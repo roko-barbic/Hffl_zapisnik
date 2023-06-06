@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hffl_zapisnik/widgets/clubRowDisplay.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/clubs.dart';
@@ -35,12 +36,13 @@ class ClubsGrid extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       itemCount: loadedClubs.length,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 1,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          mainAxisExtent: 100),
+        crossAxisCount: 1,
+        mainAxisSpacing: 3,
+        mainAxisExtent: 50,
+      ),
       itemBuilder: (context, index) =>
-          Text(sortedClubs[index].name + sortedClubs[index].win.toString()),
+          //Text(sortedClubs[index].name + sortedClubs[index].win.toString()),
+          ClubRowDisplay(club: sortedClubs[index]),
     );
   }
 }

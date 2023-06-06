@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hffl_zapisnik/classes/eventClasses/event.dart';
+import 'package:hffl_zapisnik/widgets/torunamentsGrid.dart';
+import './providers/tournaments.dart';
+import 'package:hffl_zapisnik/screens/rankingScreen.dart';
 import 'package:hffl_zapisnik/widgets/clubsGrid.dart';
 import '../providers/clubs.dart';
 import '../providers/events.dart';
@@ -25,7 +28,9 @@ class MyApp extends StatelessWidget {
       //create: (context) => UsersList(),
       providers: [
         ChangeNotifierProvider<EventsList>(create: (context) => EventsList()),
-        ChangeNotifierProvider<ClubsList>(create: (context) => ClubsList())
+        ChangeNotifierProvider<ClubsList>(create: (context) => ClubsList()),
+        ChangeNotifierProvider<TournamentsList>(
+            create: (context) => TournamentsList())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -55,26 +60,41 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: SingleChildScrollView(
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: Container(
-            padding: const EdgeInsets.only(top: 10),
-            width: MediaQuery.of(context).size.width * 95,
-            height: 500,
-            child: const Center(child: ClubsGrid()),
-          ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (() =>
-            Navigator.of(context).pushNamed(EnterEventSc.routeName)),
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+    return MaterialApp(
+      home: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+            appBar: AppBar(
+              title: Text(widget.title),
+              bottom: const TabBar(tabs: [
+                Tab(
+                  child: Text("Ljestvica"),
+                ),
+                Tab(
+                  child: Text("Turniri"),
+                ),
+              ]),
+            ),
+            body:
+                const TabBarView(children: [RankingScreen(), TournamentsGrid()])
+            /*  SingleChildScrollView(
+            child: GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: Container(
+                padding: const EdgeInsets.only(top: 10),
+                width: MediaQuery.of(context).size.width * 95,
+                height: 500,
+                child: const Center(child: ClubsGrid()),
+              ),
+            ),
+          ), */
+            /*  floatingActionButton: FloatingActionButton(
+            onPressed: (() =>
+                Navigator.of(context).pushNamed(EnterEventSc.routeName)),
+            tooltip: 'Increment',
+            child: const Icon(Icons.add),
+          ), */
+            ),
       ),
     );
   }
