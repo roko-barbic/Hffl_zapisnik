@@ -78,8 +78,8 @@ class _EnterEventScState extends State<EnterEventSc> {
   }
 
   void createEventTD() {
-    playerTD = Player(name: playerTDName, height: 150);
-    playerPass = Player(name: playerPassName, height: 149);
+    // playerTD = Player(name: playerTDName, height: 150);
+    // playerPass = Player(name: playerPassName, height: 149);
     TouchDown touchdown =
         TouchDown(touchdownCatch: playerTD, touchdownPass: playerPass);
     Provider.of<EventsList>(context, listen: false).add(touchdown);

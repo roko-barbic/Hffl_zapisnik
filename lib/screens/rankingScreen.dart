@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:hffl_zapisnik/widgets/clubsGrid.dart';
 
-class RankingScreen extends StatelessWidget {
+class RankingScreen extends StatefulWidget {
   const RankingScreen({super.key});
 
+  @override
+  State<RankingScreen> createState() => _RankingScreenState();
+}
+
+class _RankingScreenState extends State<RankingScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.05,
+        const SizedBox(
+          height: 10,
         ),
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.8,
@@ -31,12 +36,12 @@ class RankingScreen extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.1,
                 ),
                 const Text("P"),
-                const SizedBox(
-                  width: 10,
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.1,
                 ),
                 const Text("N"),
-                const SizedBox(
-                  width: 10,
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.1,
                 ),
                 const Text("I"),
               ],

@@ -9,18 +9,18 @@ import '../classes/eventClasses/eventTD.dart';
 import '../classes/eventClasses/eventXP2.dart';
 
 class EventsList extends ChangeNotifier {
-  final Player marko = Player(height: 150, name: 'Marko');
+  // final Player marko = Player(height: 150, name: 'Marko');
   final List<Event> _events = [
-    TouchDown(
-        touchdownCatch: Player(height: 150, name: 'Marko'),
-        touchdownPass: Player(height: 150, name: 'Ivan')),
-    TouchDown(
-        touchdownCatch: Player(height: 150, name: 'Ivan'),
-        touchdownPass: Player(height: 150, name: 'Marko')),
-    XP2(
-      xp2Catch: Player(height: 150, name: 'Ivan'),
-      xp2Pass: Player(height: 150, name: 'Ivan'),
-    )
+    // TouchDown(
+    //     touchdownCatch: Player(height: 150, name: 'Marko'),
+    //     touchdownPass: Player(height: 150, name: 'Ivan')),
+    // TouchDown(
+    //     touchdownCatch: Player(height: 150, name: 'Ivan'),
+    //     touchdownPass: Player(height: 150, name: 'Marko')),
+    // XP2(
+    //   xp2Catch: Player(height: 150, name: 'Ivan'),
+    //   xp2Pass: Player(height: 150, name: 'Ivan'),
+    // )
   ];
 
   UnmodifiableListView<Event> get events => UnmodifiableListView(_events);

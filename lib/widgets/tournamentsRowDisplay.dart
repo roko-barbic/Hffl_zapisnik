@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:hffl_zapisnik/classes/club.dart';
 import 'package:hffl_zapisnik/classes/tournament.dart';
@@ -26,14 +24,18 @@ class TournamentsRowDisplay extends StatelessWidget {
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.6,
                 height: 50,
-                child: Column(children: [
-                  Text(
-                    "Turnir u " + tournament.location,
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                  Text(DateFormat('dd/MM/yyyy').format(tournament.date))
-                ]),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Column(children: [
+                    Text(
+                      // "Turnir u " + tournament.location,
+                      tournament.name,
+                      textAlign: TextAlign.left,
+                      style: const TextStyle(fontSize: 17),
+                    ),
+                    Text(DateFormat('dd/MM/yyyy').format(tournament.date))
+                  ]),
+                ),
               ),
               const Icon(Icons.arrow_forward_sharp),
             ],

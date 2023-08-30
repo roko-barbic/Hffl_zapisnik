@@ -4,37 +4,39 @@ import 'package:provider/provider.dart';
 
 import '../providers/clubs.dart';
 import '../widgets/userItem.dart';
+import '../screens/DetailClubPlayersScreen.dart';
 
 import '../classes/club.dart';
 
-class ClubsGrid extends StatelessWidget {
+class ClubsGrid extends StatefulWidget {
   const ClubsGrid({super.key});
 
-  List<Club> sortClubs(List<Club> clubs) {
-    List<Club> clubsSorted = clubs;
-    for (int i = 0; i < clubsSorted.length - 1; i++) {
-      for (int j = 0; j < clubsSorted.length - i - 1; j++) {
-        if (clubsSorted[j].win! > clubsSorted[j + 1].win! ||
-            ((clubsSorted[j].win! == clubsSorted[j + 1].win!) &&
-                clubsSorted[j].draw! > clubsSorted[j + 1].draw!)) {
-          Club temp = clubsSorted[j];
-          clubsSorted[j] = clubsSorted[j + 1];
-          clubsSorted[j + 1] = temp;
-        }
-      }
-    }
+  @override
+  State<ClubsGrid> createState() => _ClubsGridState();
+}
 
-    return clubsSorted;
+class _ClubsGridState extends State<ClubsGrid> {
+  ClubsList? clubsList;
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (clubsList == null) {
+      clubsList = Provider.of<ClubsList>(context);
+      clubsList!.updateClubs();
+    }
+  }
+
+  // List<Club> sortClubs(List<Club> clubs) {
+  @override
   Widget build(BuildContext context) {
-    final clubsData = Provider.of<ClubsList>(context);
-    final loadedClubs = clubsData.clubs;
-    final sortedClubs = sortClubs(loadedClubs);
     return GridView.builder(
       padding: const EdgeInsets.all(10),
-      itemCount: loadedClubs.length,
+      itemCount: clubsList!.clubs.length,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 1,
         mainAxisSpacing: 3,
@@ -42,7 +44,20 @@ class ClubsGrid extends StatelessWidget {
       ),
       itemBuilder: (context, index) =>
           //Text(sortedClubs[index].name + sortedClubs[index].win.toString()),
-          ClubRowDisplay(club: sortedClubs[index]),
+          GestureDetector(
+              onTap: () {
+                // Navigate to another widget and pass information
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        DetailClubPlayersScreen(club: clubsList!.clubs[index]),
+                  ),
+                );
+              },
+              child: ClubRowDisplay(
+                club: clubsList!.clubs[index],
+              )),
     );
   }
 }

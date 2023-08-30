@@ -75,8 +75,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ]),
             ),
-            body:
-                const TabBarView(children: [RankingScreen(), TournamentsGrid()])
+            body: const TabBarView(children: [
+              RankingScreen(),
+              // Text("BOOOK")
+              TournamentsGrid()
+            ])
             /*  SingleChildScrollView(
             child: GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),

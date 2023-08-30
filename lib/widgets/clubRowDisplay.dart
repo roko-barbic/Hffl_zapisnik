@@ -35,12 +35,12 @@ class ClubRowDisplay extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.1,
               ),
               Text(club.win.toString()),
-              const SizedBox(
-                width: 10,
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.1,
               ),
               Text(club.draw.toString()),
-              const SizedBox(
-                width: 10,
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.1,
               ),
               Text(club.lose.toString()),
             ],
