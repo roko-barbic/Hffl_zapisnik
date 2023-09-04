@@ -19,6 +19,9 @@ class _DetailClubPlayersScreenState extends State<DetailClubPlayersScreen> {
   List<Player> players = [];
 
   void getPlayers() async {
+    setState(() {
+      players = [];
+    });
     print('get players');
     var url = Uri.https(
         'hfflzapisnik.azurewebsites.net', '/Club/' + widget.club.id.toString());
@@ -65,71 +68,78 @@ class _DetailClubPlayersScreenState extends State<DetailClubPlayersScreen> {
           title: Text(
         widget.club.name,
       )),
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 10,
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.9,
+      body: players == []
+          ? const SizedBox(
               height: 50,
-              child: Card(
-                elevation: 2,
-                shape: const RoundedRectangleBorder(
-                  side: BorderSide(
-                    color: Colors.black,
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
+              width: 50,
+              child: CircularProgressIndicator(),
+            )
+          : Column(
+              children: [
+                const SizedBox(
+                  height: 10,
                 ),
-                child: Row(children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.07,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.20,
-                    child: const Text(
-                      "#Igrač",
+                Align(
+                  alignment: Alignment.center,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    height: 50,
+                    child: Card(
+                      elevation: 2,
+                      shape: const RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: Colors.black,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                      ),
+                      child: Row(children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.07,
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.20,
+                          child: const Text(
+                            "#Igrač",
+                          ),
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.05,
+                        ),
+                        const Text("TDP"),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.05,
+                        ),
+                        const Text("TDC"),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.05,
+                        ),
+                        const Text("INT"),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.05,
+                        ),
+                        const Text("XPP"),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.05,
+                        ),
+                        const Text("XPC"),
+                      ]),
                     ),
                   ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.05,
-                  ),
-                  const Text("TDP"),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.05,
-                  ),
-                  const Text("TDC"),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.05,
-                  ),
-                  const Text("INT"),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.05,
-                  ),
-                  const Text("XPP"),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.05,
-                  ),
-                  const Text("XPC"),
-                ]),
-              ),
-            ),
-          ),
-          Expanded(
-            child: GridView.builder(
-                itemCount: players.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1,
-                  mainAxisSpacing: 3,
-                  mainAxisExtent: 50,
                 ),
-                itemBuilder: (context, index) =>
-                    PlayerRowDisplay(player: players[index])),
-          ),
-        ],
-      ),
+                Expanded(
+                  child: GridView.builder(
+                      itemCount: players.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 1,
+                        mainAxisSpacing: 3,
+                        mainAxisExtent: 50,
+                      ),
+                      itemBuilder: (context, index) =>
+                          PlayerRowDisplay(player: players[index])),
+                ),
+              ],
+            ),
     );
   }
 }

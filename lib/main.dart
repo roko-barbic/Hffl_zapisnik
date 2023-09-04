@@ -9,17 +9,29 @@ import '../providers/clubs.dart';
 import '../providers/events.dart';
 import '/services/mysql.dart';
 import 'package:provider/provider.dart';
+import './screens/LogIn.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import './services/mysql.dart';
 import './screens/enterEvent.dart';
 import './widgets/eventsGrid.dart';
 
-void main() {
-  runApp(const MyApp());
+// void main() {
+//   runApp(const MyApp());
+// }
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  bool isLoggedIn =
+      prefs.getBool('isLoggedIn') ?? false; // Default to false if not found
+  print("probjera prefsa za pocinanje app" +
+      prefs.getBool('isLoggedIn').toString());
+  runApp(MyApp(isLoggedIn: isLoggedIn));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool isLoggedIn;
+  MyApp({required this.isLoggedIn, Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -38,7 +50,10 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           //fontFamily: '';
         ),
-        home: const MyHomePage(title: 'HFFL zapisnik'),
+        home: MyHomePage(
+          title: 'HFFL zapisnik',
+          isLoggedIn: isLoggedIn,
+        ),
         routes: {
           EnterEventSc.routeName: (context) => const EnterEventSc(),
         },
@@ -48,8 +63,9 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  MyHomePage({super.key, required this.title, required this.isLoggedIn});
   final String title;
+  bool isLoggedIn;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -57,6 +73,40 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   var club = '  ';
+  // bool isLoggedIn = false;
+
+  @override
+  void initState() {
+    super.initState();
+    checkLoginStatus();
+  }
+
+  Future<bool> fetchLoginStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isLoggedIn') ?? false;
+  }
+
+  Future<void> checkLoginStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    bool? loggedIn = prefs.getBool('isLoggedIn');
+    print("probjera prefsa" + loggedIn.toString());
+    setState(() {
+      // Update the parent widget's property using widget.isLoggedIn
+      widget.isLoggedIn = loggedIn!;
+    });
+  }
+
+  Future<void> logOutAdmin() async {
+    final _prefs = await SharedPreferences.getInstance();
+    await _prefs.setBool('isLoggedIn', false);
+
+    print(
+        "probjera prefsa za logout" + _prefs.getBool('isLoggedIn').toString());
+    setState(() {
+      // Update the parent widget's property using widget.isLoggedIn
+      widget.isLoggedIn = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +116,82 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Scaffold(
             appBar: AppBar(
               title: Text(widget.title),
+              actions: [
+                FutureBuilder<bool>(
+                  future: fetchLoginStatus(), // Use the future here
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      // Handle the loading state if needed
+                      return CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      // Handle errors
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      // Check the isLoggedIn status
+                      bool isLoggedIn = snapshot.data ?? false;
+
+                      return !isLoggedIn
+                          ? IconButton(
+                              icon: const Icon(Icons.lock_person),
+                              onPressed: () {
+                                // Add your button's action here
+                                // For example, navigate to a new screen
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        (LogInScreen()), // Replace with your actual login screen widget
+                                  ),
+                                );
+                              },
+                            )
+                          : IconButton(
+                              icon: const Icon(Icons.logout_sharp),
+                              onPressed: () {
+                                // Add your button's action here
+                                // For example, navigate to a new screen
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text('Logout'),
+                                      content: Text('Do you want to Logout?'),
+                                      actions: <Widget>[
+                                        Row(children: [
+                                          TextButton(
+                                            child: Text('YES'),
+                                            onPressed: () {
+                                              logOutAdmin();
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MyHomePage(
+                                                    title: 'HFFL zapisnik',
+                                                    isLoggedIn:
+                                                        false, // Set isLoggedIn to true after successful login
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: Text('NO'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ]),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                    }
+                  },
+                ),
+              ],
               bottom: const TabBar(tabs: [
                 Tab(
                   child: Text("Ljestvica"),
@@ -79,25 +205,7 @@ class _MyHomePageState extends State<MyHomePage> {
               RankingScreen(),
               // Text("BOOOK")
               TournamentsGrid()
-            ])
-            /*  SingleChildScrollView(
-            child: GestureDetector(
-              onTap: () => FocusScope.of(context).unfocus(),
-              child: Container(
-                padding: const EdgeInsets.only(top: 10),
-                width: MediaQuery.of(context).size.width * 95,
-                height: 500,
-                child: const Center(child: ClubsGrid()),
-              ),
-            ),
-          ), */
-            /*  floatingActionButton: FloatingActionButton(
-            onPressed: (() =>
-                Navigator.of(context).pushNamed(EnterEventSc.routeName)),
-            tooltip: 'Increment',
-            child: const Icon(Icons.add),
-          ), */
-            ),
+            ])),
       ),
     );
   }
