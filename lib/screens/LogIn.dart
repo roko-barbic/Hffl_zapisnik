@@ -33,7 +33,8 @@ class _LogInScreenState extends State<LogInScreen> {
       'password': _passwordController.text
     };
 
-    http.Response response = await http.post(url, body: jsonEncode(body));
+    http.Response response =
+        await http.post(url, body: jsonEncode(body)); //mozda visak
     if (response.statusCode == 200) {}
     try {
       final response = await http.post(

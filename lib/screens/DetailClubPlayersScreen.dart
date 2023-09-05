@@ -17,11 +17,9 @@ class DetailClubPlayersScreen extends StatefulWidget {
 
 class _DetailClubPlayersScreenState extends State<DetailClubPlayersScreen> {
   List<Player> players = [];
+  bool isLoaded = false;
 
-  void getPlayers() async {
-    setState(() {
-      players = [];
-    });
+  Future<void> getPlayers() async {
     print('get players');
     var url = Uri.https(
         'hfflzapisnik.azurewebsites.net', '/Club/' + widget.club.id.toString());
@@ -43,6 +41,7 @@ class _DetailClubPlayersScreenState extends State<DetailClubPlayersScreen> {
     players.clear();
     setState(() {
       players.addAll(_loadedPlayers);
+      isLoaded = true;
     });
   }
 
@@ -50,7 +49,7 @@ class _DetailClubPlayersScreenState extends State<DetailClubPlayersScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (players == null) {
-      getPlayers();
+      getPlayers().then((_) => {isLoaded = true});
     }
   }
 
@@ -68,12 +67,8 @@ class _DetailClubPlayersScreenState extends State<DetailClubPlayersScreen> {
           title: Text(
         widget.club.name,
       )),
-      body: players == []
-          ? const SizedBox(
-              height: 50,
-              width: 50,
-              child: CircularProgressIndicator(),
-            )
+      body: !isLoaded
+          ? Center(child: CircularProgressIndicator())
           : Column(
               children: [
                 const SizedBox(

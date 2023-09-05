@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hffl_zapisnik/classes/playerDTO.dart';
+import 'package:hffl_zapisnik/screens/enterEvent.dart';
 import 'package:hffl_zapisnik/widgets/eventRowDisplay.dart';
 import '../classes/game.dart';
 import '../classes/eventInGame.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 class GameEventsScreen extends StatefulWidget {
@@ -18,6 +20,17 @@ class GameEventsScreen extends StatefulWidget {
 
 class _GameEventsScreenState extends State<GameEventsScreen> {
   List<EventInGame> events = [];
+  bool isLoggedIn = false;
+
+  Future<void> checkLoginStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    bool? loggedIn = prefs.getBool('isLoggedIn');
+    print("probjera prefsa" + loggedIn.toString());
+    setState(() {
+      // Update the parent widget's property using widget.isLoggedIn
+      isLoggedIn = loggedIn!;
+    });
+  }
 
   void getEvents() async {
     print('get events in game');
@@ -57,6 +70,7 @@ class _GameEventsScreenState extends State<GameEventsScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    checkLoginStatus();
     getEvents();
   }
 
@@ -67,6 +81,23 @@ class _GameEventsScreenState extends State<GameEventsScreen> {
           title: Text(
         widget.game.clubHome.name + " vs " + widget.game.clubAway.name,
       )),
+      floatingActionButton: Visibility(
+        visible:
+            isLoggedIn, //_tabcontroller.index == 1, da bi bio samo turniri tab
+        child: FloatingActionButton(
+          onPressed: () {
+            showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return Container(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    child: EnterEventSc(gameId: widget.game.id),
+                  );
+                });
+          },
+          child: Icon(Icons.add),
+        ),
+      ),
       body: Column(children: [
         Container(
             height: 60,

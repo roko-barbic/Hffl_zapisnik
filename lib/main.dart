@@ -54,9 +54,6 @@ class MyApp extends StatelessWidget {
           title: 'HFFL zapisnik',
           isLoggedIn: isLoggedIn,
         ),
-        routes: {
-          EnterEventSc.routeName: (context) => const EnterEventSc(),
-        },
       ),
     );
   }
@@ -71,14 +68,33 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
   var club = '  ';
+  late TabController _tabController;
+  int _currentTabIndex = 0;
   // bool isLoggedIn = false;
 
   @override
   void initState() {
     super.initState();
     checkLoginStatus();
+    _tabController = TabController(
+      length: 2,
+      vsync: this,
+    );
+
+    _tabController.addListener(() {
+      setState(() {
+        _currentTabIndex = _tabController.index;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose(); // Dispose of the TabController
+    super.dispose();
   }
 
   Future<bool> fetchLoginStatus() async {
@@ -192,7 +208,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 ),
               ],
-              bottom: const TabBar(tabs: [
+              bottom: TabBar(controller: _tabController, tabs: const [
                 Tab(
                   child: Text("Ljestvica"),
                 ),
@@ -201,7 +217,23 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ]),
             ),
-            body: const TabBarView(children: [
+            floatingActionButton: Visibility(
+              visible: widget
+                  .isLoggedIn, //_tabcontroller.index == 1, da bi bio samo turniri tab
+              child: FloatingActionButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Container(
+                          child: Text(_tabController.index.toString()),
+                        );
+                      });
+                },
+                child: Icon(Icons.add),
+              ),
+            ),
+            body: TabBarView(controller: _tabController, children: [
               RankingScreen(),
               // Text("BOOOK")
               TournamentsGrid()

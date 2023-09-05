@@ -4,8 +4,10 @@ import 'package:hffl_zapisnik/classes/game.dart';
 import 'package:hffl_zapisnik/classes/tournament.dart';
 import 'package:hffl_zapisnik/screens/GameEventsScreen.dart';
 import 'package:hffl_zapisnik/widgets/GamesRowDisplay.dart';
+import 'package:hffl_zapisnik/widgets/enterGame.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GamesScreen extends StatefulWidget {
   Tournament tournament;
@@ -18,6 +20,7 @@ class GamesScreen extends StatefulWidget {
 
 class _GamesScreenState extends State<GamesScreen> {
   List<Game> games = [];
+  bool isLoggedIn = false;
 
   void getGames() async {
     print('get games');
@@ -30,8 +33,8 @@ class _GamesScreenState extends State<GamesScreen> {
       _loadedGames.add(Game(
           clubHome: Club.defaultConstr(name: item['club_Home']['name']),
           clubAway: Club.defaultConstr(name: item['club_Away']['name']),
-          scoreAway: item['club_Home_Score'],
-          scoreHome: item['club_Away_Score'],
+          scoreAway: item['club_Away_Score'],
+          scoreHome: item['club_Home_Score'],
           id: item['id']));
     }
     print(_loadedGames);
@@ -41,18 +44,30 @@ class _GamesScreenState extends State<GamesScreen> {
     });
   }
 
+  Future<void> checkLoginStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    bool? loggedIn = prefs.getBool('isLoggedIn');
+    print("probjera prefsa" + loggedIn.toString());
+    setState(() {
+      // Update the parent widget's property using widget.isLoggedIn
+      isLoggedIn = loggedIn!;
+    });
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (games == null) {
       getGames();
     }
+    //getGames();
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    checkLoginStatus();
     getGames();
   }
 
@@ -63,6 +78,24 @@ class _GamesScreenState extends State<GamesScreen> {
           title: Text(
         widget.tournament.name,
       )),
+      floatingActionButton: Visibility(
+        visible:
+            isLoggedIn, //_tabcontroller.index == 1, da bi bio samo turniri tab
+        child: FloatingActionButton(
+          onPressed: () {
+            showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return Container(
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    child: EnterGame(
+                        tournamentId: widget.tournament.id), //enterGame
+                  );
+                });
+          },
+          child: Icon(Icons.add),
+        ),
+      ),
       body: GridView.builder(
           padding: const EdgeInsets.all(10),
           itemCount: games.length,

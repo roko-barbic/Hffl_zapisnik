@@ -39,7 +39,7 @@ class TournamentsList extends ChangeNotifier {
   UnmodifiableListView<Tournament> get tournaments =>
       UnmodifiableListView(_tournaments);
 
-  void updateTournaments() async {
+  Future<void> updateTournaments() async {
     print('update tournaments');
     var url = Uri.https('hfflzapisnik.azurewebsites.net', '/Tournament');
     final response = await http.get(url);

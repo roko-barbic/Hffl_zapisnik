@@ -14,13 +14,18 @@ class TournamentsGrid extends StatefulWidget {
 
 class _TournamentsGridState extends State<TournamentsGrid> {
   TournamentsList? tournamentsList;
+  bool isLoaded = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (tournamentsList == null) {
       tournamentsList = Provider.of<TournamentsList>(context);
-      tournamentsList!.updateTournaments();
+      tournamentsList!.updateTournaments().then((_) => {
+            setState(() {
+              isLoaded = true;
+            })
+          });
     }
   }
 
@@ -29,30 +34,35 @@ class _TournamentsGridState extends State<TournamentsGrid> {
     // final torunamentsData = Provider.of<TournamentsList>(context);
     // final loadedTournaments = torunamentsData.tournaments;
 
-    return GridView.builder(
-        padding: const EdgeInsets.all(10),
-        itemCount: tournamentsList!.tournaments.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 1,
-          mainAxisSpacing: 10,
-          mainAxisExtent: 50,
-        ),
-        itemBuilder: (context, index) => GestureDetector(
-              onTap: () {
-                // Navigate to another widget and pass information
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        // DetailClubPlayersScreen(club: clubsList!.clubs[index]),
-                        // RankingScreen(),
-                        GamesScreen(
-                            tournament: tournamentsList!.tournaments[index]),
-                  ),
-                );
-              },
-              child: TournamentsRowDisplay(
-                  tournament: tournamentsList!.tournaments[index]),
-            ));
+    return isLoaded
+        ? GridView.builder(
+            padding: const EdgeInsets.all(10),
+            itemCount: tournamentsList!.tournaments.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 1,
+              mainAxisSpacing: 10,
+              mainAxisExtent: 50,
+            ),
+            itemBuilder: (context, index) => GestureDetector(
+                  onTap: () {
+                    // Navigate to another widget and pass information
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            // DetailClubPlayersScreen(club: clubsList!.clubs[index]),
+                            // RankingScreen(),
+                            GamesScreen(
+                                tournament:
+                                    tournamentsList!.tournaments[index]),
+                      ),
+                    );
+                  },
+                  child: TournamentsRowDisplay(
+                      tournament: tournamentsList!.tournaments[index]),
+                ))
+        : Center(
+            child: CircularProgressIndicator(),
+          );
   }
 }

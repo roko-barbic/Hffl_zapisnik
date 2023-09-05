@@ -20,10 +20,6 @@ class ClubsGrid extends StatefulWidget {
 class _ClubsGridState extends State<ClubsGrid> {
   ClubsList? clubsList;
   bool isLoaded = false;
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   void didChangeDependencies() {
@@ -31,17 +27,17 @@ class _ClubsGridState extends State<ClubsGrid> {
     if (clubsList == null) {
       clubsList = Provider.of<ClubsList>(context);
 
-      // setState(() {
-      clubsList!.updateClubs();
-      isLoaded = true;
-      // });
+      clubsList!.updateClubs().then((_) {
+        setState(() {
+          isLoaded = true;
+        });
+      });
     }
   }
 
-  // List<Club> sortClubs(List<Club> clubs) {
   @override
   Widget build(BuildContext context) {
-    return isLoaded == true
+    return isLoaded
         ? GridView.builder(
             padding: const EdgeInsets.all(10),
             itemCount: clubsList!.clubs.length,
@@ -50,24 +46,19 @@ class _ClubsGridState extends State<ClubsGrid> {
               mainAxisSpacing: 3,
               mainAxisExtent: 50,
             ),
-            itemBuilder: (context, index) =>
-                //Text(sortedClubs[index].name + sortedClubs[index].win.toString()),
-                GestureDetector(
-                    onTap: () {
-                      // Navigate to another widget and pass information
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailClubPlayersScreen(
-                              club: clubsList!.clubs[index]),
-                        ),
-                      );
-                    },
-                    child: ClubRowDisplay(
-                      club: clubsList!.clubs[index],
-                    )),
+            itemBuilder: (context, index) => GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        DetailClubPlayersScreen(club: clubsList!.clubs[index]),
+                  ),
+                );
+              },
+              child: ClubRowDisplay(club: clubsList!.clubs[index]),
+            ),
           )
-        : SizedBox(
-            height: 50, width: 50, child: const CircularProgressIndicator());
+        : Center(child: CircularProgressIndicator());
   }
 }

@@ -25,7 +25,7 @@ class ClubsList extends ChangeNotifier {
 
   UnmodifiableListView<Club> get clubs => UnmodifiableListView(_clubs);
 
-  void updateClubs() async {
+  Future<void> updateClubs() async {
     print('updateCub called');
     var url = Uri.https('hfflzapisnik.azurewebsites.net', '/Club');
     final response = await http.get(url);

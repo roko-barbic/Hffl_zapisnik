@@ -72,7 +72,8 @@ class EventRowDisplay extends StatelessWidget {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.13,
                     ),
-                    Center(
+                    SizedBox(
+                      height: 100,
                       child: Column(
                         children: [
                           Text('Pass: ' +
