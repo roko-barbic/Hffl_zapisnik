@@ -21,6 +21,12 @@ class _RankingScreenState extends State<RankingScreen> {
           height: 50,
           child: Card(
             elevation: 2,
+            shape: const RoundedRectangleBorder(
+              side: BorderSide(
+                color: Colors.black,
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+            ),
             child: Row(
               children: [
                 SizedBox(

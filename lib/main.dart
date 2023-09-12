@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hffl_zapisnik/classes/eventClasses/event.dart';
+import 'package:hffl_zapisnik/widgets/enterTurnament.dart';
 import 'package:hffl_zapisnik/widgets/torunamentsGrid.dart';
 import './providers/tournaments.dart';
 import 'package:hffl_zapisnik/screens/rankingScreen.dart';
@@ -226,7 +227,7 @@ class _MyHomePageState extends State<MyHomePage>
                       context: context,
                       builder: (BuildContext context) {
                         return Container(
-                          child: Text(_tabController.index.toString()),
+                          child: EnterTurnament(),
                         );
                       });
                 },

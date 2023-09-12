@@ -21,6 +21,7 @@ class GameEventsScreen extends StatefulWidget {
 class _GameEventsScreenState extends State<GameEventsScreen> {
   List<EventInGame> events = [];
   bool isLoggedIn = false;
+  bool isSwiped = false;
 
   Future<void> checkLoginStatus() async {
     final prefs = await SharedPreferences.getInstance();
@@ -66,6 +67,23 @@ class _GameEventsScreenState extends State<GameEventsScreen> {
     }
   }
 
+  Future<bool> deleteEvent(int id) async {
+    var url = Uri.https(
+        'hfflzapisnik.azurewebsites.net', '/deleteEvent/${id.toString()}');
+    try {
+      final response = await http.delete(url);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        print('Failed to delete tournament');
+        return false;
+      }
+    } catch (e) {
+      print('Error: $e');
+      return false;
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -102,7 +120,7 @@ class _GameEventsScreenState extends State<GameEventsScreen> {
         Container(
             height: 60,
             width: MediaQuery.of(context).size.width * 0.9,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               border: Border(
                 bottom: BorderSide(
                   color: Colors
@@ -123,7 +141,7 @@ class _GameEventsScreenState extends State<GameEventsScreen> {
                 style: TextStyle(fontSize: 15),
               ),
             )),
-        SizedBox(
+        const SizedBox(
           height: 20,
         ),
         Expanded(
@@ -135,10 +153,92 @@ class _GameEventsScreenState extends State<GameEventsScreen> {
               mainAxisSpacing: 10,
               mainAxisExtent: 50,
             ),
-            itemBuilder: (context, index) =>
-                EventRowDisplay(event: events[index]),
+            itemBuilder: (context, index) => isLoggedIn
+                ? GestureDetector(
+                    onLongPress: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text('Delete event'),
+                            content: Text(
+                                'Are you sure you want to delete event? (id:' +
+                                    events[index].id.toString() +
+                                    ")"),
+                            actions: <Widget>[
+                              TextButton(
+                                child: const Text('Yes'),
+                                onPressed: () {
+                                  deleteEvent(events[index].id);
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              TextButton(
+                                child: const Text('No'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: EventRowDisplay(event: events[index]))
+                : EventRowDisplay(event: events[index]),
           ),
         ),
+
+        // Expanded(
+        //   child: GridView.builder(
+        //     padding: const EdgeInsets.all(10),
+        //     itemCount: events.length,
+        //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        //       crossAxisCount: 1,
+        //       mainAxisSpacing: 10,
+        //       mainAxisExtent: 50,
+        //     ),
+        //     itemBuilder: (context, index) {
+        //       // Track whether the row is swiped or not.
+
+        //       return GestureDetector(
+        //         onHorizontalDragUpdate: (details) {
+        //           // Detect horizontal swipe gesture.
+        //           if (details.delta.dx < -20) {
+        //             // If swiped left by a certain threshold, set isSwiped to true.
+        //             setState(() {
+        //               isSwiped = true;
+        //             });
+        //           }
+        //         },
+        //         onHorizontalDragEnd: (details) {
+        //           // When the swipe gesture ends, reset isSwiped.
+        //           setState(() {
+        //             isSwiped = false;
+        //           });
+        //         },
+        //         child: Row(
+        //           children: [
+        //             if (isSwiped)
+        //               Expanded(
+        //                 child: IconButton(
+        //                   icon: Icon(Icons.delete),
+        //                   onPressed: () {
+        //                     // Call deleteEvent() when the trash icon is pressed.
+        //                     // deleteEvent(
+        //                     //     index); // You may need to pass the correct index here.
+        //                   },
+        //                 ),
+        //               ),
+        //             Expanded(
+        //               child: EventRowDisplay(event: events[index]),
+        //             ),
+        //           ],
+        //         ),
+        //       );
+        //     },
+        //   ),
+        // ),
       ]),
     );
   }

@@ -54,6 +54,22 @@ class _GamesScreenState extends State<GamesScreen> {
     });
   }
 
+  Future<bool> deleteGame(int id) async {
+    var url = Uri.https('hfflzapisnik.azurewebsites.net', '/deleteGame/${id}');
+    try {
+      final response = await http.delete(url);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        print('Failed to delete tournament');
+        return false;
+      }
+    } catch (e) {
+      print('Error: $e');
+      return false;
+    }
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -104,23 +120,70 @@ class _GamesScreenState extends State<GamesScreen> {
             mainAxisSpacing: 10,
             mainAxisExtent: 50,
           ),
-          itemBuilder: (context, index) => GestureDetector(
-                onTap: () {
-                  // Navigate to another widget and pass information
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          // DetailClubPlayersScreen(club: clubsList!.clubs[index]),
-                          // RankingScreen(),
-                          GameEventsScreen(game: games[index]),
-                    ),
-                  );
-                },
-                child: GamesRowDisplay(
-                  game: games[index],
-                ),
-              )),
+          itemBuilder: (context, index) => isLoggedIn
+              ? GestureDetector(
+                  onLongPress: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text('Delete event'),
+                          content: Text(
+                              'Are you sure you want to delete game? (id:' +
+                                  games[index].id.toString() +
+                                  ")"),
+                          actions: <Widget>[
+                            TextButton(
+                              child: const Text('Yes'),
+                              onPressed: () {
+                                deleteGame(games[index].id);
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            TextButton(
+                              child: const Text('No'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  onTap: () {
+                    // Navigate to another widget and pass information
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            // DetailClubPlayersScreen(club: clubsList!.clubs[index]),
+                            // RankingScreen(),
+                            GameEventsScreen(game: games[index]),
+                      ),
+                    );
+                  },
+                  child: GamesRowDisplay(
+                    game: games[index],
+                  ),
+                )
+              : GestureDetector(
+                  onTap: () {
+                    // Navigate to another widget and pass information
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            // DetailClubPlayersScreen(club: clubsList!.clubs[index]),
+                            // RankingScreen(),
+                            GameEventsScreen(game: games[index]),
+                      ),
+                    );
+                  },
+                  child: GamesRowDisplay(
+                    game: games[index],
+                  ),
+                )),
     );
   }
 }
