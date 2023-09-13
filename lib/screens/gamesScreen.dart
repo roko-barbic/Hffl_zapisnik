@@ -70,6 +70,12 @@ class _GamesScreenState extends State<GamesScreen> {
     }
   }
 
+  void refreshGames() {
+    setState(() {
+      getGames();
+    });
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -105,11 +111,12 @@ class _GamesScreenState extends State<GamesScreen> {
                   return Container(
                     height: MediaQuery.of(context).size.height * 0.2,
                     child: EnterGame(
-                        tournamentId: widget.tournament.id), //enterGame
+                        tournamentId: widget.tournament.id,
+                        refreshGames: refreshGames), //enterGame
                   );
                 });
           },
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
         ),
       ),
       body: GridView.builder(
@@ -135,8 +142,14 @@ class _GamesScreenState extends State<GamesScreen> {
                           actions: <Widget>[
                             TextButton(
                               child: const Text('Yes'),
-                              onPressed: () {
-                                deleteGame(games[index].id);
+                              onPressed: () async {
+                                bool deleted =
+                                    await deleteGame(games[index].id);
+                                if (deleted) {
+                                  setState(() {
+                                    getGames();
+                                  });
+                                }
                                 Navigator.of(context).pop();
                               },
                             ),
@@ -161,7 +174,11 @@ class _GamesScreenState extends State<GamesScreen> {
                             // RankingScreen(),
                             GameEventsScreen(game: games[index]),
                       ),
-                    );
+                    ).then((value) {
+                      setState(() {
+                        getGames();
+                      });
+                    });
                   },
                   child: GamesRowDisplay(
                     game: games[index],
@@ -178,7 +195,11 @@ class _GamesScreenState extends State<GamesScreen> {
                             // RankingScreen(),
                             GameEventsScreen(game: games[index]),
                       ),
-                    );
+                    ).then((value) {
+                      setState(() {
+                        getGames();
+                      });
+                    });
                   },
                   child: GamesRowDisplay(
                     game: games[index],

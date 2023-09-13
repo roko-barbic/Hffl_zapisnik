@@ -8,17 +8,17 @@ class EventRowDisplay extends StatelessWidget {
 
   String getText() {
     if (event.type == 1) {
-      return 'TD';
+      return 'TD  +6';
     } else if (event.type == 2) {
       return 'INT';
     } else if (event.type == 3) {
-      return 'Pick 6';
+      return 'PickSix  +6';
     } else if (event.type == 4) {
-      return 'XP';
+      return 'XP  +1';
     } else if (event.type == 5) {
-      return 'XP2';
+      return 'XP2  +2';
     } else {
-      return 'SAF';
+      return 'SAF  +2';
     }
   }
 
@@ -42,15 +42,17 @@ class EventRowDisplay extends StatelessWidget {
                     ),
                     Center(
                       child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.12,
+                        width: MediaQuery.of(context).size.width * 0.13,
                         child: Text(textType),
                       ),
                     ),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.02,
+                      width: MediaQuery.of(context).size.width * 0.05,
                     ),
-                    Center(
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.35,
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text('Pass: ' +
                               event.playerOne.surname +
@@ -70,11 +72,12 @@ class EventRowDisplay extends StatelessWidget {
               : Row(
                   children: [
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.13,
+                      width: MediaQuery.of(context).size.width * 0.02,
                     ),
                     SizedBox(
-                      height: 100,
+                      width: MediaQuery.of(context).size.width * 0.35,
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text('Pass: ' +
                               event.playerOne.surname +
@@ -94,12 +97,9 @@ class EventRowDisplay extends StatelessWidget {
                     ),
                     Center(
                       child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.12,
+                        width: MediaQuery.of(context).size.width * 0.13,
                         child: Text(textType),
                       ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.01,
                     ),
                   ],
                 ),

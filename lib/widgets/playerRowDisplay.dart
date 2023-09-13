@@ -19,31 +19,41 @@ class PlayerRowDisplay extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.05,
             ),
             SizedBox(
-              width: MediaQuery.of(context).size.width * 0.20,
+              width: MediaQuery.of(context).size.width * 0.22,
               child: Text(
                 player.surname + ' ' + player.name.characters.first + ".",
               ),
             ),
             SizedBox(
-              width: MediaQuery.of(context).size.width * 0.09,
+              width: MediaQuery.of(context).size.width * 0.05,
             ),
-            Text(player.touchdownPassCounter.toString()),
             SizedBox(
-              width: MediaQuery.of(context).size.width * 0.1,
-            ),
-            Text(player.touchdownCatchCounter.toString()),
+                width: MediaQuery.of(context).size.width * 0.07,
+                child: Text(player.touchdownPassCounter.toString())),
             SizedBox(
-              width: MediaQuery.of(context).size.width * 0.09,
+              width: MediaQuery.of(context).size.width * 0.05,
             ),
-            Text(player.interceptionCounter.toString()),
             SizedBox(
-              width: MediaQuery.of(context).size.width * 0.1,
-            ),
-            Text(player.extreaPointPassCounter.toString()),
+                width: MediaQuery.of(context).size.width * 0.07,
+                child: Text(player.touchdownCatchCounter.toString())),
             SizedBox(
-              width: MediaQuery.of(context).size.width * 0.09,
+              width: MediaQuery.of(context).size.width * 0.05,
             ),
-            Text(player.extraPointCatchCounter.toString()),
+            SizedBox(
+                width: MediaQuery.of(context).size.width * 0.07,
+                child: Text(player.interceptionCounter.toString())),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.05,
+            ),
+            SizedBox(
+                width: MediaQuery.of(context).size.width * 0.07,
+                child: Text(player.extreaPointPassCounter.toString())),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.05,
+            ),
+            SizedBox(
+                width: MediaQuery.of(context).size.width * 0.07,
+                child: Text(player.extraPointCatchCounter.toString())),
           ]),
         ),
       ),

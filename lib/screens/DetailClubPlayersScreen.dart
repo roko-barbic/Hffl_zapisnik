@@ -77,7 +77,7 @@ class _DetailClubPlayersScreenState extends State<DetailClubPlayersScreen> {
                 Align(
                   alignment: Alignment.center,
                   child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.9,
+                    width: MediaQuery.of(context).size.width * 0.94,
                     height: 50,
                     child: Card(
                       elevation: 2,
@@ -100,23 +100,33 @@ class _DetailClubPlayersScreenState extends State<DetailClubPlayersScreen> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.05,
                         ),
-                        const Text("TDP"),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.07,
+                            child: const Text("TDP")),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.05,
                         ),
-                        const Text("TDC"),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.07,
+                            child: const Text("TDC")),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.05,
                         ),
-                        const Text("INT"),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.07,
+                            child: const Text("INT")),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.05,
                         ),
-                        const Text("XPP"),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.07,
+                            child: const Text("XPP")),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.05,
                         ),
-                        const Text("XPC"),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.07,
+                            child: const Text("XPC")),
                       ]),
                     ),
                   ),

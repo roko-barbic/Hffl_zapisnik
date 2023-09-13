@@ -13,7 +13,8 @@ import '../classes/club.dart';
 import '../providers/events.dart';
 
 class EnterEventSc extends StatefulWidget {
-  EnterEventSc({required this.gameId, super.key});
+  EnterEventSc({required this.gameId, required this.refreshEvents, super.key});
+  Function refreshEvents;
   int gameId;
   @override
   State<EnterEventSc> createState() => _EnterEventScState();
@@ -608,17 +609,8 @@ class _EnterEventScState extends State<EnterEventSc> {
             scoreAway: _loadedGame['club_Away_Score'],
             scoreHome: _loadedGame['club_Home_Score'],
             id: _loadedGame['id']);
-        // Navigator.of(context).pop();
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) {
-              // Navigate back to the original widget
-              return GameEventsScreen(
-                game: gameToReturnBack,
-              );
-            },
-          ),
-        );
+        Navigator.of(context).pop();
+        widget.refreshEvents(gameToReturnBack);
       } else {
         showDialog(
           context: context,

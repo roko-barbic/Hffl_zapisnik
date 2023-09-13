@@ -4,6 +4,8 @@ import 'package:hffl_zapisnik/classes/playerDTO.dart';
 import 'package:hffl_zapisnik/screens/enterEvent.dart';
 import 'package:hffl_zapisnik/widgets/eventRowDisplay.dart';
 import '../classes/game.dart';
+import '../classes/club.dart';
+
 import '../classes/eventInGame.dart';
 
 import 'package:http/http.dart' as http;
@@ -67,12 +69,29 @@ class _GameEventsScreenState extends State<GameEventsScreen> {
     }
   }
 
+  void refreshEvents(Game game) {
+    setState(() {
+      widget.game = game;
+      getEvents();
+    });
+  }
+
   Future<bool> deleteEvent(int id) async {
     var url = Uri.https(
         'hfflzapisnik.azurewebsites.net', '/deleteEvent/${id.toString()}');
     try {
       final response = await http.delete(url);
       if (response.statusCode == 200) {
+        final dynamic _loadedGame = json.decode(response.body);
+        final gameToReturnBack = Game(
+            clubHome:
+                Club.defaultConstr(name: _loadedGame['club_Home']['name']),
+            clubAway:
+                Club.defaultConstr(name: _loadedGame['club_Away']['name']),
+            scoreAway: _loadedGame['club_Away_Score'],
+            scoreHome: _loadedGame['club_Home_Score'],
+            id: _loadedGame['id']);
+        widget.game = gameToReturnBack;
         return true;
       } else {
         print('Failed to delete tournament');
@@ -109,7 +128,10 @@ class _GameEventsScreenState extends State<GameEventsScreen> {
                 builder: (BuildContext context) {
                   return Container(
                     height: MediaQuery.of(context).size.height * 0.5,
-                    child: EnterEventSc(gameId: widget.game.id),
+                    child: EnterEventSc(
+                      gameId: widget.game.id,
+                      refreshEvents: refreshEvents,
+                    ),
                   );
                 });
           },
@@ -168,8 +190,14 @@ class _GameEventsScreenState extends State<GameEventsScreen> {
                             actions: <Widget>[
                               TextButton(
                                 child: const Text('Yes'),
-                                onPressed: () {
-                                  deleteEvent(events[index].id);
+                                onPressed: () async {
+                                  bool deleted =
+                                      await deleteEvent(events[index].id);
+                                  if (deleted) {
+                                    setState(() {
+                                      getEvents();
+                                    });
+                                  }
                                   Navigator.of(context).pop();
                                 },
                               ),

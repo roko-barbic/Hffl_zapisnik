@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import '../widgets/torunamentsGrid.dart';
+import 'package:hffl_zapisnik/providers/tournaments.dart';
+import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'dart:convert';
 
 class EnterTurnament extends StatefulWidget {
@@ -44,6 +48,9 @@ class _EnterTurnamentState extends State<EnterTurnament> {
       );
       if (response.statusCode == 200) {
         print('radi tournament ');
+        var tournamentsList =
+            Provider.of<TournamentsList>(context, listen: false);
+        tournamentsList!.updateTournaments();
         Navigator.of(context).pop();
       }
     } catch (e) {
@@ -88,13 +95,16 @@ class _EnterTurnamentState extends State<EnterTurnament> {
                 ),
               ),
             ),
+            const SizedBox(
+              height: 15,
+            ),
             isSelectedTime
                 ? Text(
-                    "Odabrano vrijeme održavanja turnira: ${selectedDate.toLocal()}")
+                    "Odabrano vrijeme održavanja turnira: ${DateFormat('dd/MM/yyyy').format(selectedDate.toLocal())}")
                 // .split(' ')[0])
                 : const Text('Niste još odabrali vrijeme.'),
             const SizedBox(
-              height: 15,
+              height: 25,
             ),
             FloatingActionButton(
               onPressed: (() => createTurnament()),

@@ -139,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage>
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       // Handle the loading state if needed
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     } else if (snapshot.hasError) {
                       // Handle errors
                       return Text('Error: ${snapshot.error}');
@@ -157,7 +157,7 @@ class _MyHomePageState extends State<MyHomePage>
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        (LogInScreen()), // Replace with your actual login screen widget
+                                        (const LogInScreen()), // Replace with your actual login screen widget
                                   ),
                                 );
                               },
@@ -171,12 +171,13 @@ class _MyHomePageState extends State<MyHomePage>
                                   context: context,
                                   builder: (context) {
                                     return AlertDialog(
-                                      title: Text('Logout'),
-                                      content: Text('Do you want to Logout?'),
+                                      title: const Text('Logout'),
+                                      content:
+                                          const Text('Do you want to Logout?'),
                                       actions: <Widget>[
                                         Row(children: [
                                           TextButton(
-                                            child: Text('YES'),
+                                            child: const Text('YES'),
                                             onPressed: () {
                                               logOutAdmin();
                                               Navigator.pushReplacement(
@@ -193,7 +194,7 @@ class _MyHomePageState extends State<MyHomePage>
                                             },
                                           ),
                                           TextButton(
-                                            child: Text('NO'),
+                                            child: const Text('NO'),
                                             onPressed: () {
                                               Navigator.of(context).pop();
                                             },
@@ -219,15 +220,16 @@ class _MyHomePageState extends State<MyHomePage>
               ]),
             ),
             floatingActionButton: Visibility(
-              visible: widget
-                  .isLoggedIn, //_tabcontroller.index == 1, da bi bio samo turniri tab
+              visible: widget.isLoggedIn &&
+                  _tabController.index ==
+                      1, //_tabcontroller.index == 1, da bi bio samo turniri tab
               child: FloatingActionButton(
                 onPressed: () {
                   showModalBottomSheet(
                       context: context,
                       builder: (BuildContext context) {
                         return Container(
-                          child: EnterTurnament(),
+                          child: const EnterTurnament(),
                         );
                       });
                 },
@@ -235,9 +237,11 @@ class _MyHomePageState extends State<MyHomePage>
               ),
             ),
             body: TabBarView(controller: _tabController, children: [
-              RankingScreen(),
+              const RankingScreen(),
               // Text("BOOOK")
-              TournamentsGrid()
+              TournamentsGrid(
+                isLoggedIn: widget.isLoggedIn,
+              )
             ])),
       ),
     );

@@ -8,8 +8,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class EnterGame extends StatefulWidget {
-  EnterGame({required this.tournamentId, super.key});
+  EnterGame(
+      {required this.tournamentId, required this.refreshGames, super.key});
   final int tournamentId; // Add 'final' to the member variable.
+  final Function() refreshGames;
   @override
   State<EnterGame> createState() => _EnterGameState();
 }
@@ -81,6 +83,7 @@ class _EnterGameState extends State<EnterGame> {
       );
       if (response.statusCode == 200) {
         Navigator.of(context).pop();
+        widget.refreshGames();
       }
     } catch (e) {
       print('Error: $e');
