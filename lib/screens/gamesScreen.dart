@@ -21,6 +21,7 @@ class GamesScreen extends StatefulWidget {
 class _GamesScreenState extends State<GamesScreen> {
   List<Game> games = [];
   bool isLoggedIn = false;
+  bool isLoaded = false;
 
   void getGames() async {
     print('get games');
@@ -41,6 +42,7 @@ class _GamesScreenState extends State<GamesScreen> {
     games.clear();
     setState(() {
       games.addAll(_loadedGames);
+      isLoaded = true;
     });
   }
 
@@ -101,8 +103,7 @@ class _GamesScreenState extends State<GamesScreen> {
         widget.tournament.name,
       )),
       floatingActionButton: Visibility(
-        visible:
-            isLoggedIn, //_tabcontroller.index == 1, da bi bio samo turniri tab
+        visible: isLoggedIn,
         child: FloatingActionButton(
           onPressed: () {
             showModalBottomSheet(
@@ -119,92 +120,96 @@ class _GamesScreenState extends State<GamesScreen> {
           child: const Icon(Icons.add),
         ),
       ),
-      body: GridView.builder(
-          padding: const EdgeInsets.all(10),
-          itemCount: games.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 1,
-            mainAxisSpacing: 10,
-            mainAxisExtent: 50,
-          ),
-          itemBuilder: (context, index) => isLoggedIn
-              ? GestureDetector(
-                  onLongPress: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: Text('Delete event'),
-                          content: Text(
-                              'Are you sure you want to delete game? (id:' +
-                                  games[index].id.toString() +
-                                  ")"),
-                          actions: <Widget>[
-                            TextButton(
-                              child: const Text('Yes'),
-                              onPressed: () async {
-                                bool deleted =
-                                    await deleteGame(games[index].id);
-                                if (deleted) {
-                                  setState(() {
-                                    getGames();
-                                  });
-                                }
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            TextButton(
-                              child: const Text('No'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
+      body: isLoaded
+          ? GridView.builder(
+              padding: const EdgeInsets.all(10),
+              itemCount: games.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 1,
+                mainAxisSpacing: 10,
+                mainAxisExtent: 50,
+              ),
+              itemBuilder: (context, index) => isLoggedIn
+                  ? GestureDetector(
+                      onLongPress: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text('Delete event'),
+                              content: Text(
+                                  'Are you sure you want to delete game? (id:' +
+                                      games[index].id.toString() +
+                                      ")"),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: const Text('Yes'),
+                                  onPressed: () async {
+                                    bool deleted =
+                                        await deleteGame(games[index].id);
+                                    if (deleted) {
+                                      setState(() {
+                                        getGames();
+                                      });
+                                    }
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  child: const Text('No'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
                         );
                       },
-                    );
-                  },
-                  onTap: () {
-                    // Navigate to another widget and pass information
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            // DetailClubPlayersScreen(club: clubsList!.clubs[index]),
-                            // RankingScreen(),
-                            GameEventsScreen(game: games[index]),
+                      onTap: () {
+                        // Navigate to another widget and pass information
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                // DetailClubPlayersScreen(club: clubsList!.clubs[index]),
+                                // RankingScreen(),
+                                GameEventsScreen(game: games[index]),
+                          ),
+                        ).then((value) {
+                          setState(() {
+                            getGames();
+                          });
+                        });
+                      },
+                      child: GamesRowDisplay(
+                        game: games[index],
                       ),
-                    ).then((value) {
-                      setState(() {
-                        getGames();
-                      });
-                    });
-                  },
-                  child: GamesRowDisplay(
-                    game: games[index],
-                  ),
-                )
-              : GestureDetector(
-                  onTap: () {
-                    // Navigate to another widget and pass information
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            // DetailClubPlayersScreen(club: clubsList!.clubs[index]),
-                            // RankingScreen(),
-                            GameEventsScreen(game: games[index]),
+                    )
+                  : GestureDetector(
+                      onTap: () {
+                        // Navigate to another widget and pass information
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                // DetailClubPlayersScreen(club: clubsList!.clubs[index]),
+                                // RankingScreen(),
+                                GameEventsScreen(game: games[index]),
+                          ),
+                        ).then((value) {
+                          setState(() {
+                            getGames();
+                          });
+                        });
+                      },
+                      child: GamesRowDisplay(
+                        game: games[index],
                       ),
-                    ).then((value) {
-                      setState(() {
-                        getGames();
-                      });
-                    });
-                  },
-                  child: GamesRowDisplay(
-                    game: games[index],
-                  ),
-                )),
+                    ))
+          : Center(
+              child: CircularProgressIndicator(),
+            ),
     );
   }
 }

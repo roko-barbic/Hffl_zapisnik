@@ -24,6 +24,7 @@ class _GameEventsScreenState extends State<GameEventsScreen> {
   List<EventInGame> events = [];
   bool isLoggedIn = false;
   bool isSwiped = false;
+  bool isLoaded = false;
 
   Future<void> checkLoginStatus() async {
     final prefs = await SharedPreferences.getInstance();
@@ -58,6 +59,7 @@ class _GameEventsScreenState extends State<GameEventsScreen> {
     events.clear();
     setState(() {
       events.addAll(_loadedEvents);
+      isLoaded = true;
     });
   }
 
@@ -167,54 +169,58 @@ class _GameEventsScreenState extends State<GameEventsScreen> {
           height: 20,
         ),
         Expanded(
-          child: GridView.builder(
-            padding: const EdgeInsets.all(10),
-            itemCount: events.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 1,
-              mainAxisSpacing: 10,
-              mainAxisExtent: 50,
-            ),
-            itemBuilder: (context, index) => isLoggedIn
-                ? GestureDetector(
-                    onLongPress: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text('Delete event'),
-                            content: Text(
-                                'Are you sure you want to delete event? (id:' +
-                                    events[index].id.toString() +
-                                    ")"),
-                            actions: <Widget>[
-                              TextButton(
-                                child: const Text('Yes'),
-                                onPressed: () async {
-                                  bool deleted =
-                                      await deleteEvent(events[index].id);
-                                  if (deleted) {
-                                    setState(() {
-                                      getEvents();
-                                    });
-                                  }
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                              TextButton(
-                                child: const Text('No'),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    child: EventRowDisplay(event: events[index]))
-                : EventRowDisplay(event: events[index]),
-          ),
+          child: isLoaded
+              ? GridView.builder(
+                  padding: const EdgeInsets.all(10),
+                  itemCount: events.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 1,
+                    mainAxisSpacing: 10,
+                    mainAxisExtent: 50,
+                  ),
+                  itemBuilder: (context, index) => isLoggedIn
+                      ? GestureDetector(
+                          onLongPress: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text('Delete event'),
+                                  content: Text(
+                                      'Are you sure you want to delete event? (id:' +
+                                          events[index].id.toString() +
+                                          ")"),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: const Text('Yes'),
+                                      onPressed: () async {
+                                        bool deleted =
+                                            await deleteEvent(events[index].id);
+                                        if (deleted) {
+                                          setState(() {
+                                            getEvents();
+                                          });
+                                        }
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: const Text('No'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          child: EventRowDisplay(event: events[index]))
+                      : EventRowDisplay(event: events[index]),
+                )
+              : Center(
+                  child: CircularProgressIndicator(),
+                ),
         ),
 
         // Expanded(

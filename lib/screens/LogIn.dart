@@ -58,7 +58,7 @@ class _LogInScreenState extends State<LogInScreen> {
           context,
           MaterialPageRoute(
             builder: (context) => MyHomePage(
-              title: 'HFFL zapisnik Admin',
+              title: 'FlagFootballHR Admin',
               isLoggedIn: true, // Set isLoggedIn to true after successful login
             ),
           ),

@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
           //fontFamily: '';
         ),
         home: MyHomePage(
-          title: 'HFFL zapisnik',
+          title: isLoggedIn ? 'FlagFootballHR Admin' : 'FlagFootballHR',
           isLoggedIn: isLoggedIn,
         ),
       ),

@@ -658,11 +658,11 @@ class _EnterEventScState extends State<EnterEventSc> {
                       value: 'pick6',
                     ),
                     DropdownMenuItem(
-                      child: Text('Extrapoint 2'),
+                      child: Text('Extrapoint'),
                       value: 'extrapoint2',
                     ),
                     DropdownMenuItem(
-                      child: Text('Extrapoint4'),
+                      child: Text('Extrapoint 2'),
                       value: 'extrapoint4',
                     ),
                     DropdownMenuItem(
