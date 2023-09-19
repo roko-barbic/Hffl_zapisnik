@@ -185,7 +185,7 @@ class _MyHomePageState extends State<MyHomePage>
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       MyHomePage(
-                                                    title: 'HFFL zapisnik',
+                                                    title: 'FlagFootballHR',
                                                     isLoggedIn:
                                                         false, // Set isLoggedIn to true after successful login
                                                   ),
