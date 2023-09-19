@@ -39,6 +39,8 @@ class _EnterEventScState extends State<EnterEventSc> {
 
   PlayerIdDTO? selectedValuePlayerOne;
   PlayerIdDTO? selectedValuePlayerTwo;
+  PlayerIdDTO? playerOneSaf;
+  PlayerIdDTO? playerTwoSaf;
 
   Widget _conditionalWidget = Container();
 
@@ -47,6 +49,8 @@ class _EnterEventScState extends State<EnterEventSc> {
     setState(() {
       selectedValuePlayerOne = null;
       selectedValuePlayerTwo = null;
+      playerOneSaf = null;
+      playerTwoSaf = null;
       player1DropdownItems.clear();
       player2DropdownItems.clear();
       _dropDownValue = selectedValue!;
@@ -528,8 +532,29 @@ class _EnterEventScState extends State<EnterEventSc> {
         );
       } else if (_dropDownValue == 'safety') {
         type = 6;
-        _conditionalWidget =
-            Container(child: Text("+2 boda " + clubSelected.name));
+        _conditionalWidget = Container(
+            child: Column(children: [
+          const SizedBox(
+            height: 15,
+          ),
+          Text("+2 boda " + clubSelected.name),
+          const SizedBox(
+            height: 15,
+          ),
+          FloatingActionButton(
+            onPressed: () {
+              if (clubSelected == homeClub) {
+                playerOneSaf = homePlayers.first;
+                playerTwoSaf = homePlayers.last;
+              } else if (clubSelected == awayClub) {
+                playerOneSaf = awayPlayers.first;
+                playerTwoSaf = awayPlayers.last;
+              }
+              createEvent();
+            },
+            child: const Text('Save'),
+          )
+        ]));
       }
     });
   }
@@ -586,11 +611,21 @@ class _EnterEventScState extends State<EnterEventSc> {
     print('add event ' + type.toString());
     var url = Uri.https('hfflzapisnik.azurewebsites.net',
         '/Game/api/games/' + widget.gameId.toString() + '/events');
-    Map body = {
-      "player_OneId": selectedValuePlayerOne!.id.toString(),
-      "player_TwoId": selectedValuePlayerTwo!.id.toString(),
-      "type": type.toString()
-    };
+    Map? body;
+    if (type! > 0 && type! < 6) {
+      body = {
+        "player_OneId": selectedValuePlayerOne!.id.toString(),
+        "player_TwoId": selectedValuePlayerTwo!.id.toString(),
+        "type": type.toString()
+      };
+    } else if (type! == 6) {
+      body = {
+        "player_OneId": playerOneSaf!.id.toString(),
+        "player_TwoId": playerTwoSaf!.id.toString(),
+        "type": type.toString()
+      };
+    }
+
     try {
       final response = await http.post(
         url,

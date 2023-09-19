@@ -30,78 +30,110 @@ class EventRowDisplay extends StatelessWidget {
           ? Alignment.centerLeft
           : Alignment.centerRight,
       child: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.6,
+        width: event.type == 6
+            ? MediaQuery.of(context).size.width * 0.3
+            : MediaQuery.of(context).size.width * 0.6,
         height: 50,
         child: Card(
           elevation: 2,
           child: event.teamGettingPoints == 1
               ? Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.02,
-                    ),
-                    Center(
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.13,
-                        child: Text(textType),
-                      ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.05,
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.35,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Pass: ' +
-                              event.playerOne.surname +
-                              " " +
-                              event.playerOne.name.characters.first +
-                              "."),
-                          Text('Catch: ' +
-                              event.playerTwo.surname +
-                              " " +
-                              event.playerTwo.name.characters.first +
-                              "."),
+                  children: event.type == 6
+                      ? [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.02,
+                          ),
+                          Center(
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.13,
+                              child: Text(textType),
+                            ),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.05,
+                          ),
+                        ]
+                      : [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.02,
+                          ),
+                          Center(
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.13,
+                              child: Text(textType),
+                            ),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.05,
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.35,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('Pass: ' +
+                                    event.playerOne.surname +
+                                    " " +
+                                    event.playerOne.name.characters.first +
+                                    "."),
+                                Text('Catch: ' +
+                                    event.playerTwo.surname +
+                                    " " +
+                                    event.playerTwo.name.characters.first +
+                                    "."),
+                              ],
+                            ),
+                          )
                         ],
-                      ),
-                    )
-                  ],
                 )
               : Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.02,
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.35,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Pass: ' +
-                              event.playerOne.surname +
-                              " " +
-                              event.playerOne.name.characters.first +
-                              "."),
-                          Text('Catch: ' +
-                              event.playerTwo.surname +
-                              " " +
-                              event.playerTwo.name.characters.first +
-                              "."),
+                  children: event.type == 6
+                      ? [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.02,
+                          ),
+                          Center(
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.13,
+                              child: Text(textType),
+                            ),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.05,
+                          ),
+                        ]
+                      : [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.02,
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.35,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('Pass: ' +
+                                    event.playerOne.surname +
+                                    " " +
+                                    event.playerOne.name.characters.first +
+                                    "."),
+                                Text('Catch: ' +
+                                    event.playerTwo.surname +
+                                    " " +
+                                    event.playerTwo.name.characters.first +
+                                    "."),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.05,
+                          ),
+                          Center(
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.13,
+                              child: Text(textType),
+                            ),
+                          ),
                         ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.05,
-                    ),
-                    Center(
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.13,
-                        child: Text(textType),
-                      ),
-                    ),
-                  ],
                 ),
         ),
       ),
