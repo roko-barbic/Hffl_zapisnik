@@ -136,7 +136,7 @@ class _GamesScreenState extends State<GamesScreen> {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              title: Text('Delete event'),
+                              title: Text('Delete game'),
                               content: Text(
                                   'Are you sure you want to delete game? (id:' +
                                       games[index].id.toString() +

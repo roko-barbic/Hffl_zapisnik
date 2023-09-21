@@ -66,7 +66,7 @@ class _TournamentsGridState extends State<TournamentsGrid> {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: const Text('Delete event'),
+                            title: const Text('Delete tournament'),
                             content: Text(
                                 'Are you sure you want to delete tournament? (id:' +
                                     tournamentsList!.tournaments[index].id
