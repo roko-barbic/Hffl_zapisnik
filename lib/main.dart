@@ -13,9 +13,6 @@ import 'package:provider/provider.dart';
 import './screens/LogIn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import './services/mysql.dart';
-import './screens/enterEvent.dart';
-import './widgets/eventsGrid.dart';
 
 // void main() {
 //   runApp(const MyApp());
