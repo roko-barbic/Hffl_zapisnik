@@ -57,7 +57,7 @@ class _TournamentsGridState extends State<TournamentsGrid> {
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 1,
               mainAxisSpacing: 10,
-              mainAxisExtent: 50,
+              mainAxisExtent: 70,
             ),
             itemBuilder: (context, index) => widget.isLoggedIn
                 ? GestureDetector(

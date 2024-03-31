@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings
+
 import 'package:flutter/material.dart';
 import 'package:hffl_zapisnik/classes/club.dart';
 import 'package:hffl_zapisnik/classes/eventClasses/eventTD.dart';
@@ -328,7 +330,7 @@ class _EnterEventScState extends State<EnterEventSc> {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 FloatingActionButton(
@@ -417,13 +419,76 @@ class _EnterEventScState extends State<EnterEventSc> {
                               // Update the selected value
                             })
                           },
-                          hint: Text('Izaberi igrača'),
+                          hint: const Text('Izaberi igrača'),
                         );
                       }),
                     ],
                   ),
                 ),
+                const SizedBox(
+                  height: 15,
+                ),
+                FloatingActionButton(
+                  onPressed: () => {createEvent()},
+                  child: const Text('Save'),
+                )
+              ],
+            ),
+          ),
+        );
+      } else if (_dropDownValue == 'extrapoint4Run' || _dropDownValue == 'extrapoint2Run' || _dropDownValue == 'touchdownRun') {
+        type = _dropDownValue == 'extrapoint4Run' ? 9 : 8;
+        if(_dropDownValue == 'touchdownRun'){
+          type = 7;
+        }
+        if (clubSelected == homeClub) {
+          player1DropdownItems = homePlayers
+              .map((PlayerIdDTO player) => DropdownMenuItem<PlayerIdDTO>(
+                    value: player,
+                    child: Text(player.name + " " + player.surname),
+                  ))
+              .toList();
+          
+        } else if (clubSelected == awayClub) {
+          player1DropdownItems = awayPlayers
+              .map((PlayerIdDTO player) => DropdownMenuItem<PlayerIdDTO>(
+                    value: player,
+                    child: Text(player.name + " " + player.surname),
+                  ))
+              .toList();
+        }
+        _conditionalWidget = Container(
+          height: MediaQuery.of(context).size.height * 0.3,
+          padding: const EdgeInsets.all(20),
+          width: double.infinity,
+          child: Center(
+            child: Column(
+              children: [
                 SizedBox(
+                  height: 50,
+                  child: Row(
+                    children: [
+                      const Text('Igrač run: '),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      StatefulBuilder(builder: (context, setState) {
+                        return DropdownButton<PlayerIdDTO>(
+                          value: selectedValuePlayerOne,
+                          items: player1DropdownItems,
+                          onChanged: (newValue) => {
+                            setState(() {
+                              selectedValuePlayerOne = newValue;
+                              // Update the selected value
+                            })
+                          },
+                          hint: const Text('Izaberi igrača'),
+                        );
+                      }),
+                    ],
+                  ),
+                ),
+                const SizedBox(
                   height: 15,
                 ),
                 FloatingActionButton(
@@ -625,6 +690,13 @@ class _EnterEventScState extends State<EnterEventSc> {
         "type": type.toString()
       };
     }
+    else if(type! > 6){
+      body = {
+        "player_OneId": selectedValuePlayerOne!.id.toString(),
+        "player_TwoId": homePlayers.last.id.toString(),
+        "type": type.toString()
+      };
+    }
 
     try {
       final response = await http.post(
@@ -651,11 +723,11 @@ class _EnterEventScState extends State<EnterEventSc> {
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text('Error'),
-              content: Text('Adding new event failed'),
+              title: const Text('Error'),
+              content: const Text('Adding new event failed'),
               actions: <Widget>[
                 TextButton(
-                  child: Text('OK'),
+                  child: const Text('OK'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -681,28 +753,40 @@ class _EnterEventScState extends State<EnterEventSc> {
                 DropdownButton(
                   items: const [
                     DropdownMenuItem(
-                      child: Text('Touchdown'),
                       value: 'touchdown',
+                      child: Text('Touchdown'),
                     ),
                     DropdownMenuItem(
-                      child: Text('Interception'),
+                      value: 'touchdownRun',
+                      child: Text('TouchDown Run'),
+                    ),
+                    DropdownMenuItem(
                       value: 'interception',
+                      child: Text('Interception'),
                     ),
                     DropdownMenuItem(
-                      child: Text('Pick Six'),
                       value: 'pick6',
+                      child: Text('Pick Six'),
                     ),
                     DropdownMenuItem(
-                      child: Text('Extrapoint'),
                       value: 'extrapoint2',
+                      child: Text('Extrapoint'),
                     ),
                     DropdownMenuItem(
-                      child: Text('Extrapoint 2'),
+                      value: 'extrapoint2Run',
+                      child: Text('Extrapoint Run'),
+                    ),
+                    DropdownMenuItem(
                       value: 'extrapoint4',
+                      child: Text('Extrapoint 2'),
                     ),
                     DropdownMenuItem(
-                      child: Text('Safety'),
+                      value: 'extrapoint4Run',
+                      child: Text('Extrapoint 2 Run'),
+                    ),
+                    DropdownMenuItem(
                       value: 'safety',
+                      child: Text('Safety'),
                     ),
                   ],
                   onChanged: chooseTypeOfEvent,

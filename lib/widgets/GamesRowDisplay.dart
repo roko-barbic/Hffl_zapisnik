@@ -11,7 +11,7 @@ class GamesRowDisplay extends StatelessWidget {
     return Center(
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.8,
-        height: 50,
+        height: 70,
         child: Card(
           elevation: 2,
           child: Row(

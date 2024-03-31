@@ -127,7 +127,7 @@ class _GamesScreenState extends State<GamesScreen> {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 1,
                 mainAxisSpacing: 10,
-                mainAxisExtent: 50,
+                mainAxisExtent: 70,
               ),
               itemBuilder: (context, index) => isLoggedIn
                   ? GestureDetector(
