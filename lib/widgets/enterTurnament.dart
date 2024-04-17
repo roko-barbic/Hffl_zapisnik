@@ -90,9 +90,6 @@ class _EnterTurnamentState extends State<EnterTurnament> {
               onPressed: () => _selectDate(context),
               child: const Text(
                 'Select date',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
               ),
             ),
             const SizedBox(

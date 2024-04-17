@@ -148,8 +148,8 @@ class _GameEventsScreenState extends State<GameEventsScreen> {
               border: Border(
                 bottom: BorderSide(
                   color: Colors
-                      .black, // You can change the color to your preference
-                  width: 2.0, // You can adjust the thickness of the underline
+                      .black, 
+                  width: 2.0, 
                 ),
               ),
             ),
@@ -162,7 +162,7 @@ class _GameEventsScreenState extends State<GameEventsScreen> {
                     widget.game.scoreAway.toString() +
                     " " +
                     widget.game.clubAway.name,
-                style: TextStyle(fontSize: 15),
+                style: const TextStyle(fontSize: 15),
               ),
             )),
         const SizedBox(
@@ -176,7 +176,7 @@ class _GameEventsScreenState extends State<GameEventsScreen> {
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 1,
                     mainAxisSpacing: 10,
-                    mainAxisExtent: 50,
+                    mainAxisExtent: 60,
                   ),
                   itemBuilder: (context, index) => isLoggedIn
                       ? GestureDetector(

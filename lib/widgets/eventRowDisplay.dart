@@ -35,7 +35,7 @@ class EventRowDisplay extends StatelessWidget {
         width: event.type == 6
             ? MediaQuery.of(context).size.width * 0.3
             : MediaQuery.of(context).size.width * 0.6,
-        height: 50,
+        height: 60,
         child: Card(
           elevation: 2,
           child: event.teamGettingPoints == 1
