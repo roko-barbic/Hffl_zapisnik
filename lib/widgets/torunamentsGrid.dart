@@ -111,8 +111,8 @@ class _TournamentsGridState extends State<TournamentsGrid> {
                         ),
                       );
                     },
-                    child: TournamentsRowDisplay(
-                        tournament: tournamentsList!.tournaments[index]),
+                    // child: TournamentsRowDisplay(
+                    //     tournament: tournamentsList!.tournaments[index]),
                   )
                 : GestureDetector(
                     onTap: () {
@@ -124,8 +124,8 @@ class _TournamentsGridState extends State<TournamentsGrid> {
                         ),
                       );
                     },
-                    child: TournamentsRowDisplay(
-                        tournament: tournamentsList!.tournaments[index]),
+                    // child: TournamentsRowDisplay(
+                    //     tournament: tournamentsList!.tournaments[index]),
                   ))
         : const Center(
             child: CircularProgressIndicator(),

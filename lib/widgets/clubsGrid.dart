@@ -21,19 +21,20 @@ class _ClubsGridState extends State<ClubsGrid> {
   ClubsList? clubsList;
   bool isLoaded = false;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (clubsList == null) {
-      clubsList = Provider.of<ClubsList>(context);
-
-      clubsList!.updateClubs().then((_) {
-        setState(() {
-          isLoaded = true;
-        });
-      });
-    }
-  }
+  //
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   if (clubsList == null) {
+  //     clubsList = Provider.of<ClubsList>(context);
+  //
+  //     clubsList!.updateClubs().then((_) {
+  //       setState(() {
+  //         isLoaded = true;
+  //       });
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

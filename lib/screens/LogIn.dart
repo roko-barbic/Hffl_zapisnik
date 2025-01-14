@@ -54,15 +54,15 @@ class _LogInScreenState extends State<LogInScreen> {
         await _prefs.setBool('isLoggedIn', true);
         print("probjera prefsa za login" +
             _prefs.getBool('isLoggedIn').toString());
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MyHomePage(
-              title: 'FlagFootballHR Admin',
-              isLoggedIn: true, // Set isLoggedIn to true after successful login
-            ),
-          ),
-        );
+        // Navigator.pushReplacement(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => MyHomePage(
+        //       title: 'FlagFootballHR Admin',
+        //       isLoggedIn: true, // Set isLoggedIn to true after successful login
+        //     ),
+        //   ),
+        // );
       } else {
         // Authentication failed
         showDialog(
