@@ -13,7 +13,7 @@ import 'models/tournaments.dart';
 class HfflApi {
 
   const HfflApi();
-  final String conn = "https://c151-93-142-66-172.ngrok-free.app";
+  final String conn = "https://1e93-93-139-229-153.ngrok-free.app";
 
   //used to retrieve clubs stats
   Future<Clubs?> getClubs() async {
@@ -68,10 +68,14 @@ class HfflApi {
 
   Future<bool?> createTournament(Tournament tournament) async{
     Dio client = new Dio();
-
+    Map<String, dynamic> body =  {
+      "name": tournament.name,
+      "date": tournament.date.toIso8601String(),
+      "season": tournament.season
+    };
     final response = await client.post(
         '$conn${Routes.createTournament}',
-        queryParameters: tournament.toJson(),
+        data: body,
         options: Options(
           headers: {'Content-Type': 'application/json'},
         ));

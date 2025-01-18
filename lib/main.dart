@@ -9,7 +9,7 @@ import 'package:hffl_zapisnik/cubit/clubs_cubit.dart';
 import 'package:hffl_zapisnik/cubit/tournament_cubit.dart';
 import 'package:hffl_zapisnik/views/clubs_ranking_screen.dart';
 import 'package:hffl_zapisnik/views/tournaments_screen.dart';
-import 'package:hffl_zapisnik/widgets/enterTurnament.dart';
+import 'package:hffl_zapisnik/widgets/enter_tournament.dart';
 import 'package:hffl_zapisnik/widgets/torunamentsGrid.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import './providers/tournaments.dart';

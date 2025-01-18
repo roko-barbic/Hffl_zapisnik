@@ -30,7 +30,7 @@ class TournamentsRowDisplay extends StatelessWidget {
                     return TextButton(
                         child: const Text('Yes'),
                         onPressed: () {
-                          onDelete(tournament.id);
+                          onDelete(tournament.id ?? 0); //todo prepravi
                           Navigator.of(context).pop();
                         }
                     );

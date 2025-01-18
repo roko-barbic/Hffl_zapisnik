@@ -36,22 +36,26 @@ class TournamentCubit extends Cubit<TournamentState> {
         emit(state.copyWith(creatingTournament: LoadingStatus.success));
       }
     }on Exception{
-      emit(state.copyWith(tournamentLoadingStatus: LoadingStatus.failure));
+      emit(state.copyWith(creatingTournament: LoadingStatus.failure));
     }
   }
 
   Future<void> deleteTournament(int tournamentId) async{
     try{
 
-      emit(state.copyWith(creatingTournament: LoadingStatus.loading));
+      emit(state.copyWith(deletingTournament: LoadingStatus.loading));
       final deletion = await _hfflRepository.deleteTournament(tournamentId);
       if(deletion == true){
-        emit(state.copyWith(creatingTournament: LoadingStatus.success));
+        emit(state.copyWith(deletingTournament: LoadingStatus.success));
         await fetchTournaments();
       }
     }on Exception{
-      emit(state.copyWith(tournamentLoadingStatus: LoadingStatus.failure));
+      emit(state.copyWith(deletingTournament: LoadingStatus.failure));
     }
+  }
+
+  void resetCreatingTournament(){
+    emit(state.copyWith(creatingTournament: LoadingStatus.initial));
   }
 
   @override

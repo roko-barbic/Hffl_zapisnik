@@ -7,18 +7,20 @@ part 'tournament.g.dart';
 @JsonSerializable()
 class Tournament {
 
-  final int id;
+  final int? id;
   final DateTime date;
   final String name;
+  final String? season;
 
-  factory Tournament.fromJson(Map<String, dynamic> json) => _$TorunamentFromJson(json);
-  Map<String, dynamic> toJson() => _$TorunamentToJson(this);
+  factory Tournament.fromJson(Map<String, dynamic> json) => _$TournamentFromJson(json);
+  Map<String, dynamic> toJson() => _$TournamentToJson(this);
 
 //<editor-fold desc="Data Methods">
   const Tournament({
-    required this.id,
+    this.id,
     required this.date,
     required this.name,
+    this.season,
   });
 
   @override
@@ -28,17 +30,20 @@ class Tournament {
           runtimeType == other.runtimeType &&
           id == other.id &&
           date == other.date &&
-          name == other.name);
+          name == other.name &&
+          season == other.season);
 
   @override
-  int get hashCode => id.hashCode ^ date.hashCode ^ name.hashCode;
+  int get hashCode =>
+      id.hashCode ^ date.hashCode ^ name.hashCode ^ season.hashCode;
 
   @override
   String toString() {
-    return 'Torunament{' +
+    return 'Tournament{' +
         ' id: $id,' +
         ' date: $date,' +
         ' name: $name,' +
+        ' season: $season,' +
         '}';
   }
 
@@ -46,11 +51,13 @@ class Tournament {
     int? id,
     DateTime? date,
     String? name,
+    String? season,
   }) {
     return Tournament(
       id: id ?? this.id,
       date: date ?? this.date,
       name: name ?? this.name,
+      season: season ?? this.season,
     );
   }
 
@@ -59,6 +66,7 @@ class Tournament {
       'id': this.id,
       'date': this.date,
       'name': this.name,
+      'season': this.season,
     };
   }
 
@@ -67,6 +75,7 @@ class Tournament {
       id: map['id'] as int,
       date: map['date'] as DateTime,
       name: map['name'] as String,
+      season: map['season'] as String,
     );
   }
 
