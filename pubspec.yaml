@@ -50,6 +50,15 @@ dependencies:
     path: packages/hffl_repository
   hydrated_bloc: ^9.0.0
   path_provider: ^2.0.8
+  image_picker: ^1.1.2
+  permission_handler_platform_interface: ^4.2.0
+  device_info_plus: ^10.1.2
+  permission_handler: ^11.3.1
+  file_picker: ^8.0.5
+  mime: ^1.0.6
+  http_parser: ^4.0.2
+  alh_pdf_view: ^2.3.1
+  share_plus: ^10.0.0
 
 
 dev_dependencies:
