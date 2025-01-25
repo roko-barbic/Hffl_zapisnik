@@ -1,9 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hffl_api/hffl_api.dart';
 import 'package:hffl_zapisnik/cubit/tournament_cubit.dart';
 import 'package:hffl_zapisnik/enums/clubs_status_enum.dart';
+import 'package:hffl_zapisnik/widgets/upload_image.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -27,13 +30,19 @@ class _EnterTournamentState extends State<EnterTournament> {
         return switch (state.creatingTournament) {
           LoadingStatus.initial => EnterTournamentValues(),
           LoadingStatus.loading => const CircularProgressIndicator(),
-          LoadingStatus.failure => const TextWidget(text: "fail",),
-          LoadingStatus.success => const TextWidget(text: "Prolaz!!",),
+          LoadingStatus.failure => const TextWidget(
+              text: "fail",
+            ),
+          LoadingStatus.success => const TextWidget(
+              text: "Prolaz!!",
+            ),
         };
       },
     );
   }
 }
+
+
 
 class EnterTournamentValues extends StatefulWidget {
   const EnterTournamentValues({super.key});
@@ -42,10 +51,18 @@ class EnterTournamentValues extends StatefulWidget {
   State<EnterTournamentValues> createState() => _EnterTournamentValuesState();
 }
 
+
 class _EnterTournamentValuesState extends State<EnterTournamentValues> {
   TextEditingController tournamentNameController = TextEditingController();
   DateTime selectedDate = DateTime.now();
   bool isSelectedTime = false;
+  String? _path;
+
+  void onUpdatePhoto(String path){
+    setState(() {
+      _path = path;
+    });
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -71,57 +88,71 @@ class _EnterTournamentValuesState extends State<EnterTournamentValues> {
 
   @override
   Widget build(BuildContext context) {
-
-    final double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    //final double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
     return Align(
       alignment: Alignment.topCenter,
-      child: AnimatedContainer( //todo ovo sa pormijenom velicine je preseravanje jer ne ovsi o tome pa to mos makniot kad os ali mos i i ostavit da imas za primjer kako se to radi
-          duration: const Duration(milliseconds: 300), // Smooth height transition
-          curve: Curves.easeInOut,
-          height: (MediaQuery.of(context).size.height * 0.3) +
-              (keyboardHeight > 0 ? keyboardHeight : 0),
-          child: Column(children: [
-            SingleChildScrollView(
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: TextField(
-                  controller: tournamentNameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Ime turnira:',
-                    hintText: 'Unesite ime turnira',
-                  ),
+      child:
+          // AnimatedContainer( //todo ovo sa pormijenom velicine je preseravanje jer ne ovsi o tome pa to mos makniot kad os ali mos i i ostavit da imas za primjer kako se to radi
+          //     duration: const Duration(milliseconds: 300), // Smooth height transition
+          //     curve: Curves.easeInOut,
+          //     height: (MediaQuery.of(context).size.height * 0.3) +
+          //         (keyboardHeight > 0 ? keyboardHeight : 0),
+          //     child:
+          SizedBox(
+        height: MediaQuery.of(context).size.height * 0.5,
+        child: Column(children: [
+          SingleChildScrollView(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: TextField(
+                controller: tournamentNameController,
+                decoration: const InputDecoration(
+                  labelText: 'Ime turnira:',
+                  hintText: 'Unesite ime turnira',
                 ),
               ),
             ),
-            const SizedBox(
-              height: 15,
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          ElevatedButton(
+            onPressed: () => _selectDate(context),
+            child: Text(
+              isSelectedTime
+                  ? DateFormat('dd/MM/yyyy')
+                      .format(selectedDate.toLocal())
+                      .toString()
+                  : 'Select date',
             ),
-            ElevatedButton(
-              onPressed: () => _selectDate(context),
-              child: Text(
-                isSelectedTime ? DateFormat('dd/MM/yyyy').format(selectedDate.toLocal()).toString() :'Select date',
-              ),
-            ),
-            const SizedBox(
-              height: 25,
-            ),
+          ),
+          UploadPicture(
+            onUpload: onUpdatePhoto,
+          ),
+          if (_path != null)
             FloatingActionButton(
               onPressed: () {
+                // context
+                //     .read<TournamentCubit>()
+                //     .createTournament(createTournamentObject());
                 context
                     .read<TournamentCubit>()
-                    .createTournament(createTournamentObject());
+                    .createTournament2(tournamentNameController.text, selectedDate.toUtc(),
+                    2024, _path ?? "");
                 // Navigator.of(context).pop;
               },
               child: const Icon(Icons.add),
             )
-          ])),
+        ]),
+      ),
     );
   }
 }
 
 class TextWidget extends StatelessWidget {
   final String text;
+
   const TextWidget({required this.text, super.key});
 
   @override
@@ -136,9 +167,13 @@ class TextWidget extends StatelessWidget {
           SingleChildScrollView(
             child: SizedBox(
                 width: MediaQuery.of(context).size.width * 1,
-                child: Center(child: Padding(
+                child: Center(
+                    child: Padding(
                   padding: const EdgeInsets.only(top: 28.0),
-                  child: Text(text, style: const TextStyle(fontSize: 25),),
+                  child: Text(
+                    text,
+                    style: const TextStyle(fontSize: 25),
+                  ),
                 ))),
           ),
         ],
@@ -146,4 +181,3 @@ class TextWidget extends StatelessWidget {
     );
   }
 }
-

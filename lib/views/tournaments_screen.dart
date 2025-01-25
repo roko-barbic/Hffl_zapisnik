@@ -5,6 +5,7 @@ import 'package:hffl_zapisnik/cubit/tournament_cubit.dart';
 import 'package:hffl_zapisnik/enums/clubs_status_enum.dart';
 import 'package:hffl_zapisnik/widgets/enter_tournament.dart';
 import 'package:hffl_zapisnik/widgets/tournaments_list.dart';
+import 'package:hffl_zapisnik/widgets/upload_image.dart';
 
 class TournamentsScreen extends StatefulWidget {
   const TournamentsScreen({super.key});
@@ -52,9 +53,14 @@ class _TournamentsScreenState extends State<TournamentsScreen> {
                         bottom: MediaQuery.of(context).viewInsets.bottom * 0.4),
                     child: Container(
                         height: MediaQuery.of(context).size.height * 0.5,
-                        child: const EnterTournament()));
+                        child: const EnterTournament()
+                    ));
               });
-        },
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => const UploadPicture()),
+          // );
+    },
         child: const Icon(Icons.add),
       ),
     );

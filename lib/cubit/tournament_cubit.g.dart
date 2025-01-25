@@ -17,6 +17,10 @@ TournamentState _$TournamentStateFromJson(Map<String, dynamic> json) =>
           $enumDecode(_$LoadingStatusEnumMap, json['creatingTournament']),
       deletingTournament:
           $enumDecode(_$LoadingStatusEnumMap, json['deletingTournament']),
+      creatingNewTournament: json['creatingNewTournament'] == null
+          ? null
+          : Tournament.fromJson(
+              json['creatingNewTournament'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$TournamentStateToJson(TournamentState instance) =>
@@ -28,6 +32,7 @@ Map<String, dynamic> _$TournamentStateToJson(TournamentState instance) =>
           _$LoadingStatusEnumMap[instance.creatingTournament]!,
       'deletingTournament':
           _$LoadingStatusEnumMap[instance.deletingTournament]!,
+      'creatingNewTournament': instance.creatingNewTournament,
     };
 
 const _$LoadingStatusEnumMap = {

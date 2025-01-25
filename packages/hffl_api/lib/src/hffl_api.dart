@@ -1,30 +1,32 @@
-/// {@template hffl_api}
-/// The interface and models for an API providing access to hffl.
-/// {@endtemplate}
-///
+import 'dart:io';
+import 'dart:typed_data';
+import 'dart:convert';
+
 import 'package:hffl_api/hffl_api.dart';
 import 'package:dio/dio.dart';
+import 'package:mime/mime.dart';
+import 'package:http_parser/http_parser.dart';
 
 import 'package:hffl_api/src/models/clubs.dart';
 import 'package:hffl_api/src/routes/routes.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'models/tournaments.dart';
 
 class HfflApi {
-
   const HfflApi();
-  final String conn = "https://1e93-93-139-229-153.ngrok-free.app";
+
+  final String conn = "https://64f8-89-164-177-143.ngrok-free.app";
 
   //used to retrieve clubs stats
   Future<Clubs?> getClubs() async {
     Dio client = new Dio();
-    final response = await client.get(
-        '$conn${Routes.getClubsUrl}',
+    final response = await client.get('$conn${Routes.getClubsUrl}',
         options: Options(
           headers: {'Content-Type': 'application/json'},
         ));
 
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       dynamic data = response.data;
       var clubs = Clubs.fromJson(data as List<dynamic>);
       return clubs;
@@ -33,15 +35,14 @@ class HfflApi {
     return null;
   }
 
-  Future<Tournaments?> getTournaments() async{
+  Future<Tournaments?> getTournaments() async {
     Dio client = new Dio();
-    final response = await client.get(
-        '$conn${Routes.getTournamentUrl}',
+    final response = await client.get('$conn${Routes.getTournamentUrl}',
         options: Options(
           headers: {'Content-Type': 'application/json'},
         ));
 
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       dynamic data = response.data;
       var torunaments = Tournaments.fromJson(data as List<dynamic>);
       return torunaments;
@@ -49,54 +50,149 @@ class HfflApi {
     throw Exception();
   }
 
-  Future<bool?> deleteTournament(int tournamentId) async{
+  Future<bool?> deleteTournament(int tournamentId) async {
     Dio client = new Dio();
 
-    final response = await client.delete(
-        '$conn${Routes.deleteTournament}$tournamentId',
-        options: Options(
-          headers: {'Content-Type': 'application/json'},
-        ));
+    final response =
+        await client.delete('$conn${Routes.deleteTournament}$tournamentId',
+            options: Options(
+              headers: {'Content-Type': 'application/json'},
+            ));
 
-    if(response.statusCode == 200){
-
+    if (response.statusCode == 200) {
       return true;
     }
     throw Exception();
   }
 
-
-  Future<bool?> createTournament(Tournament tournament) async{
+  Future<bool?> createTournament(Tournament tournament) async {
     Dio client = new Dio();
-    Map<String, dynamic> body =  {
+    Map<String, dynamic> body = {
       "name": tournament.name,
       "date": tournament.date.toIso8601String(),
       "season": tournament.season
     };
-    final response = await client.post(
-        '$conn${Routes.createTournament}',
+    final response = await client.post('$conn${Routes.createTournament}',
         data: body,
         options: Options(
           headers: {'Content-Type': 'application/json'},
         ));
 
-    if(response.statusCode == 200){
-
+    if (response.statusCode == 200) {
       return true;
     }
     throw Exception();
   }
 
-  //used to retrieve tournament info
-  //Future<void> getTournamentsInfo();
+  Future<bool?> createTournamentWithPhoto({
+    required String name,
+    required DateTime date,
+    required int season,
+    required String coverPhoto,
+  }) async {
+    Dio client = new Dio();
 
-  //used to retrieve tournament general info about games
-  //Future<void> getGames();
+    String? mimeType = lookupMimeType(coverPhoto) ?? 'application/octet-stream';
+    final mimeSplit = mimeType.split('/');
 
-  //used to delete game
-  //Future<void> deleteGame();
+    try {
+      // Prepare multipart form data
+      FormData formData = FormData.fromMap({
+        "Name": name,
+        "Date": date.toIso8601String(), // Convert DateTime to ISO8601 string
+        "Season": season.toString(),
+        "CoverPhoto": await MultipartFile.fromFile(
+          coverPhoto,
+          filename: "name",
+          //todo prepravi ako moze biti i ime turnira sa razmakom
+          contentType: MediaType.parse(
+              mimeType), //MediaType(mimeSplit[0], mimeSplit[1]), // Adjust based on file type
+        ),
+      });
 
+      // Send POST request
+      Response response = await client.post(
+        '$conn${Routes.createTournamentWithPhoto}',
+        data: formData,
+      );
 
+      // Handle the response
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print("Exception: $e");
+    }
+  }
 
+  Future<String?> fetchTournamentPhoto(int tournamentId) async {
+    try {
+      Dio dio = Dio();
+      String url = 'http://your-api-url.com/tournament/$tournamentId/photo';
 
+      Response response = await dio.get(
+        url,
+        options: Options(
+          responseType: ResponseType.bytes, // Expecting binary image data
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        Uint8List imageBytes = Uint8List.fromList(response.data as List<int>);
+        String base64String = base64Encode(imageBytes);
+        return base64String;
+      } else {
+        print("Failed to fetch photo: ${response.statusCode}");
+      }
+    } catch (e) {
+      print("Error fetching photo: $e");
+    }
+  }
+
+  Future<Tournaments?> fetchTournamentsWithPhoto() async {
+    try {
+      Dio dio = Dio();
+      String url = '$conn/tournamentWithPhoto';
+
+      Response response = await dio.get(
+        url,
+      );
+
+      if (response.statusCode == 200) {
+        var torunaments = Tournaments.fromJson(response.data as List<dynamic>);
+        return torunaments;
+      } else {
+        print("Failed to fetch photo: ${response.statusCode}");
+      }
+    } catch (e) {
+      print("Error fetching photo: $e");
+    }
+  }
+
+  Future<String?> downloadPdf(int tournamentId, String fileName) async {
+    Dio dio = Dio();
+
+    try {
+      final String url = '$conn${Routes.generatePdf}$tournamentId';
+      //https://localhost:7011/Tournament/GeneratePdfReport?tournamentId=1'
+      Directory directory = await getTemporaryDirectory();
+      //String fileName = "Turnir-$tournamentId.pdf";
+      String filePath = '${directory.path}/$fileName';
+      Response response = await dio.download(
+        url,
+        filePath,
+        options: Options(
+          responseType: ResponseType.bytes, // Expecting binary data
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return filePath;
+      }
+    } catch (e) {
+      print('Error downloading PDF: $e');
+    }
+  }
 }

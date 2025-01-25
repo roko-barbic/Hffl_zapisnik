@@ -11,6 +11,7 @@ Tournament _$TournamentFromJson(Map<String, dynamic> json) => Tournament(
       date: DateTime.parse(json['date'] as String),
       name: json['name'] as String,
       season: json['season'] as String?,
+      coverPhoto: json['coverPhoto'] as String?,
     );
 
 Map<String, dynamic> _$TournamentToJson(Tournament instance) =>
@@ -19,4 +20,5 @@ Map<String, dynamic> _$TournamentToJson(Tournament instance) =>
       'date': instance.date.toIso8601String(),
       'name': instance.name,
       'season': instance.season,
+      'coverPhoto': instance.coverPhoto,
     };

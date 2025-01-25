@@ -10,6 +10,8 @@ final class TournamentState extends Equatable {
   final LoadingStatus creatingTournament;
   final LoadingStatus deletingTournament;
 
+  final Tournament? creatingNewTournament;
+
 
   factory TournamentState.fromJson(Map<String, dynamic> json) => _$TournamentStateFromJson(json);
   Map<String, dynamic> toJson() => _$TournamentStateToJson(this);
@@ -23,27 +25,27 @@ final class TournamentState extends Equatable {
     required this.tournamentLoadingStatus,
     required this.creatingTournament,
     required this.deletingTournament,
+    this.creatingNewTournament,
   });
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          (other is TournamentState &&
-              runtimeType == other.runtimeType &&
-              tournaments == other.tournaments &&
-              tournamentLoadingStatus == other.tournamentLoadingStatus &&
-              creatingTournament == other.creatingTournament &&
-              deletingTournament == other.deletingTournament
-          );
-
+      (other is TournamentState &&
+          runtimeType == other.runtimeType &&
+          tournaments == other.tournaments &&
+          tournamentLoadingStatus == other.tournamentLoadingStatus &&
+          creatingTournament == other.creatingTournament &&
+          deletingTournament == other.deletingTournament &&
+          creatingNewTournament == other.creatingNewTournament);
 
   @override
   int get hashCode =>
       tournaments.hashCode ^
       tournamentLoadingStatus.hashCode ^
       creatingTournament.hashCode ^
-      deletingTournament.hashCode;
-
+      deletingTournament.hashCode ^
+      creatingNewTournament.hashCode;
 
   @override
   String toString() {
@@ -52,25 +54,27 @@ final class TournamentState extends Equatable {
         ' tournamentLoadingStatus: $tournamentLoadingStatus,' +
         ' creatingTournament: $creatingTournament,' +
         ' deletingTournament: $deletingTournament,' +
+        ' creatingNewTournament: $creatingNewTournament,' +
         '}';
   }
-
 
   TournamentState copyWith({
     Tournaments? tournaments,
     LoadingStatus? tournamentLoadingStatus,
     LoadingStatus? creatingTournament,
     LoadingStatus? deletingTournament,
+    Tournament? creatingNewTournament,
   }) {
     return TournamentState(
       tournaments: tournaments ?? this.tournaments,
-      tournamentLoadingStatus: tournamentLoadingStatus ??
-          this.tournamentLoadingStatus,
+      tournamentLoadingStatus:
+          tournamentLoadingStatus ?? this.tournamentLoadingStatus,
       creatingTournament: creatingTournament ?? this.creatingTournament,
       deletingTournament: deletingTournament ?? this.deletingTournament,
+      creatingNewTournament:
+          creatingNewTournament ?? this.creatingNewTournament,
     );
   }
-
 
   Map<String, dynamic> toMap() {
     return {
@@ -78,6 +82,7 @@ final class TournamentState extends Equatable {
       'tournamentLoadingStatus': this.tournamentLoadingStatus,
       'creatingTournament': this.creatingTournament,
       'deletingTournament': this.deletingTournament,
+      'creatingNewTournament': this.creatingNewTournament,
     };
   }
 
@@ -87,9 +92,9 @@ final class TournamentState extends Equatable {
       tournamentLoadingStatus: map['tournamentLoadingStatus'] as LoadingStatus,
       creatingTournament: map['creatingTournament'] as LoadingStatus,
       deletingTournament: map['deletingTournament'] as LoadingStatus,
+      creatingNewTournament: map['creatingNewTournament'] as Tournament,
     );
   }
-
 
 //</editor-fold>
 }

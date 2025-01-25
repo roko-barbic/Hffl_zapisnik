@@ -1,62 +1,107 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:hffl_api/hffl_api.dart';
 import 'package:hffl_zapisnik/enums/clubs_status_enum.dart';
+import 'package:hffl_zapisnik/widgets/modals/pdf_view_popup.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:hffl_repository/hffl_repository.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-
 part 'tournament_state.dart';
+
 part 'tournament_cubit.g.dart';
 
 class TournamentCubit extends Cubit<TournamentState> {
-  TournamentCubit(this._hfflRepository) : super(const TournamentState(tournamentLoadingStatus: LoadingStatus.initial, creatingTournament: LoadingStatus.initial, deletingTournament: LoadingStatus.initial));
+  TournamentCubit(this._hfflRepository)
+      : super(const TournamentState(
+            tournamentLoadingStatus: LoadingStatus.initial,
+            creatingTournament: LoadingStatus.initial,
+            deletingTournament: LoadingStatus.initial));
 
   final HfflRepository _hfflRepository;
 
-  Future<void> fetchTournaments() async{
-    try{
-      if(state.tournamentLoadingStatus == LoadingStatus.initial){
+  Future<void> fetchTournaments() async {
+    try {
+      if (state.tournamentLoadingStatus == LoadingStatus.initial) {
         emit(state.copyWith(tournamentLoadingStatus: LoadingStatus.loading));
       }
-      final tournaments = await _hfflRepository.getTournaments();
-      emit(state.copyWith(tournaments: tournaments, tournamentLoadingStatus: LoadingStatus.success));
-
-    }on Exception{
+      final tournaments = await _hfflRepository.fetchTournaments(); //ovo sam changeo
+      if(tournaments != null)
+        emit(state.copyWith(
+          tournaments: tournaments,
+          tournamentLoadingStatus: LoadingStatus.success));
+    } on Exception {
       emit(state.copyWith(tournamentLoadingStatus: LoadingStatus.failure));
     }
   }
 
-  Future<void> createTournament(Tournament tournament) async{
-    try{
-
+  Future<void> createTournament(Tournament tournament) async {
+    try {
       emit(state.copyWith(creatingTournament: LoadingStatus.loading));
       final creation = await _hfflRepository.createTournament(tournament);
-      if(creation == true){
+      if (creation == true) {
         emit(state.copyWith(creatingTournament: LoadingStatus.success));
       }
-    }on Exception{
+    } on Exception {
       emit(state.copyWith(creatingTournament: LoadingStatus.failure));
     }
   }
 
-  Future<void> deleteTournament(int tournamentId) async{
-    try{
+  Future<void> createTournament2(String name, DateTime date, int season,
+      String coverPhoto) async {
+    try {
+      emit(state.copyWith(creatingTournament: LoadingStatus.loading));
+      final creation = await _hfflRepository.createTournamentWithPhoto(
+          name, date, season, coverPhoto);
+      if (creation == true) {
+        emit(state.copyWith(creatingTournament: LoadingStatus.success));
+      }
+    } on Exception {
+      emit(state.copyWith(creatingTournament: LoadingStatus.failure));
+    }
+  }
 
+  Future<void> deleteTournament(int tournamentId) async {
+    try {
       emit(state.copyWith(deletingTournament: LoadingStatus.loading));
       final deletion = await _hfflRepository.deleteTournament(tournamentId);
-      if(deletion == true){
+      if (deletion == true) {
         emit(state.copyWith(deletingTournament: LoadingStatus.success));
         await fetchTournaments();
       }
-    }on Exception{
+    } on Exception {
       emit(state.copyWith(deletingTournament: LoadingStatus.failure));
     }
   }
 
-  void resetCreatingTournament(){
+  void resetCreatingTournament() {
     emit(state.copyWith(creatingTournament: LoadingStatus.initial));
   }
+
+  // void storeValuesForNewTournament(){
+  //}
+
+  Future<void> dowloadTournamentSummary(int tournamentId, BuildContext context) async{
+    String fileName = "Turnir-$tournamentId.pdf";
+    String? filePath = await _hfflRepository.downloadTournamentPdf(tournamentId, fileName);
+
+    if (filePath != null) {
+      _showPdfPopup(context, filePath, fileName);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to download the PDF')),
+      );
+    }
+  }
+
+  void _showPdfPopup(BuildContext context, String filePath, String fileName) {
+    showDialog(
+      context: context,
+      builder: (context) => PdfPopupWidget(pdfFilePath: filePath, pdfFileName: fileName),
+    );
+  }
+
 
   @override
   TournamentState fromJson(Map<String, dynamic> json) =>

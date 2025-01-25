@@ -20,6 +20,7 @@ class TournamentsList extends StatelessWidget {
           onRefresh: () async {
             context.read<TournamentCubit>().fetchTournaments();
           },
+          //child: ,
           child: ListView.builder(
             padding: const EdgeInsets.all(15),
             itemCount: tournaments!.tournaments.length,

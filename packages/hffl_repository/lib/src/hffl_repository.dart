@@ -6,32 +6,48 @@ import 'dart:async';
 import 'package:hffl_api/hffl_api.dart';
 
 class HfflRepository {
-
-  HfflRepository({HfflApi? hfflApiClient}) : _hfflApiClient = hfflApiClient ?? HfflApi();
+  HfflRepository({HfflApi? hfflApiClient})
+      : _hfflApiClient = hfflApiClient ?? HfflApi();
 
   final HfflApi _hfflApiClient;
 
-  Future<Clubs?> getClubs() async{
+  Future<Clubs?> getClubs() async {
     final clubs = await _hfflApiClient.getClubs();
     return clubs;
   }
 
-  Future<Tournaments?> getTournaments() async{
+  Future<Tournaments?> getTournaments() async {
     final tournaments = await _hfflApiClient.getTournaments();
     return tournaments;
   }
 
-  Future<bool?> deleteTournament(int tournamentId) async{
+  Future<bool?> deleteTournament(int tournamentId) async {
     return _hfflApiClient.deleteTournament(tournamentId);
   }
 
-
-  Future<bool?> createTournament(Tournament tournament) async{
+  Future<bool?> createTournament(Tournament tournament) async {
     return _hfflApiClient.createTournament(tournament);
   }
 
-  //Widget initApp(){
+  Future<bool?> createTournamentWithPhoto(String name, DateTime date,
+      int season, String coverPhoto) async {
+    return _hfflApiClient.createTournamentWithPhoto(
+        name: name,
+        date: date,
+        season: season,
+        coverPhoto: coverPhoto,
+        );
+  }
 
-  //realno repository ti treba ako ces sklapat neke komplekcsnije pozive sastavljene od vise poziva
+  Future<Tournaments?> fetchTournaments(){
+    return _hfflApiClient.fetchTournamentsWithPhoto();
+  }
 
+  Future<String?> downloadTournamentPdf(int tournamentId, String fileName){
+    return _hfflApiClient.downloadPdf(tournamentId, fileName);
+  }
+
+//Widget initApp(){
+
+//realno repository ti treba ako ces sklapat neke komplekcsnije pozive sastavljene od vise poziva
 }
