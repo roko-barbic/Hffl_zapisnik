@@ -6,6 +6,7 @@ import 'package:hffl_repository/hffl_repository.dart';
 import 'package:hffl_zapisnik/classes/eventClasses/event.dart';
 import 'package:hffl_zapisnik/cubit/app_bloc_observer.dart';
 import 'package:hffl_zapisnik/cubit/clubs_cubit.dart';
+import 'package:hffl_zapisnik/cubit/game_cubit.dart';
 import 'package:hffl_zapisnik/cubit/tournament_cubit.dart';
 import 'package:hffl_zapisnik/views/clubs_ranking_screen.dart';
 import 'package:hffl_zapisnik/views/tournaments_screen.dart';
@@ -107,7 +108,11 @@ class MyApp extends StatelessWidget {
             cubit.fetchTournaments(); // Fetch clubs as soon as the cubit is created
             return cubit;
           },
-        )
+        ),
+        BlocProvider<GameCubit>(create: (context){
+          final cubit = GameCubit(_hfflRepository);
+          return cubit;
+        })
       ],
       child: const HfflAppView(),
       // MaterialApp(

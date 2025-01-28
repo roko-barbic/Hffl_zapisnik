@@ -6,4 +6,7 @@ class Routes{
   static const String createTournament = '/newTournament';
   static const String createTournamentWithPhoto = '/newTournamentWithPhoto';
   static const String generatePdf = '/Tournament/generatePdfReport?tournamentId=';
+  static const String getGames = '/moreInfo/';
+  static const String createGame = '/newGame/';
+  static const String gameDetails = '/Game/detailedInfo/';
 }

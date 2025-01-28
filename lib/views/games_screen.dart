@@ -1,36 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hffl_api/hffl_api.dart';
+import 'package:hffl_zapisnik/cubit/game_cubit.dart';
 import 'package:hffl_zapisnik/cubit/tournament_cubit.dart';
 import 'package:hffl_zapisnik/enums/clubs_status_enum.dart';
+import 'package:hffl_zapisnik/widgets/enterGame.dart';
 import 'package:hffl_zapisnik/widgets/enter_tournament.dart';
-import 'package:hffl_zapisnik/widgets/tournaments_list.dart';
+import 'package:hffl_zapisnik/widgets/games_list.dart';
 
-class TournamentsScreen extends StatefulWidget {
-  const TournamentsScreen({super.key});
+class GamesScreen extends StatefulWidget {
+  final int tournamentId;
+  final String tournamentName;
+
+  const GamesScreen({required this.tournamentId, required this.tournamentName, super.key});
 
   @override
-  State<TournamentsScreen> createState() => _TournamentsScreenState();
+  State<GamesScreen> createState() => _GamesScreenState();
 }
 
-class _TournamentsScreenState extends State<TournamentsScreen> {
+class _GamesScreenState extends State<GamesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tournaments'),
+        title: Text(widget.tournamentName),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop(); // Pops the current screen
+          },
+        ),
       ),
       body: Center(
-        child: BlocBuilder<TournamentCubit, TournamentState>(
+        child: BlocBuilder<GameCubit, GameState>(
           builder: (context, state) {
-            return switch (state.tournamentLoadingStatus) {
+            return switch (state.gamesLoadingStatus) {
               LoadingStatus.initial => const Text(
                   "Nesto bar displayam"), //tu sad treba definirat widget za kad nema niceg, itd za ostale
               LoadingStatus.loading => const CircularProgressIndicator(),
               LoadingStatus.failure => const Text("fail"),
-              LoadingStatus.success => TournamentsList(
-                  tournaments: state.tournaments,
+              LoadingStatus.success => GamesList(
+                  tournamentId: widget.tournamentId,
+                  games: state.games,
                   onRefresh: () =>
-                      context.read<TournamentCubit>().fetchTournaments(),
+                      context.read<GameCubit>().fetchGames(widget.tournamentId),
                 ),
             };
           },
@@ -38,7 +51,7 @@ class _TournamentsScreenState extends State<TournamentsScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.read<TournamentCubit>().resetCreatingTournament();
+          context.read<GameCubit>().resetCreatingGame();
 
           showModalBottomSheet(
               context: context,
@@ -48,17 +61,16 @@ class _TournamentsScreenState extends State<TournamentsScreen> {
                 return AnimatedContainer(
                     duration: const Duration(milliseconds: 150),
                     padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom * 0.4),
+                        bottom: MediaQuery.of(context).viewInsets.bottom * 0.3),
                     child: Container(
-                        height: MediaQuery.of(context).size.height * 0.5,
-                        child: const EnterTournament()
-                    ));
+                        height: MediaQuery.of(context).size.height * 0.4,
+                        child: EnterGame(tournamentId: widget.tournamentId)));
               });
           // Navigator.push(
           //   context,
           //   MaterialPageRoute(builder: (context) => const UploadPicture()),
           // );
-    },
+        },
         child: const Icon(Icons.add),
       ),
     );

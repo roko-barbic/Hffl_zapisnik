@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:hffl_api/hffl_api.dart';
 import 'package:dio/dio.dart';
+import 'package:hffl_api/src/models/game_dto_expanded.dart';
 import 'package:mime/mime.dart';
 import 'package:http_parser/http_parser.dart';
 
@@ -16,7 +17,7 @@ import 'models/tournaments.dart';
 class HfflApi {
   const HfflApi();
 
-  final String conn = "https://64f8-89-164-177-143.ngrok-free.app";
+  final String conn = "https://8505-95-168-120-33.ngrok-free.app";
 
   //used to retrieve clubs stats
   Future<Clubs?> getClubs() async {
@@ -195,4 +196,77 @@ class HfflApi {
       print('Error downloading PDF: $e');
     }
   }
+
+
+  //games
+  Future<Games?> fetchGames(int tournamentId) async{
+    Dio dio = Dio();
+    final String url = '$conn${Routes.getGames}$tournamentId';
+
+    Response response = await dio.get(
+      url,
+    );
+
+    if(response.statusCode == 200){
+      var games =  Games.fromJson(response.data as Map<String, dynamic>);
+      return Games.fromJson(response.data as Map<String, dynamic>);
+    }
+
+    //return null;
+  }
+
+  Future<bool?> createGame(int tournamentId, int homeClubId, int awayClubId) async{
+    Dio dio = Dio();
+
+    try {
+      final String url = '$conn${Routes.createGame}$tournamentId';
+      final Map<String, dynamic> body = {
+        "club_HomeId": homeClubId,
+        "club_AwayId": awayClubId,
+      };
+
+      final response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print('Error creating game: $e');
+      return null;
+    }
+  }
+
+  Future<GameDto?> fethcGameDetails(int gameId) async {
+    final String url = '$conn${Routes.gameDetails}$gameId';
+
+    try {
+      Dio dio = Dio();
+
+      final response = await dio.get(url);
+
+      if (response.statusCode == 200) {
+
+        final gameDto = GameDto.fromJson(response.data as Map<String, dynamic>);
+
+        return gameDto;
+      } else {
+        print('Failed to fetch game details. Status code: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching game details: $e');
+      return null;
+    }
+  }
+
 }

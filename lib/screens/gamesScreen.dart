@@ -113,7 +113,7 @@ class _GamesScreenState extends State<GamesScreen> {
                     height: MediaQuery.of(context).size.height * 0.2,
                     child: EnterGame(
                         tournamentId: widget.tournament.id,
-                        refreshGames: refreshGames), //enterGame
+                        ), //enterGame
                   );
                 });
           },
@@ -182,9 +182,10 @@ class _GamesScreenState extends State<GamesScreen> {
                           });
                         });
                       },
-                      child: GamesRowDisplay(
-                        game: games[index],
-                      ),
+                      child: Text("aa"),
+                      // GamesRowDisplay(
+                      //   game: games[index],
+                      // ),
                     )
                   : GestureDetector(
                       onTap: () {
@@ -203,9 +204,10 @@ class _GamesScreenState extends State<GamesScreen> {
                           });
                         });
                       },
-                      child: GamesRowDisplay(
-                        game: games[index],
-                      ),
+                      child: Text("aa"),
+                      // GamesRowDisplay(
+                      //   game: games[index],
+                      // ),
                     ))
           : Center(
               child: CircularProgressIndicator(),
