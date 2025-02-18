@@ -98,18 +98,20 @@ class MyApp extends StatelessWidget {
         BlocProvider<ClubsCubit>(
           create: (context) {
             final cubit = ClubsCubit(_hfflRepository);
-            cubit.fetchClubsInfo(); // Fetch clubs as soon as the cubit is created
+            cubit
+                .fetchClubsInfo(); // Fetch clubs as soon as the cubit is created
             return cubit;
           },
         ),
         BlocProvider<TournamentCubit>(
           create: (context) {
             final cubit = TournamentCubit(_hfflRepository);
-            cubit.fetchTournaments(); // Fetch clubs as soon as the cubit is created
+            cubit
+                .fetchTournaments(); // Fetch clubs as soon as the cubit is created
             return cubit;
           },
         ),
-        BlocProvider<GameCubit>(create: (context){
+        BlocProvider<GameCubit>(create: (context) {
           final cubit = GameCubit(_hfflRepository);
           return cubit;
         })
@@ -157,18 +159,62 @@ class _HfflAppViewState extends State<HfflAppView>
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        primaryColor: Colors.redAccent, // Set primary color to redAccent
+        colorScheme: const ColorScheme.light(
+          primary: Colors.redAccent,
+          // Ensure redAccent is used for primary elements
+          secondary: Colors.blueAccent, // Optional: Define a secondary color
+        ),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
+          backgroundColor: Colors.redAccent, // Ensure AppBar uses redAccent
+          foregroundColor: Colors.white,
+        ),
+        tabBarTheme: const TabBarTheme(
+          labelColor: Colors.white,
+          // Color for selected tab text/icon
+          unselectedLabelColor: Colors.white70,
+          // Color for unselected tab text/icon
         ),
       ),
       home: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.redAccent,
+          title: const Padding(
+              padding: EdgeInsets.only(left: 15),
+              child: Text(
+                "CAFA - zapisnik",
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white),
+              )),
+          actions: [
+            IconButton(
+              icon: const Icon(
+                Icons.logout,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                print('Logout pressed');
+              },
+            ),
+          ],
           bottom: TabBar(
+            indicatorColor: Colors.white,
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.white.withOpacity(0.7),
             controller: _tabController,
             tabs: const [
-              Tab(icon: Icon(Icons.table_bar)),
-              Tab(icon: Icon(Icons.tour_sharp)),
+              Tab(
+                  icon: Text(
+                "Poredak",
+                style: TextStyle(fontSize: 16),
+              )),
+              Tab(
+                  icon: Text(
+                "Turniri",
+                style: TextStyle(fontSize: 16),
+              )),
             ],
           ),
         ),

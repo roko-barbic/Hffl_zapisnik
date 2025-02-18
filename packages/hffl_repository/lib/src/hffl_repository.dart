@@ -58,6 +58,14 @@ class HfflRepository {
   Future<GameDto?> getGameDetails(int gameId){
     return _hfflApiClient.fethcGameDetails(gameId);
   }
+
+  Future<GameDetails?> getGameAndPlayerDetails(int gameId){
+    return _hfflApiClient.fetchGameAndPlayerDetails(gameId);
+  }
+
+  Future<bool> addJerseyNumbersToPlayers(int gameId, Map<int, int?> homePlayers, Map<int, int?> awayPlayers){
+    return _hfflApiClient.addJerseyNumbersToPlayers(gameId, homePlayers, awayPlayers);
+  }
 //Widget initApp(){
 
 //realno repository ti treba ako ces sklapat neke komplekcsnije pozive sastavljene od vise poziva

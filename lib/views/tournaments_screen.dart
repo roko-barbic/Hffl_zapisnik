@@ -16,9 +16,7 @@ class _TournamentsScreenState extends State<TournamentsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tournaments'),
-      ),
+      backgroundColor: Colors.white54,
       body: Center(
         child: BlocBuilder<TournamentCubit, TournamentState>(
           builder: (context, state) {
@@ -49,7 +47,8 @@ class _TournamentsScreenState extends State<TournamentsScreen> {
                     duration: const Duration(milliseconds: 150),
                     padding: EdgeInsets.only(
                         bottom: MediaQuery.of(context).viewInsets.bottom * 0.4),
-                    child: Container(
+                    child: SizedBox(
+                        width: double.infinity,
                         height: MediaQuery.of(context).size.height * 0.5,
                         child: const EnterTournament()
                     ));

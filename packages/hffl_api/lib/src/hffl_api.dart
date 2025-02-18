@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:hffl_api/hffl_api.dart';
 import 'package:dio/dio.dart';
+import 'package:hffl_api/src/models/game_details.dart';
 import 'package:hffl_api/src/models/game_dto_expanded.dart';
 import 'package:mime/mime.dart';
 import 'package:http_parser/http_parser.dart';
@@ -17,7 +18,7 @@ import 'models/tournaments.dart';
 class HfflApi {
   const HfflApi();
 
-  final String conn = "https://8505-95-168-120-33.ngrok-free.app";
+  final String conn = "https://469d-93-142-3-65.ngrok-free.app";
 
   //used to retrieve clubs stats
   Future<Clubs?> getClubs() async {
@@ -266,6 +267,65 @@ class HfflApi {
     } catch (e) {
       print('Error fetching game details: $e');
       return null;
+    }
+  }
+
+  Future<GameDetails?> fetchGameAndPlayerDetails(int gameId) async {
+    Dio dio = Dio();
+    try {
+      final String url = '$conn${Routes.gameAndPlayerDetails}$gameId';
+      final response = await dio.get(url);
+
+      if (response.statusCode == 200) {
+        return GameDetails.fromJson(response.data as Map<String, dynamic>);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching game details: $e');
+      return null;
+    }
+  }
+
+  Future<bool> addJerseyNumbersToPlayers(int gameId, Map<int, int?> homePlayers, Map<int, int?> awayPlayers) async {
+    final dio = Dio();
+
+    Map<String, int> homePlayersStringKeys =  Map.fromEntries(
+        homePlayers.entries
+            .where((entry) => entry.value != null)
+            .map((entry) => MapEntry(entry.key.toString(), entry.value!))
+    );
+    Map<String, int> awayPlayersStringKeys =Map.fromEntries(
+        awayPlayers.entries
+            .where((entry) => entry.value != null)
+            .map((entry) => MapEntry(entry.key.toString(), entry.value!))
+    );
+
+    final data = {
+      'gameId': gameId,
+      'homePlayersJerseyNumbers': homePlayersStringKeys,
+      'awayPlayersJerseyNumbers': awayPlayersStringKeys,
+    };
+    final url = '$conn${Routes.registerPlayers}';
+
+    try {
+      final response = await dio.post(
+        url,
+        data: data,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
     }
   }
 

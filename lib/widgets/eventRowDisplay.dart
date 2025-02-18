@@ -1,11 +1,10 @@
 // ignore_for_file: prefer_interpolation_to_compose_strings
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hffl_zapisnik/classes/eventInGame.dart';
+import 'package:hffl_api/hffl_api.dart';
 
 class EventRowDisplay extends StatelessWidget {
-  EventInGame event;
+  Event event;
   EventRowDisplay({required this.event, super.key});
 
   String getText() {
@@ -76,9 +75,9 @@ class EventRowDisplay extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text('Run: ' +
-                                        event.playerOne.surname +
+                                        event.playerOne.LastName +
                                         " " +
-                                        event.playerOne.name.characters.first +
+                                        event.playerOne.firstName.characters.first +
                                         "."),
                                   ],
                                 ),
@@ -104,14 +103,14 @@ class EventRowDisplay extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text('Pass: ' +
-                                        event.playerOne.surname +
+                                        event.playerOne.LastName +
                                         " " +
-                                        event.playerOne.name.characters.first +
+                                        event.playerOne.firstName.characters.first +
                                         "."),
                                     Text('Catch: ' +
-                                        event.playerTwo.surname +
+                                        event.playerTwo.LastName +
                                         " " +
-                                        event.playerTwo.name.characters.first +
+                                        event.playerTwo.firstName.characters.first +
                                         "."),
                                   ],
                                 ),
@@ -145,11 +144,11 @@ class EventRowDisplay extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text('Run: ' +
-                                        event.playerOne.surname +
+                                        event.playerOne.LastName +
                                         " " +
-                                        event.playerOne.name.characters.first +
+                                        event.playerOne.firstName.characters.first +
                                         "."),
-                                    
+
                                   ],
                                 ),
                               ),
@@ -174,14 +173,14 @@ class EventRowDisplay extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text('Pass: ' +
-                                        event.playerOne.surname +
+                                        event.playerOne.LastName +
                                         " " +
-                                        event.playerOne.name.characters.first +
+                                        event.playerOne.firstName.characters.first +
                                         "."),
                                     Text('Catch: ' +
-                                        event.playerTwo.surname +
+                                        event.playerTwo.LastName +
                                         " " +
-                                        event.playerTwo.name.characters.first +
+                                        event.playerTwo.firstName.characters.first +
                                         "."),
                                   ],
                                 ),

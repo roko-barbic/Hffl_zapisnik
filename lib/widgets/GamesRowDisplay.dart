@@ -12,7 +12,7 @@ class GamesRowDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        context.read<GameCubit>().fetchGameDetails(game.id ?? 0, context);
+        context.read<GameCubit>().fetchGameDetails(game.id ?? 0, context, false);
       },
       child: Center(
         child: SizedBox(

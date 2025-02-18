@@ -77,15 +77,25 @@ class TournamentsRowDisplay extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             child: AspectRatio(
               aspectRatio: 16 / 9,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Stack(
-                  children: [
-                    _buildParallaxBackground(context),
-                    _buildGradient(),
-                    _buildTitleAndSubtitle(),
-                    _buildDownloadButton(context),
-                  ],
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow:const  [BoxShadow(
+                    //color: Theme.of(context).primaryColor, // Shadow color
+                    blurRadius: 10, // Spread of the shadow
+                    offset: Offset(0, 4),
+                  )]
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Stack(
+                    children: [
+                      _buildParallaxBackground(context),
+                      _buildGradient(),
+                      _buildTitleAndSubtitle(),
+                      _buildDownloadButton(context),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -106,7 +116,27 @@ class TournamentsRowDisplay extends StatelessWidget {
               "https://media.ksdk.com/assets/CCT/images/d54f648e-df76-466e-bfd6-3b7bcdd2158a/d54f648e-df76-466e-bfd6-3b7bcdd2158a_1140x641.jpg",
           key: _backgroundImageKey,
           fit: BoxFit.cover,
-        )
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) {
+              return child;
+            }
+            return const Center(
+              child: CircularProgressIndicator(
+              ),
+            );
+          },
+          errorBuilder: (context, error, stackTrace) {
+            return Container(
+              color: Colors.grey[300],
+              child: const Center(
+                child: Icon(
+                  Icons.broken_image,
+                  color: Colors.grey,
+                  size: 48,
+                ),
+              ));
+          },
+          )
       ],
     );
   }

@@ -27,6 +27,7 @@ class _GamesScreenState extends State<GamesScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
+            context.read<GameCubit>().cleanGamesState();
             Navigator.of(context).pop(); // Pops the current screen
           },
         ),
@@ -37,7 +38,9 @@ class _GamesScreenState extends State<GamesScreen> {
             return switch (state.gamesLoadingStatus) {
               LoadingStatus.initial => const Text(
                   "Nesto bar displayam"), //tu sad treba definirat widget za kad nema niceg, itd za ostale
-              LoadingStatus.loading => const CircularProgressIndicator(),
+              LoadingStatus.loading => const Center(
+                  child: SizedBox(
+                      width: 100, height: 100, child: CircularProgressIndicator())),
               LoadingStatus.failure => const Text("fail"),
               LoadingStatus.success => GamesList(
                   tournamentId: widget.tournamentId,
@@ -62,7 +65,8 @@ class _GamesScreenState extends State<GamesScreen> {
                     duration: const Duration(milliseconds: 150),
                     padding: EdgeInsets.only(
                         bottom: MediaQuery.of(context).viewInsets.bottom * 0.3),
-                    child: Container(
+                    child: SizedBox(
+                        width: double.infinity,
                         height: MediaQuery.of(context).size.height * 0.4,
                         child: EnterGame(tournamentId: widget.tournamentId)));
               });

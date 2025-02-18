@@ -253,12 +253,12 @@ class _EnterGameState extends State<EnterGame> {
           );
         }
         else if (state.creatingGameStatus == LoadingStatus.loading){
-          return CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         }
         else if(state.creatingGameStatus == LoadingStatus.success){
-          return Text("Uspijeh");
+          return const Text("Uspijeh");
         }
-        return Text("Neuspiheh");
+        return const Text("Neuspiheh");
       },
     );
   }

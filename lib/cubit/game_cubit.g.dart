@@ -17,6 +17,10 @@ GameState _$GameStateFromJson(Map<String, dynamic> json) => GameState(
           : GameDto.fromJson(json['selectedGame'] as Map<String, dynamic>),
       selectedGameLoadingStatus: $enumDecode(
           _$LoadingStatusEnumMap, json['selectedGameLoadingStatus']),
+      selectedGameAndPlayers: json['selectedGameAndPlayers'] == null
+          ? null
+          : GameDetails.fromJson(
+              json['selectedGameAndPlayers'] as Map<String, dynamic>),
       creatingGameStatus:
           $enumDecode(_$LoadingStatusEnumMap, json['creatingGameStatus']),
     );
@@ -28,6 +32,7 @@ Map<String, dynamic> _$GameStateToJson(GameState instance) => <String, dynamic>{
       'selectedGame': instance.selectedGame,
       'selectedGameLoadingStatus':
           _$LoadingStatusEnumMap[instance.selectedGameLoadingStatus]!,
+      'selectedGameAndPlayers': instance.selectedGameAndPlayers,
       'creatingGameStatus':
           _$LoadingStatusEnumMap[instance.creatingGameStatus]!,
     };

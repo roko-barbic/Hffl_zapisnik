@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hffl_api/hffl_api.dart';
 import 'package:hffl_zapisnik/cubit/tournament_cubit.dart';
@@ -28,8 +29,8 @@ class _EnterTournamentState extends State<EnterTournament> {
     return BlocBuilder<TournamentCubit, TournamentState>(
       builder: (context, state) {
         return switch (state.creatingTournament) {
-          LoadingStatus.initial => EnterTournamentValues(),
-          LoadingStatus.loading => const CircularProgressIndicator(),
+          LoadingStatus.initial => const EnterTournamentValues(),
+          LoadingStatus.loading => const Center(child: CircularProgressIndicator()),
           LoadingStatus.failure => const TextWidget(
               text: "fail",
             ),
