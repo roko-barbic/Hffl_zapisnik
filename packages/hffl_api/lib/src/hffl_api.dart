@@ -329,4 +329,29 @@ class HfflApi {
     }
   }
 
+  Future<bool> createNewEvent(int gameId, EventDto eventDto) async {
+    Dio dio = Dio();
+    try {
+      final String url = '$conn${Routes.createNewEvent}'.replaceAll("%s", gameId.toString());
+
+      final response = await dio.post(
+        url,
+        data: eventDto.toJson(),
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),);
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print('Error fetching game details: $e');
+      return false;
+    }
+  }
+
 }

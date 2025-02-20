@@ -8,8 +8,12 @@ part of 'event.dart';
 
 Event _$EventFromJson(Map<String, dynamic> json) => Event(
       id: (json['id'] as num).toInt(),
-      playerOne: PlayerDto.fromJson(json['player_One'] as Map<String, dynamic>),
-      playerTwo: PlayerDto.fromJson(json['player_Two'] as Map<String, dynamic>),
+      playerOne: json['player_One'] != null
+          ? PlayerDto.fromJson(json['player_One'] as Map<String, dynamic>)
+          : null,
+      playerTwo: json['player_Two'] != null
+          ? PlayerDto.fromJson(json['player_Two'] as Map<String, dynamic>)
+          : null,
       type: (json['type'] as num).toInt(),
       teamGettingPoints: (json['teamGettingPoints'] as num).toInt(),
     );

@@ -159,14 +159,13 @@ class _HfflAppViewState extends State<HfflAppView>
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primaryColor: Colors.redAccent, // Set primary color to redAccent
+        primaryColor: const Color.fromRGBO(2, 71, 181, 1.0),
         colorScheme: const ColorScheme.light(
-          primary: Colors.redAccent,
-          // Ensure redAccent is used for primary elements
-          secondary: Colors.blueAccent, // Optional: Define a secondary color
+          primary: Color.fromRGBO(2, 71, 181, 1.0),
+          secondary: Colors.blueAccent,
         ),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.redAccent, // Ensure AppBar uses redAccent
+          backgroundColor: Color.fromRGBO(2, 71, 181, 1.0),
           foregroundColor: Colors.white,
         ),
         tabBarTheme: const TabBarTheme(
@@ -178,7 +177,7 @@ class _HfflAppViewState extends State<HfflAppView>
       ),
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.redAccent,
+          //backgroundColor: Colors.redAccent,
           title: const Padding(
               padding: EdgeInsets.only(left: 15),
               child: Text(

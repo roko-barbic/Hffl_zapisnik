@@ -75,9 +75,10 @@ class EventRowDisplay extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text('Run: ' +
-                                        event.playerOne.LastName +
+                                        //TODO OVO SA USKLICNIKOM NIKAKO NIJE DOMBRO
+                                        event.playerOne!.LastName +
                                         " " +
-                                        event.playerOne.firstName.characters.first +
+                                        event.playerOne!.firstName.characters.first +
                                         "."),
                                   ],
                                 ),
@@ -103,14 +104,14 @@ class EventRowDisplay extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text('Pass: ' +
-                                        event.playerOne.LastName +
+                                        event.playerOne!.LastName +
                                         " " +
-                                        event.playerOne.firstName.characters.first +
+                                        event.playerOne!.firstName.characters.first +
                                         "."),
                                     Text('Catch: ' +
-                                        event.playerTwo.LastName +
+                                        event.playerTwo!.LastName +
                                         " " +
-                                        event.playerTwo.firstName.characters.first +
+                                        event.playerTwo!.firstName.characters.first +
                                         "."),
                                   ],
                                 ),
@@ -144,9 +145,9 @@ class EventRowDisplay extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text('Run: ' +
-                                        event.playerOne.LastName +
+                                        event.playerOne!.LastName +
                                         " " +
-                                        event.playerOne.firstName.characters.first +
+                                        event.playerOne!.firstName.characters.first +
                                         "."),
 
                                   ],
@@ -173,14 +174,14 @@ class EventRowDisplay extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text('Pass: ' +
-                                        event.playerOne.LastName +
+                                        event.playerOne!.LastName +
                                         " " +
-                                        event.playerOne.firstName.characters.first +
+                                        event.playerOne!.firstName.characters.first +
                                         "."),
                                     Text('Catch: ' +
-                                        event.playerTwo.LastName +
+                                        event.playerTwo!.LastName +
                                         " " +
-                                        event.playerTwo.firstName.characters.first +
+                                        event.playerTwo!.firstName.characters.first +
                                         "."),
                                   ],
                                 ),

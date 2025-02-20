@@ -72,6 +72,7 @@ class GameCubit extends Cubit<GameState> {
       if(gameDetails != null){
         emit(state.copyWith(selectedGame: gameDetails, selectedGameLoadingStatus: LoadingStatus.success));
         if(gameDetails.playerRegistration){
+          await fetchGameAndPlayerDetails(gameId);
           if(isFromRegistration)
           {
             Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const GameDetailsScreen()));
@@ -93,6 +94,24 @@ class GameCubit extends Cubit<GameState> {
     }
 
   }
+
+  Future<void> justFetchGameDetails(int? gameId)async {
+    if(gameId != null){
+      try{
+        emit(state.copyWith(selectedGameLoadingStatus: LoadingStatus.loading));
+        final gameDetails = await _hfflRepository.getGameDetails(gameId);
+        if(gameDetails != null){
+          emit(state.copyWith(selectedGame: gameDetails, selectedGameLoadingStatus: LoadingStatus.success));
+        }
+        else{
+          emit(state.copyWith(selectedGameLoadingStatus: LoadingStatus.failure));
+        }
+      }on Exception{
+        emit(state.copyWith(selectedGameLoadingStatus: LoadingStatus.failure));
+      }
+    }
+  }
+
 
   Future<void> fetchGameAndPlayerDetails(int gameId) async{
     emit(state.copyWith(selectedGameLoadingStatus: LoadingStatus.loading));
@@ -126,6 +145,13 @@ class GameCubit extends Cubit<GameState> {
       }
     }on Exception{
       emit(state.copyWith(selectedGameLoadingStatus: LoadingStatus.failure));
+    }
+  }
+
+  Future<void> addNewEvent(int gameId, EventDto eventDto) async{
+    final isSuccessful = await _hfflRepository.addNewEvent(gameId, eventDto);
+    if(isSuccessful){
+      justFetchGameDetails(gameId);
     }
   }
 

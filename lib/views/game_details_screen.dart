@@ -4,7 +4,9 @@ import 'package:hffl_api/hffl_api.dart';
 import 'package:hffl_zapisnik/cubit/game_cubit.dart';
 import 'package:hffl_zapisnik/cubit/game_cubit.dart';
 import 'package:hffl_zapisnik/enums/clubs_status_enum.dart';
+import 'package:hffl_zapisnik/widgets/enter_event.dart';
 import 'package:hffl_zapisnik/widgets/eventRowDisplay.dart';
+import 'package:hffl_zapisnik/widgets/game_events_details.dart';
 
 class GameDetailsScreen extends StatefulWidget {
   const GameDetailsScreen({Key? key}) : super(key: key);
@@ -31,8 +33,9 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
               builder: (BuildContext context) {
                 return Container(
                   height: MediaQuery.of(context).size.height * 0.5,
+                  width: double.infinity,
                   padding: EdgeInsets.all(16),
-                  child: Text("nestoo")
+                  child: EnterNewEvent()
                   // EnterEvent(
                   //   gameId: widget.game.id,
                   //   refreshEvents: refreshEvents,
@@ -46,70 +49,15 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
       ),
       body: BlocBuilder<GameCubit, GameState>(
         builder: (context, state) {
-          if (state.selectedGameLoadingStatus == LoadingStatus.initial ||
-              state.selectedGameLoadingStatus == LoadingStatus.failure)
-            return Text("data");
-          else if(state.selectedGameLoadingStatus == LoadingStatus.loading){
-            return const Center(child: CircularProgressIndicator());
-          }
-          else if (state.selectedGameLoadingStatus == LoadingStatus.success) {
-            return Column(
-              children: [
-                // Score Display
-                Container(
-                  height: 80,
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Colors.black.withOpacity(0.1),
-                        width: 2.0,
-                      ),
-                    ),
-                  ),
-                  child: Center(
-                    child: RichText(
-                      text: TextSpan(
-                        style: TextStyle(fontSize: 18, color: Colors.black),
-                        children: [
-                          TextSpan(
-                            text: state.selectedGame!.clubHome.name,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(
-                              text:
-                                  " ${state.selectedGame!.clubHomeScore} : ${state.selectedGame!.clubAwayScore} "),
-                          TextSpan(
-                            text: state.selectedGame!.clubAway.name,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
 
+          return switch (state.selectedGameLoadingStatus) {
+            LoadingStatus.initial => const Text(
+                "Nesto bar displayam"), //tu sad treba definirat widget za kad nema niceg, itd za ostale
+            LoadingStatus.loading => const Center(child: CircularProgressIndicator()),
+            LoadingStatus.failure => const Text("fail"),
+            LoadingStatus.success => const GameEventsDetails(),
+          };
 
-
-                SizedBox(height: 20),
-                // Events List
-
-
-                Expanded(
-                  child: ListView.builder(
-                    padding: EdgeInsets.all(16),
-                    itemCount: state.selectedGame!.events.length,
-                    itemBuilder: (context, index) {
-                      final event = state.selectedGame!.events[index];
-                      return EventRowDisplay(event: event,);
-                    },
-                  ),
-                ),
-              ],
-            );
-          }
-          return Text("Fail");
         },
       ),
     );

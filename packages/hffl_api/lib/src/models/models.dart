@@ -1,6 +1,8 @@
 export 'club.dart';
+export 'club_dto_short.dart';
 export 'clubs.dart';
 export 'event.dart';
+export 'event_dto.dart';
 export 'game.dart';
 export 'game_details.dart';
 export 'game_dto_expanded.dart';

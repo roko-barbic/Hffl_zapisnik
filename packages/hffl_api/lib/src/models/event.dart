@@ -6,15 +6,15 @@ part 'event.g.dart';
 @JsonSerializable()
 class Event {
   final int id;
-  final PlayerDto playerOne;
-  final PlayerDto playerTwo;
+  final PlayerDto? playerOne;
+  final PlayerDto? playerTwo;
   final int type;
   final int teamGettingPoints;
 
   Event({
     required this.id,
-    required this.playerOne,
-    required this.playerTwo,
+    this.playerOne,
+    this.playerTwo,
     required this.type,
     required this.teamGettingPoints,
   });
