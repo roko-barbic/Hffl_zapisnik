@@ -22,9 +22,10 @@ class _RegisterPlayersSwiperState extends State<RegisterPlayersSwiper> {
   Map<int, int?> awayPlayers = {};
   List<PlayerCombination> homePlayersCombination = [];
   List<PlayerCombination> awayPlayersCombination = [];
+  bool isProceedAvailable = true;
 
   bool isOnProceedVisible() {
-    return true;//(homePlayers.length > 4 && awayPlayers.length > 4);
+    return isProceedAvailable;//(homePlayers.length > 4 && awayPlayers.length > 4);
   }
 
   Map<int, int?> convertToIntIntComb(List<PlayerCombination> playerCombination) {
@@ -41,10 +42,15 @@ class _RegisterPlayersSwiperState extends State<RegisterPlayersSwiper> {
       child: ElevatedButton(
         onPressed: () {
           context.read<GameCubit>().registerPlayersToGamme(widget.gameDetails.gameId, homePlayers, awayPlayers, context);
-          ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text('Proceed clicked!')));
-        },
+          setState(() {
+            isProceedAvailable = false;
+          });
+          },
         child: const Text("Proceed"),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          foregroundColor: Colors.white,
+        ),
       ),
     );
   }
@@ -63,18 +69,19 @@ class _RegisterPlayersSwiperState extends State<RegisterPlayersSwiper> {
               name: homePlayersCombination[index].name,
               surname: homePlayersCombination[index].surname,
               jerseyNumber: newJerseyNumber);
-        } else {
-          awayPlayers[playerId] = newJerseyNumber;
-          int index = awayPlayersCombination.indexWhere(
-            (playerCombination) => playerCombination.playerId == playerId,
-          );
-          if (index != -1) {
-            awayPlayersCombination[index] = PlayerCombination(
-                playerId: awayPlayersCombination[index].playerId,
-                name: awayPlayersCombination[index].name,
-                surname: awayPlayersCombination[index].surname,
-                jerseyNumber: newJerseyNumber);
-          }
+        }
+      }
+      else {
+        awayPlayers[playerId] = newJerseyNumber;
+        int index = awayPlayersCombination.indexWhere(
+              (playerCombination) => playerCombination.playerId == playerId,
+        );
+        if (index != -1) {
+          awayPlayersCombination[index] = PlayerCombination(
+              playerId: awayPlayersCombination[index].playerId,
+              name: awayPlayersCombination[index].name,
+              surname: awayPlayersCombination[index].surname,
+              jerseyNumber: newJerseyNumber);
         }
       }
     });
@@ -160,11 +167,11 @@ class ClubsRegistrationCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(45),
+            padding: const EdgeInsets.all(30),
             child: Image.asset(
               'assets/images/club_image_id_1.png',
-              width: 150, // Adjust width
-              height: 150, // Adjust height
+              width: 130, // Adjust width
+              height: 130, // Adjust height
               fit: BoxFit.cover,
             ),
           ),
@@ -173,7 +180,7 @@ class ClubsRegistrationCard extends StatelessWidget {
                   itemCount: playersCombination.length,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
                       child: SizedBox(
                         height: 60,
                         child: Row(
