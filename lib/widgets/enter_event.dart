@@ -11,7 +11,7 @@ class EnterNewEvent extends StatefulWidget {
 }
 
 class _EnterNewEventState extends State<EnterNewEvent> {
-  int? _dropDownValue;
+  int? typeOfEvent;
   late bool isHomeClub;
   int? firstPlayerId;
   int? secondPlayerId;
@@ -73,31 +73,34 @@ class _EnterNewEventState extends State<EnterNewEvent> {
                 onChanged: (int? value) {
                   setState(() {
                     resetValues();
-                    _dropDownValue = value;
+                    typeOfEvent = value;
                   });
                 },
-                value: _dropDownValue,
+                value: typeOfEvent,
                 hint: const Center(child: Text("Odabirete tip događaja")),
               ),
             ),
-            SegmentedButton(
-              segments: <ButtonSegment<bool>>[
-                ButtonSegment<bool>(
-                    value: true,
-                    label: Text(
-                        state.selectedGame?.clubHome.name ?? "Nije ucitano")),
-                ButtonSegment<bool>(
-                    value: false,
-                    label: Text(
-                        state.selectedGame?.clubAway.name ?? "Nije ucitano"))
-              ],
-              selected: <bool>{isHomeClub},
-              onSelectionChanged: (newSet) {
-                setState(() { // This now updates the whole widget
-                  resetValues();
-                  isHomeClub = newSet.first;
-                });
-              },
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 18.0),
+              child: SegmentedButton(
+                segments: <ButtonSegment<bool>>[
+                  ButtonSegment<bool>(
+                      value: true,
+                      label: Text(
+                          state.selectedGame?.clubHome.name ?? "Nije ucitano")),
+                  ButtonSegment<bool>(
+                      value: false,
+                      label: Text(
+                          state.selectedGame?.clubAway.name ?? "Nije ucitano"))
+                ],
+                selected: <bool>{isHomeClub},
+                onSelectionChanged: (newSet) {
+                  setState(() { // This now updates the whole widget
+                    resetValues();
+                    isHomeClub = newSet.first;
+                  });
+                },
+              ),
             ),
             StatefulBuilder(
               builder: (context, setState) {
@@ -107,13 +110,13 @@ class _EnterNewEventState extends State<EnterNewEvent> {
                     state.selectedGameAndPlayers?.awayPlayersCombination ??
                         <PlayerCombination>[],
                     isHomeClub,
-                    _dropDownValue);
+                    typeOfEvent);
               },
             ),
             if (isButtonVisible(state.selectedGameAndPlayers!.gameId))
               ElevatedButton(
                   onPressed: () {
-                    if(_dropDownValue == 6){
+                    if(typeOfEvent == 6){
                       if(isHomeClub){
                         firstPlayerId = state.selectedGameAndPlayers!.homePlayersCombination.first.playerId;
                       }
@@ -122,7 +125,7 @@ class _EnterNewEventState extends State<EnterNewEvent> {
                       }
                     }
                     context.read<GameCubit>().addNewEvent(
-                      state.selectedGameAndPlayers!.gameId, EventDto(playerOneId: firstPlayerId ?? 0, playetTwoId: secondPlayerId ?? 0, type: _dropDownValue!));
+                      state.selectedGameAndPlayers!.gameId, EventDto(playerOneId: firstPlayerId ?? 0, playetTwoId: secondPlayerId ?? 0, type: typeOfEvent!));
                       Navigator.of(context).pop();
                     },
                   child: const Icon(Icons.add))
@@ -134,25 +137,27 @@ class _EnterNewEventState extends State<EnterNewEvent> {
 
   bool isButtonVisible(int? gameId) {
 
-    if(_dropDownValue == 1 || _dropDownValue == 4 || _dropDownValue == 5 || _dropDownValue == 2 || _dropDownValue == 3){
+    if(typeOfEvent == 1 || typeOfEvent == 4 || typeOfEvent == 5 || typeOfEvent == 2 || typeOfEvent == 3){
       return (gameId != null &&
           firstPlayerId != null &&
           secondPlayerId != null &&
-          _dropDownValue != null);
-    }else if(_dropDownValue == 7 || _dropDownValue == 8 || _dropDownValue == 9){
+          typeOfEvent != null);
+    }else if(typeOfEvent == 7 || typeOfEvent == 8 || typeOfEvent == 9){
       return (gameId != null &&
           firstPlayerId != null &&
-          _dropDownValue != null);
+          typeOfEvent != null);
     }
     else{
       return (gameId != null &&
-          _dropDownValue == 6);
+          typeOfEvent == 6);
     }
   }
 
   List<DropdownMenuItem<int>> buildDropdownItems(
       List<PlayerCombination> players) {
-    return players.map((player) {
+    return players
+        .where((player) => player.jerseyNumber != null && player.jerseyNumber != 0)
+        .map((player) {
       return DropdownMenuItem<int>(
         value: player.playerId,
         child: Container(
