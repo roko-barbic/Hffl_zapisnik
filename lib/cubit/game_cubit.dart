@@ -64,8 +64,9 @@ class GameCubit extends Cubit<GameState> {
   }
 
   Future<void> fetchGameDetails(int gameId, BuildContext context, bool isFromRegistration)async {
-    emit(state.copyWith(selectedGameLoadingStatus: LoadingStatus.loading));
-    //Navigator.of(context).push(MaterialPageRoute(builder: (context) => const GameDetailsScreen()));
+    if(state.selectedGameLoadingStatus == LoadingStatus.initial){
+      emit(state.copyWith(selectedGameLoadingStatus: LoadingStatus.loading));
+    }    //Navigator.of(context).push(MaterialPageRoute(builder: (context) => const GameDetailsScreen()));
     try{
       emit(state.copyWith(selectedGameLoadingStatus: LoadingStatus.loading));
       final gameDetails = await _hfflRepository.getGameDetails(gameId);
@@ -98,7 +99,9 @@ class GameCubit extends Cubit<GameState> {
   Future<void> justFetchGameDetails(int? gameId)async {
     if(gameId != null){
       try{
-        emit(state.copyWith(selectedGameLoadingStatus: LoadingStatus.loading));
+        if(state.selectedGameLoadingStatus == LoadingStatus.initial){
+          emit(state.copyWith(selectedGameLoadingStatus: LoadingStatus.loading));
+        }
         final gameDetails = await _hfflRepository.getGameDetails(gameId);
         if(gameDetails != null){
           emit(state.copyWith(selectedGame: gameDetails, selectedGameLoadingStatus: LoadingStatus.success));
