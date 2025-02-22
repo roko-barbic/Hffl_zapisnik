@@ -9,6 +9,7 @@ import 'package:hffl_api/src/models/game_dto_expanded.dart';
 import 'package:mime/mime.dart';
 import 'package:http_parser/http_parser.dart';
 
+
 import 'package:hffl_api/src/models/clubs.dart';
 import 'package:hffl_api/src/routes/routes.dart';
 import 'package:path_provider/path_provider.dart';
@@ -16,13 +17,13 @@ import 'package:path_provider/path_provider.dart';
 import 'models/tournaments.dart';
 
 class HfflApi {
-  const HfflApi();
 
-  final String conn = "https://bdfe-93-139-201-114.ngrok-free.app";
+  final String conn;
+  final Dio client;
+  HfflApi({required this.conn, required this.client});
 
   //used to retrieve clubs stats
   Future<Clubs?> getClubs() async {
-    Dio client = new Dio();
     final response = await client.get('$conn${Routes.getClubsUrl}',
         options: Options(
           headers: {'Content-Type': 'application/json'},
@@ -38,7 +39,6 @@ class HfflApi {
   }
 
   Future<Tournaments?> getTournaments() async {
-    Dio client = new Dio();
     final response = await client.get('$conn${Routes.getTournamentUrl}',
         options: Options(
           headers: {'Content-Type': 'application/json'},
@@ -53,8 +53,6 @@ class HfflApi {
   }
 
   Future<bool?> deleteTournament(int tournamentId) async {
-    Dio client = new Dio();
-
     final response =
         await client.delete('$conn${Routes.deleteTournament}$tournamentId',
             options: Options(
@@ -68,7 +66,6 @@ class HfflApi {
   }
 
   Future<bool?> createTournament(Tournament tournament) async {
-    Dio client = new Dio();
     Map<String, dynamic> body = {
       "name": tournament.name,
       "date": tournament.date.toIso8601String(),
@@ -92,8 +89,6 @@ class HfflApi {
     required int season,
     required String coverPhoto,
   }) async {
-    Dio client = new Dio();
-
     String? mimeType = lookupMimeType(coverPhoto) ?? 'application/octet-stream';
     final mimeSplit = mimeType.split('/');
 
@@ -131,10 +126,9 @@ class HfflApi {
 
   Future<String?> fetchTournamentPhoto(int tournamentId) async {
     try {
-      Dio dio = Dio();
       String url = 'http://your-api-url.com/tournament/$tournamentId/photo';
 
-      Response response = await dio.get(
+      Response response = await client.get(
         url,
         options: Options(
           responseType: ResponseType.bytes, // Expecting binary image data
@@ -155,10 +149,9 @@ class HfflApi {
 
   Future<Tournaments?> fetchTournamentsWithPhoto() async {
     try {
-      Dio dio = Dio();
       String url = '$conn/tournamentWithPhoto';
 
-      Response response = await dio.get(
+      Response response = await client.get(
         url,
       );
 
@@ -174,15 +167,13 @@ class HfflApi {
   }
 
   Future<String?> downloadPdf(int tournamentId, String fileName) async {
-    Dio dio = Dio();
-
     try {
       final String url = '$conn${Routes.generatePdf}$tournamentId';
       //https://localhost:7011/Tournament/GeneratePdfReport?tournamentId=1'
       Directory directory = await getTemporaryDirectory();
       //String fileName = "Turnir-$tournamentId.pdf";
       String filePath = '${directory.path}/$fileName';
-      Response response = await dio.download(
+      Response response = await client.download(
         url,
         filePath,
         options: Options(
@@ -201,10 +192,9 @@ class HfflApi {
 
   //games
   Future<Games?> fetchGames(int tournamentId) async{
-    Dio dio = Dio();
     final String url = '$conn${Routes.getGames}$tournamentId';
 
-    Response response = await dio.get(
+    Response response = await client.get(
       url,
     );
 
@@ -217,8 +207,6 @@ class HfflApi {
   }
 
   Future<bool?> createGame(int tournamentId, int homeClubId, int awayClubId) async{
-    Dio dio = Dio();
-
     try {
       final String url = '$conn${Routes.createGame}$tournamentId';
       final Map<String, dynamic> body = {
@@ -226,7 +214,7 @@ class HfflApi {
         "club_AwayId": awayClubId,
       };
 
-      final response = await dio.post(
+      final response = await client.post(
         url,
         data: body,
         options: Options(
@@ -248,7 +236,6 @@ class HfflApi {
   }
 
   Future<bool> deleteGame(int gameId) async {
-    Dio client = new Dio();
 
     final response =
     await client.delete('$conn${Routes.deleteGame}$gameId',
@@ -266,9 +253,7 @@ class HfflApi {
     final String url = '$conn${Routes.gameDetails}$gameId';
 
     try {
-      Dio dio = Dio();
-
-      final response = await dio.get(url);
+      final response = await client.get(url);
 
       if (response.statusCode == 200) {
 
@@ -286,10 +271,9 @@ class HfflApi {
   }
 
   Future<GameDetails?> fetchGameAndPlayerDetails(int gameId) async {
-    Dio dio = Dio();
     try {
       final String url = '$conn${Routes.gameAndPlayerDetails}$gameId';
-      final response = await dio.get(url);
+      final response = await client.get(url);
 
       if (response.statusCode == 200) {
         return GameDetails.fromJson(response.data as Map<String, dynamic>);
@@ -303,7 +287,6 @@ class HfflApi {
   }
 
   Future<bool> addJerseyNumbersToPlayers(int gameId, Map<int, int?> homePlayers, Map<int, int?> awayPlayers) async {
-    final dio = Dio();
 
     Map<String, int> homePlayersStringKeys =  Map.fromEntries(
         homePlayers.entries
@@ -324,7 +307,7 @@ class HfflApi {
     final url = '$conn${Routes.registerPlayers}';
 
     try {
-      final response = await dio.post(
+      final response = await client.post(
         url,
         data: data,
         options: Options(
@@ -345,11 +328,9 @@ class HfflApi {
   }
 
   Future<bool> createNewEvent(int gameId, EventDto eventDto) async {
-    Dio dio = Dio();
     try {
       final String url = '$conn${Routes.createNewEvent}'.replaceAll("%s", gameId.toString());
-
-      final response = await dio.post(
+      final response = await client.post(
         url,
         data: eventDto.toJson(),
         options: Options(
@@ -370,7 +351,6 @@ class HfflApi {
   }
 
   Future<bool> deleteEvent(int eventId) async {
-    Dio client = new Dio();
 
     final response =
     await client.delete('$conn${Routes.deleteEvent}$eventId',

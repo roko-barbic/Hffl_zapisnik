@@ -29,6 +29,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:dio/dio.dart';
+
 
 // void main() {
 //   runApp(const MyApp());
@@ -57,6 +60,13 @@ import 'package:path_provider/path_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await dotenv.load(fileName: ".env");
+  final String conn = dotenv.env['API_URL'] ?? 'https://default-url.com';
+  final Dio client = new Dio();
+  final hfflApi = HfflApi(conn: conn, client: client);
+  final hfflRepository = HfflRepository(hfflApiClient: hfflApi);
+
+
   // Build the correct HydratedStorage directory based on the platform.
   final storage = await HydratedStorage.build(
     storageDirectory: kIsWeb
@@ -78,7 +88,7 @@ void main() async {
     ),
     overlayColor: Colors.black.withOpacity(0.7),
     child: MyApp(
-      hfflRepository: HfflRepository(),
+      hfflRepository: hfflRepository,
       isLoggedIn: false,
     ),
   ));

@@ -2,12 +2,13 @@
 /// {@template hffl_repository}
 /// {@endtemplate}
 import 'dart:async';
+import 'package:dio/dio.dart';
 
 import 'package:hffl_api/hffl_api.dart';
 
 class HfflRepository {
   HfflRepository({HfflApi? hfflApiClient})
-      : _hfflApiClient = hfflApiClient ?? HfflApi();
+      : _hfflApiClient = hfflApiClient ?? HfflApi(conn: "aaaa", client: new Dio());
 
   final HfflApi _hfflApiClient;
 
