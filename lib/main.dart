@@ -13,6 +13,8 @@ import 'package:hffl_zapisnik/views/tournaments_screen.dart';
 import 'package:hffl_zapisnik/widgets/enter_tournament.dart';
 import 'package:hffl_zapisnik/widgets/torunamentsGrid.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:hffl_zapisnik/global_keys.dart';
 import './providers/tournaments.dart';
 import 'package:hffl_zapisnik/screens/rankingScreen.dart';
 import 'package:hffl_zapisnik/widgets/clubsGrid.dart';
@@ -66,9 +68,19 @@ void main() async {
 
   HydratedBloc.storage = storage;
 
-  runApp(MyApp(
-    hfflRepository: HfflRepository(),
-    isLoggedIn: false,
+  runApp(GlobalLoaderOverlay(
+    overlayWidgetBuilder: (_) => const Center(
+      child: CircularProgressIndicator(
+        color: Colors.blue,
+        strokeWidth: 6.0,
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+      ),
+    ),
+    overlayColor: Colors.black.withOpacity(0.7),
+    child: MyApp(
+      hfflRepository: HfflRepository(),
+      isLoggedIn: false,
+    ),
   ));
 }
 
@@ -158,6 +170,7 @@ class _HfflAppViewState extends State<HfflAppView>
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       theme: ThemeData(
         primaryColor: const Color.fromRGBO(2, 71, 181, 1.0),
         colorScheme: const ColorScheme.light(
