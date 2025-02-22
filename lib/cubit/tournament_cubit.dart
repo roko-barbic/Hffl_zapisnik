@@ -8,6 +8,9 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:hffl_repository/hffl_repository.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'package:hffl_zapisnik/global_keys.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+
 part 'tournament_state.dart';
 
 part 'tournament_cubit.g.dart';
@@ -50,6 +53,7 @@ class TournamentCubit extends Cubit<TournamentState> {
 
   Future<void> createTournament2(String name, DateTime date, int season,
       String coverPhoto) async {
+    navigatorKey.currentContext?.loaderOverlay.show();
     try {
       emit(state.copyWith(creatingTournament: LoadingStatus.loading));
       final creation = await _hfflRepository.createTournamentWithPhoto(
@@ -60,9 +64,11 @@ class TournamentCubit extends Cubit<TournamentState> {
     } on Exception {
       emit(state.copyWith(creatingTournament: LoadingStatus.failure));
     }
+    navigatorKey.currentContext?.loaderOverlay.hide();
   }
 
   Future<void> deleteTournament(int tournamentId) async {
+    navigatorKey.currentContext?.loaderOverlay.show();
     try {
       emit(state.copyWith(deletingTournament: LoadingStatus.loading));
       final deletion = await _hfflRepository.deleteTournament(tournamentId);
@@ -73,6 +79,7 @@ class TournamentCubit extends Cubit<TournamentState> {
     } on Exception {
       emit(state.copyWith(deletingTournament: LoadingStatus.failure));
     }
+    navigatorKey.currentContext?.loaderOverlay.hide();
   }
 
   void resetCreatingTournament() {
@@ -83,6 +90,7 @@ class TournamentCubit extends Cubit<TournamentState> {
   //}
 
   Future<void> dowloadTournamentSummary(int tournamentId, BuildContext context) async{
+    navigatorKey.currentContext?.loaderOverlay.show();
     String fileName = "Turnir-$tournamentId.pdf";
     String? filePath = await _hfflRepository.downloadTournamentPdf(tournamentId, fileName);
 
@@ -93,6 +101,7 @@ class TournamentCubit extends Cubit<TournamentState> {
         SnackBar(content: Text('Failed to download the PDF')),
       );
     }
+    navigatorKey.currentContext?.loaderOverlay.hide();
   }
 
   void _showPdfPopup(BuildContext context, String filePath, String fileName) {

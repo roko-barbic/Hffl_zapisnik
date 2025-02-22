@@ -24,7 +24,7 @@ class TournamentsRowDisplay extends StatelessWidget {
           //onTap: () => context.read<TournamentCubit>().deleteTournament(tournament.id),
 
           onTap: () {
-            context.read<GameCubit>().fetchGames(tournament.id ?? 0);
+            //context.read<GameCubit>().fetchGames(tournament.id ?? 0);
 
             Navigator.of(context).push(
               MaterialPageRoute<void>(

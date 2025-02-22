@@ -19,6 +19,14 @@ class GamesScreen extends StatefulWidget {
 }
 
 class _GamesScreenState extends State<GamesScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<GameCubit>().fetchGames(widget.tournamentId); // Trigger loader
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,9 +46,7 @@ class _GamesScreenState extends State<GamesScreen> {
             return switch (state.gamesLoadingStatus) {
               LoadingStatus.initial => const Text(
                   "Nesto bar displayam"), //tu sad treba definirat widget za kad nema niceg, itd za ostale
-              LoadingStatus.loading => const Center(
-                  child: SizedBox(
-                      width: 100, height: 100, child: CircularProgressIndicator())),
+              LoadingStatus.loading => const SizedBox.shrink(),
               LoadingStatus.failure => const Text("fail"),
               LoadingStatus.success => GamesList(
                   tournamentId: widget.tournamentId,
