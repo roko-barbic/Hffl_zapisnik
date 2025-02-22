@@ -8,8 +8,10 @@ class Routes{
   static const String generatePdf = '/Tournament/generatePdfReport?tournamentId=';
   static const String getGames = '/moreInfo/';
   static const String createGame = '/newGame/';
+  static const String deleteGame = '/deleteGame/';
   static const String gameDetails = '/Game/detailedInfo/';
   static const String gameAndPlayerDetails = '/getPlayersNameForRegistration/';
   static const String registerPlayers = '/addJerseyNumbers';
   static const String createNewEvent = '/games/%s/createNewEvent';
+  static const String deleteEvent = '/deleteEvent/';
 }

@@ -18,7 +18,7 @@ import 'models/tournaments.dart';
 class HfflApi {
   const HfflApi();
 
-  final String conn = "https://469d-93-142-3-65.ngrok-free.app";
+  final String conn = "https://bdfe-93-139-201-114.ngrok-free.app";
 
   //used to retrieve clubs stats
   Future<Clubs?> getClubs() async {
@@ -247,6 +247,21 @@ class HfflApi {
     }
   }
 
+  Future<bool> deleteGame(int gameId) async {
+    Dio client = new Dio();
+
+    final response =
+    await client.delete('$conn${Routes.deleteGame}$gameId',
+        options: Options(
+          headers: {'Content-Type': 'application/json'},
+        ));
+
+    if (response.statusCode == 200) {
+      return true;
+    }
+    throw Exception();
+  }
+
   Future<GameDto?> fethcGameDetails(int gameId) async {
     final String url = '$conn${Routes.gameDetails}$gameId';
 
@@ -352,6 +367,21 @@ class HfflApi {
       print('Error fetching game details: $e');
       return false;
     }
+  }
+
+  Future<bool> deleteEvent(int eventId) async {
+    Dio client = new Dio();
+
+    final response =
+    await client.delete('$conn${Routes.deleteEvent}$eventId',
+        options: Options(
+          headers: {'Content-Type': 'application/json'},
+        ));
+
+    if (response.statusCode == 200) {
+      return true;
+    }
+    throw Exception();
   }
 
 }

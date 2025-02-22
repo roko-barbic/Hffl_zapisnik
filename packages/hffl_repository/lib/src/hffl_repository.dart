@@ -55,6 +55,10 @@ class HfflRepository {
     return _hfflApiClient.createGame(tournamentId, homeClubId, awayClubId);
   }
 
+  Future<bool> deleteGame(int gameId){
+    return _hfflApiClient.deleteGame(gameId);
+  }
+
   Future<GameDto?> getGameDetails(int gameId){
     return _hfflApiClient.fethcGameDetails(gameId);
   }
@@ -70,6 +74,11 @@ class HfflRepository {
   Future<bool> addNewEvent(int gameId, EventDto eventDto){
     return _hfflApiClient.createNewEvent(gameId, eventDto);
   }
+
+  Future<bool> deleteEvent(int eventId){
+    return _hfflApiClient.deleteEvent(eventId);
+  }
+
 //Widget initApp(){
 
 //realno repository ti treba ako ces sklapat neke komplekcsnije pozive sastavljene od vise poziva
