@@ -6,21 +6,16 @@ import 'package:hffl_zapisnik/cubit/game_cubit.dart';
 import 'package:provider/provider.dart';
 
 class GamesRowDisplay extends StatelessWidget {
-  Game game;
+  final Game game;
+  final Function() onDelete;
 
-  GamesRowDisplay({required this.game, super.key});
+  GamesRowDisplay({required this.game, required this.onDelete,super.key});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
-      child: GestureDetector(
-        onTap: () {
-          context
-              .read<GameCubit>()
-              .fetchGameDetails(game.id ?? 0, context, false);
-        },
-        child: Center(
+      child: Center(
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.9,
             height: 100,
@@ -43,7 +38,6 @@ class GamesRowDisplay extends StatelessWidget {
             ),
           ),
         ),
-      ),
     );
   }
 

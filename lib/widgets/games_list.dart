@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hffl_api/hffl_api.dart';
 import 'package:hffl_zapisnik/cubit/game_cubit.dart';
 import 'package:hffl_zapisnik/widgets/GamesRowDisplay.dart';
+import 'package:hffl_zapisnik/widgets/deletePopUp.dart';
 
 class GamesList extends StatelessWidget {
 
@@ -21,17 +22,38 @@ class GamesList extends StatelessWidget {
           onRefresh: () async {
             context.read<GameCubit>().fetchGames(tournamentId);
           },
-          //child: ,
           child: ListView.builder(
             padding: const EdgeInsets.all(15),
             itemCount: games!.games.length,
             itemBuilder: (context, index) {
-              return GamesRowDisplay(
+              return GestureDetector(
+                  onTap: () {
+                    context
+                        .read<GameCubit>()
+                        .fetchGameDetails(games?.games[index].id ?? 0, context, false);
+                  },
+                  onLongPress: () => showDialog(
+                      context: context,
+                      builder: (context) {
+                        return DeleteModal(
+                            id: games?.games[index].id ??
+                                0,
+                            onDelete: () => context
+                                .read<GameCubit>()
+                                .deleteGame(
+                                games?.games[index].id ??
+                                    0,
+                                state.games?.id ?? 0),
+                            warningMessage:
+                            'Želite li obrisati utakmicu? (id:%s)',
+                            title: 'Brisanje utakmice');
+                      }),
+                  child: GamesRowDisplay(
                   game: games!.games[index],
-                  // onDelete: (id) { //TODO delete tournament
-                  //   context.read<TournamentCubit>().deleteTournament(id);
-                  //}
-              );
+                   onDelete: () { //TODO delete tournament
+                     context.read<GameCubit>().deleteGame(games?.games[index].id ?? 0, tournamentId);
+                  }
+              ));
             },
           ),
         );
