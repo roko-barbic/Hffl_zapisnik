@@ -1,3 +1,4 @@
+export 'auth_result.dart';
 export 'club.dart';
 export 'club_dto_short.dart';
 export 'clubs.dart';
@@ -7,7 +8,9 @@ export 'game.dart';
 export 'game_details.dart';
 export 'game_dto_expanded.dart';
 export 'games.dart';
+export 'login_model.dart';
 export 'player_combination.dart';
 export 'player_dto.dart';
+export 'token_request.dart';
 export 'tournament.dart';
 export 'tournaments.dart';

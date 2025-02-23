@@ -20,9 +20,10 @@ class HfflApi {
 
   final String conn;
   final Dio client;
+
   HfflApi({required this.conn, required this.client});
 
-  //used to retrieve clubs stats
+
   Future<Clubs?> getClubs() async {
     final response = await client.get('$conn${Routes.getClubsUrl}',
         options: Options(
@@ -363,5 +364,64 @@ class HfflApi {
     }
     throw Exception();
   }
+
+  Future<AuthResult?> login(String email, String password) async{
+    try {
+      final response = await client.post(
+          '$conn${Routes.login}',
+          data: UserLoginRequestDto(email: email, password: password).toJson(),
+          options: Options(
+          headers: {'Content-Type': 'application/json'},
+        )
+      );
+
+      if (response.statusCode == 200) {
+        final authResult = AuthResult.fromJson(response.data as Map<String, dynamic>);
+        return authResult;
+      }
+    } catch (e) {
+      return null;
+      //throw Exception();
+    }
+    return null;
+  }
+
+  /*Future<AuthResult?> refreshToken(String refreshToken) async {
+    try {
+      final response = await client.post(
+        '$conn/RefreshToken',
+        data: {'refreshToken': refreshToken},
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
+
+      if (response.statusCode == 200) {
+        return AuthResult.fromJson(response.data as Map<String, dynamic>);
+      } else {
+        return AuthResult.fromJson(response.data as Map<String, dynamic>);
+      }
+    } on DioException catch (e) {
+      if (e.response != null) {
+        return AuthResult.fromJson(e.response!.data as Map<String, dynamic>);
+      }
+      throw Exception('Refresh error: $e');
+    }
+  }*/
+  Future<AuthResult?> refreshToken(TokenRequest tokenRequest) async {
+    try {
+      final response = await client.post(
+        '$conn${Routes.refreshTokenn}',
+        data: tokenRequest.toJson(),
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
+      return AuthResult.fromJson(response.data as Map<String, dynamic>);
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.statusCode == 200) {
+        return AuthResult.fromJson(e.response!.data as Map<String, dynamic>);
+      }
+      throw Exception('Refresh error: $e');
+    }
+  }
+
+  //Future<ImageProvid>
 
 }

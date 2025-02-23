@@ -5,10 +5,14 @@ import 'package:hffl_api/hffl_api.dart';
 import 'package:hffl_repository/hffl_repository.dart';
 import 'package:hffl_zapisnik/classes/eventClasses/event.dart';
 import 'package:hffl_zapisnik/cubit/app_bloc_observer.dart';
+import 'package:hffl_zapisnik/cubit/auth_cubit.dart';
 import 'package:hffl_zapisnik/cubit/clubs_cubit.dart';
 import 'package:hffl_zapisnik/cubit/game_cubit.dart';
 import 'package:hffl_zapisnik/cubit/tournament_cubit.dart';
+import 'package:hffl_zapisnik/screens/login_screen.dart';
+import 'package:hffl_zapisnik/screens/overview_screen.dart';
 import 'package:hffl_zapisnik/views/clubs_ranking_screen.dart';
+import 'package:hffl_zapisnik/views/games_screen.dart';
 import 'package:hffl_zapisnik/views/tournaments_screen.dart';
 import 'package:hffl_zapisnik/widgets/enter_tournament.dart';
 import 'package:hffl_zapisnik/widgets/torunamentsGrid.dart';
@@ -32,42 +36,51 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:dio/dio.dart';
 
-
-// void main() {
-//   runApp(const MyApp());
-// }
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   final prefs = await SharedPreferences.getInstance();
-//   bool isLoggedIn =
-//       prefs.getBool('isLoggedIn') ?? false; // Default to false if not found
-//   print("probjera prefsa za pocinanje app" +
-//       prefs.getBool('isLoggedIn').toString());
-//   runApp(MyApp(isLoggedIn: isLoggedIn));
-// }
-
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   //Bloc.observer = const ClubsBlocObserver();
-//   HydratedBloc.storage = await HydratedStorage.build(
-//     storageDirectory: kIsWeb
-//         ? HydratedStorageDirectory.web
-//         : HydratedStorageDirectory((await getTemporaryDirectory()).path),
-//   );
-//   runApp(MyApp(hfflRepository: HfflRepository(), isLoggedIn: false,));
-// }
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await dotenv.load(fileName: ".env");
   final String conn = dotenv.env['API_URL'] ?? 'https://default-url.com';
-  final Dio client = new Dio();
+  final Dio client = new Dio(BaseOptions(
+    baseUrl: conn,
+    connectTimeout: const Duration(seconds: 5),
+    receiveTimeout: const Duration(seconds: 5),));
+  final authCubit = AuthCubit(HfflApi(conn: conn, client: client));
+
+  authCubit.tokenCheck();
+
+  client.interceptors.add(InterceptorsWrapper(
+    onRequest: (options, handler) async {
+      final token = await authCubit.getToken();
+      if (token != null) {
+        options.headers['Authorization'] = 'Bearer $token';
+      }
+      return handler.next(options);
+    },
+    onError: (DioException error, handler) async {
+      if (error.response?.statusCode == 401) {
+        final refreshed = await authCubit.refresh();
+        if (refreshed) {
+          error.requestOptions.headers['Authorization'] = 'Bearer ${await authCubit.getToken()}';
+          return handler.resolve(await client.fetch(error.requestOptions));
+        } else {
+          final context = navigatorKey.currentContext;
+          if(context != null){
+            navigatorKey.currentContext?.read<AuthCubit>().logout();
+            Navigator.popUntil(context, (route) => route.isFirst || route.settings.name == '/login');
+            if (ModalRoute.of(context)?.settings.name != '/login') {
+              Navigator.pushReplacementNamed(context, '/login');
+            }
+          }
+        }
+      }
+      return handler.next(error);
+    },
+  ));
+
   final hfflApi = HfflApi(conn: conn, client: client);
   final hfflRepository = HfflRepository(hfflApiClient: hfflApi);
 
-
-  // Build the correct HydratedStorage directory based on the platform.
   final storage = await HydratedStorage.build(
     storageDirectory: kIsWeb
         ? HydratedStorage.webStorageDirectory
@@ -89,6 +102,7 @@ void main() async {
     overlayColor: Colors.black.withOpacity(0.7),
     child: MyApp(
       hfflRepository: hfflRepository,
+      authCubit: authCubit,
       isLoggedIn: false,
     ),
   ));
@@ -98,12 +112,14 @@ class MyApp extends StatelessWidget {
   const MyApp(
       {required this.isLoggedIn,
       required HfflRepository hfflRepository,
+        required this.authCubit,
       Key? key})
       : _hfflRepository = hfflRepository,
         super(key: key);
 
   final bool isLoggedIn;
   final HfflRepository _hfflRepository;
+  final AuthCubit authCubit;
 
   // This widget is the root of your application.
   @override
@@ -136,8 +152,10 @@ class MyApp extends StatelessWidget {
         BlocProvider<GameCubit>(create: (context) {
           final cubit = GameCubit(_hfflRepository);
           return cubit;
-        })
+        }),
+        BlocProvider.value(value: authCubit),
       ],
+
       child: const HfflAppView(),
       // MaterialApp(
       //   title: 'Flutter Demo',
@@ -198,56 +216,18 @@ class _HfflAppViewState extends State<HfflAppView>
           // Color for unselected tab text/icon
         ),
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          //backgroundColor: Colors.redAccent,
-          title: const Padding(
-              padding: EdgeInsets.only(left: 15),
-              child: Text(
-                "CAFA - zapisnik",
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white),
-              )),
-          actions: [
-            IconButton(
-              icon: const Icon(
-                Icons.logout,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                print('Logout pressed');
+      initialRoute: '/',
+      routes: {
+        '/': (context) =>BlocBuilder<AuthCubit, AuthState>(
+              builder: (context, state) {
+                return state.isLoggedIn ? OverviewScreen() : LoginScreen();
               },
             ),
-          ],
-          bottom: TabBar(
-            indicatorColor: Colors.white,
-            labelColor: Colors.white,
-            unselectedLabelColor: Colors.white.withOpacity(0.7),
-            controller: _tabController,
-            tabs: const [
-              Tab(
-                  icon: Text(
-                "Poredak",
-                style: TextStyle(fontSize: 16),
-              )),
-              Tab(
-                  icon: Text(
-                "Turniri",
-                style: TextStyle(fontSize: 16),
-              )),
-            ],
-          ),
-        ),
-        body: TabBarView(
-          controller: _tabController,
-          children: const [
-            ClubsRanking(),
-            TournamentsScreen(),
-          ],
-        ),
-      ),
+
+        /*'/login': (context) => LoginScreen(),
+        '/gameScreen': (context) => GamesScreen(tournamentId: tournamentId, tournamentName: tournamentName),
+        '/tournamentScreen': (context) => */
+      },
     );
   }
 }

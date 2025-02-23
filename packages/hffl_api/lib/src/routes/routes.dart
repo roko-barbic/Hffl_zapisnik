@@ -14,4 +14,7 @@ class Routes{
   static const String registerPlayers = '/addJerseyNumbers';
   static const String createNewEvent = '/games/%s/createNewEvent';
   static const String deleteEvent = '/deleteEvent/';
+  static const String login = '/api/Authentication/Login';
+  static const String refreshTokenn = '/api/Authentication/RefreshToken';
+
 }
