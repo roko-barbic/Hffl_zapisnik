@@ -1,8 +1,5 @@
-import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
-import 'package:hffl_api/hffl_api.dart';
-import 'package:uuid/uuid.dart';
 
 part 'club_name.g.dart';
 

@@ -40,8 +40,6 @@ class GameCubit extends Cubit<GameState> {
     } on Exception {
       emit(state.copyWith(gamesLoadingStatus: LoadingStatus.failure));
     }
-    await Future.delayed(const Duration(seconds: 2)); // 2-second delay
-
     navigatorKey.currentContext?.loaderOverlay.hide();
   }
 

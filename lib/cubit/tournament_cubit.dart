@@ -86,9 +86,6 @@ class TournamentCubit extends Cubit<TournamentState> {
     emit(state.copyWith(creatingTournament: LoadingStatus.initial));
   }
 
-  // void storeValuesForNewTournament(){
-  //}
-
   Future<void> dowloadTournamentSummary(int tournamentId, BuildContext context) async{
     navigatorKey.currentContext?.loaderOverlay.show();
     String fileName = "Turnir-$tournamentId.pdf";
