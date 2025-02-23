@@ -101,7 +101,10 @@ flutter:
     - assets/images/club_image_osijek_png.png
     - assets/images/club_image_zagreb_png.png
     - assets/images/club_image_dubrovnik_png.png
+    - assets/images/club_image_split_png.png
     - assets/animations/connection_lost_animation_json.json
+    - assets/animations/bouncing-american-football.json
+    - assets/animations/connecttion-failed.json
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

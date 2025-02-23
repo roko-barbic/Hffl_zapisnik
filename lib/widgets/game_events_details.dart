@@ -24,14 +24,8 @@ class GameEventsDetails extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
-                  colors: Helper().getListOfColorsToBlend(6, 8),
+                  colors: Helper().getListOfColorsToBlend(2, 8),
                   stops: const [0.0, 0.5, 1.0],
-                ),
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.black.withOpacity(0.2),
-                    width: 2.0,
-                  ),
                 ),
               ),
               child: Column(
@@ -48,23 +42,24 @@ class GameEventsDetails extends StatelessWidget {
                             children: [
                               Image.asset(
                                 ClubIconsPng.clubIcon[
-                                        6] //state.selectedGameAndPlayers?.homeClubId ??1]
+                                        7] //state.selectedGameAndPlayers?.homeClubId ??1]
                                     ??
                                     "assets/images/club_image_id_1.png",
                                 //iconPath
-                                width: 55,
-                                height: 55,
+                                width: 65,
+                                height: 65,
                                 fit: BoxFit.cover,
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 28.0),
+                                padding: const EdgeInsets.only(left: 32.0),
                                 child: Text(
                                   state.selectedGame?.clubHomeScore
                                           .toString() ??
                                       '-',
                                   style: const TextStyle(
-                                    fontSize: 52,
+                                    fontSize: 48,
                                     fontWeight: FontWeight.w700,
+                                    color: const Color.fromRGBO(237, 237, 237, 1),
                                   ),
                                 ),
                               ),
@@ -79,6 +74,8 @@ class GameEventsDetails extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w700,
+                            color: const Color.fromRGBO(237, 237, 237, 1),
+
                           ),
                         ),
                       ),
@@ -90,25 +87,27 @@ class GameEventsDetails extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(right: 28.0),
+                                padding: const EdgeInsets.only(right: 32.0),
                                 child: Text(
                                   state.selectedGame?.clubAwayScore
                                           .toString() ??
                                       '-',
                                   style: const TextStyle(
-                                    fontSize: 52,
+                                    fontSize: 48,
                                     fontWeight: FontWeight.w700,
+                                    color: const Color.fromRGBO(237, 237, 237, 1),
+
                                   ),
                                 ),
                               ),
                               Image.asset(
                                 ClubIconsPng.clubIcon[
-                                        8] //state.selectedGameAndPlayers?.awayClubId ?? 1]
+                                        4] //state.selectedGameAndPlayers?.awayClubId ?? 1]
                                     ??
                                     "assets/images/club_i„mage_id_1.png",
                                 //iconPath
-                                width: 55,
-                                height: 55,
+                                width: 65,
+                                height: 65,
                                 fit: BoxFit.cover,
                               ),
                             ],
@@ -121,21 +120,32 @@ class GameEventsDetails extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 18.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          state.selectedGame?.clubHome.name ?? '-',
-                          softWrap: true,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 12,
+                        Padding(
+                          padding: const EdgeInsets.only(right: 18.0),
+                          child: Text(
+                            state.selectedGame?.clubHome.name ?? '-',
+                            softWrap: true,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: const Color.fromRGBO(237, 237, 237, 1),
+
+                            ),
                           ),
                         ),
-                        Text(
-                          state.selectedGame?.clubAway.name ?? '-',
-                          softWrap: true,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 12,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 18.0),
+                          child: Text(
+                            state.selectedGame?.clubAway.name ?? '-',
+                            softWrap: true,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: const Color.fromRGBO(237, 237, 237, 1),
+
+                            ),
                           ),
                         ),
                       ],
@@ -153,7 +163,7 @@ class GameEventsDetails extends StatelessWidget {
                       end: Alignment.bottomCenter,
                       colors: [
                         Colors.white.withOpacity(1.0),
-                        Colors.white.withOpacity(0.1),
+                        Colors.white.withOpacity(0.30),
                       ],
                       stops: const [0.0, 0.45],
                     ).createShader(bounds);
@@ -164,7 +174,7 @@ class GameEventsDetails extends StatelessWidget {
                       gradient: LinearGradient(
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
-                        colors: Helper().getListOfColorsToBlend(6, 8),
+                        colors: Helper().getListOfColorsToBlend(2, 8),
                         stops: const [0.0, 0.5, 1.0],
                       ),
                     ),

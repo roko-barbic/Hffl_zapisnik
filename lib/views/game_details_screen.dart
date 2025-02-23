@@ -34,7 +34,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
             gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
-              colors: Helper().getListOfColorsToBlend(6, 8),
+              colors: Helper().getListOfColorsToBlend(2, 8),
               stops: const [0.0, 0.5, 1.0], // Define transition points
             ),
           ),

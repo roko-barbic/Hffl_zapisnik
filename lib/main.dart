@@ -14,11 +14,13 @@ import 'package:hffl_zapisnik/screens/overview_screen.dart';
 import 'package:hffl_zapisnik/views/clubs_ranking_screen.dart';
 import 'package:hffl_zapisnik/views/games_screen.dart';
 import 'package:hffl_zapisnik/views/tournaments_screen.dart';
+import 'package:hffl_zapisnik/widgets/bouncing_ball_progress_indicator.dart';
 import 'package:hffl_zapisnik/widgets/enter_tournament.dart';
 import 'package:hffl_zapisnik/widgets/torunamentsGrid.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:hffl_zapisnik/global_keys.dart';
+import 'package:lottie/lottie.dart';
 import './providers/tournaments.dart';
 import 'package:hffl_zapisnik/screens/rankingScreen.dart';
 import 'package:hffl_zapisnik/widgets/clubsGrid.dart';
@@ -43,8 +45,8 @@ void main() async {
   final String conn = dotenv.env['API_URL'] ?? 'https://default-url.com';
   final Dio client = new Dio(BaseOptions(
     baseUrl: conn,
-    connectTimeout: const Duration(seconds: 5),
-    receiveTimeout: const Duration(seconds: 5),));
+    connectTimeout: const Duration(seconds: 10),
+    receiveTimeout: const Duration(seconds: 10),));
   final authCubit = AuthCubit(HfflApi(conn: conn, client: client));
 
   authCubit.tokenCheck();
@@ -92,14 +94,9 @@ void main() async {
   HydratedBloc.storage = storage;
 
   runApp(GlobalLoaderOverlay(
-    overlayWidgetBuilder: (_) => const Center(
-      child: CircularProgressIndicator(
-        color: Colors.blue,
-        strokeWidth: 6.0,
-        valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-      ),
-    ),
-    overlayColor: Colors.black.withOpacity(0.7),
+    overlayWidgetBuilder: (_) => const BouncingBallProgressIndicator()
+    ,
+    overlayColor: Color.fromRGBO(2, 71, 181, 1.0).withOpacity(0.6),
     child: MyApp(
       hfflRepository: hfflRepository,
       authCubit: authCubit,
@@ -223,6 +220,7 @@ class _HfflAppViewState extends State<HfflAppView>
                 return state.isLoggedIn ? OverviewScreen() : LoginScreen();
               },
             ),
+        '/login': (context) => LoginScreen(),
 
         /*'/login': (context) => LoginScreen(),
         '/gameScreen': (context) => GamesScreen(tournamentId: tournamentId, tournamentName: tournamentName),

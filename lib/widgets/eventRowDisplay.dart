@@ -1,7 +1,6 @@
-// ignore_for_file: prefer_interpolation_to_compose_strings
-
 import 'package:flutter/material.dart';
 import 'package:hffl_api/hffl_api.dart';
+import 'package:hffl_zapisnik/utility/helper_class.dart';
 
 class EventRowDisplay extends StatelessWidget {
   Event event;
@@ -39,9 +38,14 @@ class EventRowDisplay extends StatelessWidget {
           height: 60,
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.83),
+              color: const Color.fromRGBO(237, 237, 237, 1),
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: Colors.grey, width: 1.0),
+              boxShadow: const [ BoxShadow(
+                color: Colors.black26,
+                blurRadius: 2,
+                offset: Offset(0, 3),
+                spreadRadius: 0,
+              ),]
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

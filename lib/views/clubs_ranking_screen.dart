@@ -6,7 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hffl_api/hffl_api.dart';
 import 'package:hffl_zapisnik/cubit/clubs_cubit.dart';
 import 'package:hffl_zapisnik/enums/clubs_status_enum.dart';
+import 'package:hffl_zapisnik/widgets/bouncing_ball_progress_indicator.dart';
 import 'package:hffl_zapisnik/widgets/clubs_ranking_populated.dart';
+import 'package:hffl_zapisnik/widgets/connection_error.dart';
 
 class ClubsRanking extends StatelessWidget {
   const ClubsRanking({super.key});
@@ -20,10 +22,12 @@ class ClubsRanking extends StatelessWidget {
           return switch (state.clubsLoadingStatus) {
             LoadingStatus.initial => const Text(
                 "Hello"), //tu sad treba definirat widget za kad nema niceg, itd za ostale
-            LoadingStatus.loading => const Center(
-                child: SizedBox(
-                    width: 100, height: 100, child: CircularProgressIndicator())),
-            LoadingStatus.failure => const Text("fail"),
+            LoadingStatus.loading => const BouncingBallProgressIndicator(),
+            LoadingStatus.failure => ConnectionError(
+              onRefresh:  () {
+                return context.read<ClubsCubit>().fetchClubsInfo();
+              },
+            ),
             LoadingStatus.success => ClubsRankingPopulated(
                 clubs: state.clubs ??
                     const Clubs(clubs: <Club>[
