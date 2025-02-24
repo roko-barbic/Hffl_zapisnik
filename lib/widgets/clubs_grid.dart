@@ -17,7 +17,7 @@ class ClubsGrid extends StatelessWidget {
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 1,
         mainAxisSpacing: 3,
-        mainAxisExtent: 50,
+        mainAxisExtent: 60,
       ),
       itemBuilder: (context, index) => GestureDetector(
         onTap: () {

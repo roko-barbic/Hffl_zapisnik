@@ -7,12 +7,13 @@ part of 'game.dart';
 // **************************************************************************
 
 Game _$GameFromJson(Map<String, dynamic> json) => Game(
-      ///IMPORTANT DONT CHANGE
       id: (json['id'] as num?)?.toInt(),
       clubHome: ClubName.fromJson(json['club_Home'] as Map<String, dynamic>),
       clubAway: ClubName.fromJson(json['club_Away'] as Map<String, dynamic>),
       scoreHome: (json['club_Home_Score'] as num).toInt(),
       scoreAway: (json['club_Away_Score'] as num).toInt(),
+      clubHomeId: (json['club_Home_Id'] as num?)?.toInt(),
+      clubAwayId: (json['club_Away_Id'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$GameToJson(Game instance) => <String, dynamic>{
@@ -21,4 +22,6 @@ Map<String, dynamic> _$GameToJson(Game instance) => <String, dynamic>{
       'club_Away': instance.clubAway,
       'club_Home_Score': instance.scoreHome,
       'club_Away_Score': instance.scoreAway,
+      'club_Home_Id': instance.clubHomeId,
+      'club_Away_Id': instance.clubAwayId,
     };

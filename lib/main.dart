@@ -96,7 +96,7 @@ void main() async {
   runApp(GlobalLoaderOverlay(
     overlayWidgetBuilder: (_) => const BouncingBallProgressIndicator()
     ,
-    overlayColor: Color.fromRGBO(2, 71, 181, 1.0).withOpacity(0.6),
+    overlayColor: Color.fromRGBO(20, 81, 191, 1.0).withOpacity(0.7),
     child: MyApp(
       hfflRepository: hfflRepository,
       authCubit: authCubit,

@@ -7,6 +7,7 @@ import 'package:hffl_zapisnik/cubit/tournament_cubit.dart';
 import 'package:hffl_zapisnik/delegates/parallax_flow_delegate.dart';
 import 'package:hffl_zapisnik/enums/clubs_status_enum.dart';
 import 'package:hffl_zapisnik/views/games_screen.dart';
+import 'package:hffl_zapisnik/widgets/deletePopUp.dart';
 import 'package:intl/intl.dart';
 
 class TournamentsRowDisplay extends StatelessWidget {
@@ -37,7 +38,9 @@ class TournamentsRowDisplay extends StatelessWidget {
             showDialog(
               context: context,
               builder: (context) {
-                return AlertDialog(
+                return DeleteModal(id: tournament.id ?? 0, onDelete: () => onDelete(tournament.id ?? 0), warningMessage: "Jeste li sigurni da želite obrisati ${tournament.name}?", title: "Brisanje turnira");
+
+                /*AlertDialog(
                   title: const Text('Delete tournament'),
                   content: Text(
                       'Are you sure you want to delete tournament? (id: ${tournament.id.toString()})'),
@@ -69,7 +72,7 @@ class TournamentsRowDisplay extends StatelessWidget {
                       },
                     ),
                   ],
-                );
+                );*/
               },
             );
           },

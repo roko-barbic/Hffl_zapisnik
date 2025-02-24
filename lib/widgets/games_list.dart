@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hffl_api/hffl_api.dart';
 import 'package:hffl_zapisnik/cubit/game_cubit.dart';
-import 'package:hffl_zapisnik/widgets/GamesRowDisplay.dart';
+import 'package:hffl_zapisnik/widgets/game_row.dart';
 import 'package:hffl_zapisnik/widgets/deletePopUp.dart';
+import 'package:hffl_zapisnik/widgets/game_row.dart';
 
 class GamesList extends StatelessWidget {
 

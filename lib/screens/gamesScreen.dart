@@ -3,7 +3,7 @@
 // import 'package:hffl_zapisnik/classes/game.dart';
 // import 'package:hffl_zapisnik/classes/tournament.dart';
 // import 'package:hffl_zapisnik/screens/GameEventsScreen.dart';
-// import 'package:hffl_zapisnik/widgets/GamesRowDisplay.dart';
+// import 'package:hffl_zapisnik/widgets/game_row.dart';
 // import 'package:hffl_zapisnik/widgets/enterGame.dart';
 // import 'package:http/http.dart' as http;
 // import 'dart:convert';

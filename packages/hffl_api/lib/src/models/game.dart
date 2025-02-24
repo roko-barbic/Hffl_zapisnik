@@ -13,6 +13,8 @@ class Game{
   final ClubName clubAway;
   final int scoreHome;
   final int scoreAway;
+  final int? clubHomeId;
+  final int? clubAwayId;
 
   factory Game.fromJson(Map<String, dynamic> json) => _$GameFromJson(json);
   Map<String, dynamic> toJson() => _$GameToJson(this);
@@ -24,6 +26,8 @@ class Game{
     required this.clubAway,
     required this.scoreHome,
     required this.scoreAway,
+    this.clubHomeId,
+    this.clubAwayId,
   });
 
   @override
@@ -35,7 +39,9 @@ class Game{
           clubHome == other.clubHome &&
           clubAway == other.clubAway &&
           scoreHome == other.scoreHome &&
-          scoreAway == other.scoreAway);
+          scoreAway == other.scoreAway &&
+          clubHomeId == other.clubHomeId &&
+          clubAwayId == other.clubAwayId);
 
   @override
   int get hashCode =>
@@ -43,7 +49,9 @@ class Game{
       clubHome.hashCode ^
       clubAway.hashCode ^
       scoreHome.hashCode ^
-      scoreAway.hashCode;
+      scoreAway.hashCode ^
+      clubHomeId.hashCode ^
+      clubAwayId.hashCode;
 
   @override
   String toString() {
@@ -53,6 +61,8 @@ class Game{
         ' clubAway: $clubAway,' +
         ' scoreHome: $scoreHome,' +
         ' scoreAway: $scoreAway,' +
+        ' clubHomeId: $clubHomeId,' +
+        ' clubAwayId: $clubAwayId,' +
         '}';
   }
 
@@ -62,6 +72,8 @@ class Game{
     ClubName? clubAway,
     int? scoreHome,
     int? scoreAway,
+    int? clubHomeId,
+    int? clubAwayId,
   }) {
     return Game(
       id: id ?? this.id,
@@ -69,6 +81,8 @@ class Game{
       clubAway: clubAway ?? this.clubAway,
       scoreHome: scoreHome ?? this.scoreHome,
       scoreAway: scoreAway ?? this.scoreAway,
+      clubHomeId: clubHomeId ?? this.clubHomeId,
+      clubAwayId: clubAwayId ?? this.clubAwayId,
     );
   }
 
@@ -79,6 +93,8 @@ class Game{
       'clubAway': this.clubAway,
       'scoreHome': this.scoreHome,
       'scoreAway': this.scoreAway,
+      'clubHomeId': this.clubHomeId,
+      'clubAwayId': this.clubAwayId,
     };
   }
 
@@ -89,6 +105,8 @@ class Game{
       clubAway: map['clubAway'] as ClubName,
       scoreHome: map['scoreHome'] as int,
       scoreAway: map['scoreAway'] as int,
+      clubHomeId: map['clubHomeId'] as int,
+      clubAwayId: map['clubAwayId'] as int,
     );
   }
 

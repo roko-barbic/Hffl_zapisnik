@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_swiper_plus/flutter_swiper_plus.dart';
 import 'package:hffl_api/hffl_api.dart';
 import 'package:hffl_zapisnik/cubit/game_cubit.dart';
+import 'package:hffl_zapisnik/utility/helper_class.dart';
 
 class RegisterPlayersSwiper extends StatefulWidget {
   RegisterPlayersSwiper({required this.gameDetails, super.key});
@@ -169,10 +170,10 @@ class ClubsRegistrationCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(30),
             child: Image.asset(
-              'assets/images/club_image_id_1.png',
+              ClubIconsPng.clubIcon[clubId] ?? "assets/images/club_image_id_1.png",
               width: 130, // Adjust width
               height: 130, // Adjust height
-              fit: BoxFit.cover,
+              fit: BoxFit.contain,
             ),
           ),
           Expanded(
