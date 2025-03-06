@@ -196,6 +196,7 @@ class _HfflAppViewState extends State<HfflAppView>
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: navigatorKey,
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: const Color.fromRGBO(2, 71, 181, 1.0),
         colorScheme: const ColorScheme.light(
