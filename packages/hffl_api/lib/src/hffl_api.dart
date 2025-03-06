@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:hffl_api/hffl_api.dart';
 import 'package:dio/dio.dart';
+import 'package:hffl_api/src/models/club_player_stats.dart';
 import 'package:hffl_api/src/models/game_details.dart';
 import 'package:hffl_api/src/models/game_dto_expanded.dart';
 import 'package:mime/mime.dart';
@@ -367,6 +368,7 @@ class HfflApi {
 
   Future<AuthResult?> login(String email, String password) async{
     try {
+      final url = '$conn${Routes.login}';
       final response = await client.post(
           '$conn${Routes.login}',
           data: UserLoginRequestDto(email: email, password: password).toJson(),
@@ -422,6 +424,22 @@ class HfflApi {
     }
   }
 
+  Future<ClubPlayersStats?> fetchClubPlayersStats(int clubId) async {
+    try {
+      String url = '$conn${Routes.clubPlayerStats}$clubId';
+
+      final response = await client.get(url);
+
+      if (response.statusCode == 200) {
+        return ClubPlayersStats.fromJson(response.data as Map<String, dynamic>);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      //print('Error fetching game details: $e');
+      return null;
+    }
+  }
   //Future<ImageProvid>
 
 }

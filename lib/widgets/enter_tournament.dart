@@ -34,9 +34,11 @@ class _EnterTournamentState extends State<EnterTournament> {
           LoadingStatus.failure => const TextWidget(
               text: "fail",
             ),
-          LoadingStatus.success => const TextWidget(
-              text: "Prolaz!!",
-            ),
+          LoadingStatus.success => const Center(
+            child: TextWidget(
+                text: "Uspjesno kreiran turnir",
+              ),
+          ),
         };
       },
     );
@@ -94,7 +96,7 @@ class _EnterTournamentValuesState extends State<EnterTournamentValues> {
     return Align(
       alignment: Alignment.topCenter,
       child:
-          // AnimatedContainer( //todo ovo sa pormijenom velicine je preseravanje jer ne ovsi o tome pa to mos makniot kad os ali mos i i ostavit da imas za primjer kako se to radi
+          // AnimatedContainer( //todo ovo sa pormjenom velicine je preseravanje jer ne ovsi o tome pa to mos makniot kad os ali mos i i ostavit da imas za primjer kako se to radi
           //     duration: const Duration(milliseconds: 300), // Smooth height transition
           //     curve: Curves.easeInOut,
           //     height: (MediaQuery.of(context).size.height * 0.3) +
@@ -102,9 +104,9 @@ class _EnterTournamentValuesState extends State<EnterTournamentValues> {
           //     child:
           SizedBox(
         height: MediaQuery.of(context).size.height * 0.5,
-        child: Column(children: [
-          SingleChildScrollView(
-            child: SizedBox(
+        child: Column(
+            children: [
+              SizedBox(
               width: MediaQuery.of(context).size.width * 0.8,
               child: TextField(
                 controller: tournamentNameController,
@@ -114,9 +116,8 @@ class _EnterTournamentValuesState extends State<EnterTournamentValues> {
                 ),
               ),
             ),
-          ),
           const SizedBox(
-            height: 15,
+            height: 45,
           ),
           ElevatedButton(
             onPressed: () => _selectDate(context),
@@ -125,9 +126,13 @@ class _EnterTournamentValuesState extends State<EnterTournamentValues> {
                   ? DateFormat('dd/MM/yyyy')
                       .format(selectedDate.toLocal())
                       .toString()
-                  : 'Select date',
+                  : 'Odaberite datum',
             ),
           ),
+              const SizedBox(
+                height: 35,
+              ),
+
           UploadPicture(
             onUpload: onUpdatePhoto,
           ),

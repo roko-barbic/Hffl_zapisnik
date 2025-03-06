@@ -128,7 +128,7 @@ class _UploadPictureState extends State<UploadPicture> {
             else
               ElevatedButton(
                 onPressed: checkPermission,
-                child: const Text("Pick Image from Gallery"),
+                child: const Text("Odaberi sliku za cover"),
               ),
           ],
         ));

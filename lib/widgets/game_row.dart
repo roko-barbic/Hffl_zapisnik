@@ -32,11 +32,11 @@ class GamesRowDisplay extends StatelessWidget {
                   color: ClubColors.clubColors[game.clubAwayId] ?? Colors.black,
                   width: 3.0,
                 ),
-                /*top: const BorderSide(
-                  color: Colors.black,
+                top: BorderSide(
+                  color: Colors.black.withOpacity(0.1),
                   width: 1.0,
                 ),
-                bottom: const BorderSide(
+                /*bottom: const BorderSide(
                   color: Colors.black,
                   width: 3.0,
                 ),*/

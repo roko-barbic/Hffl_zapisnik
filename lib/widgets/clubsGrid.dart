@@ -49,13 +49,7 @@ class _ClubsGridState extends State<ClubsGrid> {
             ),
             itemBuilder: (context, index) => GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        DetailClubPlayersScreen(club: clubsList!.clubs[index]),
-                  ),
-                );
+
               },
               child: ClubRowDisplay(club: clubsList!.clubs[index]),
             ),

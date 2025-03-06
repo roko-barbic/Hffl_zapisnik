@@ -54,10 +54,6 @@ class _EnterNewEventState extends State<EnterNewEvent> {
                     child: Text('Extrapoint'),
                   ),
                   DropdownMenuItem(
-                    value: 8,
-                    child: Text('Extrapoint Run'),
-                  ),
-                  DropdownMenuItem(
                     value: 5,
                     child: Text('Extrapoint 2'),
                   ),

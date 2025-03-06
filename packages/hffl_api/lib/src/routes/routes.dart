@@ -16,5 +16,6 @@ class Routes{
   static const String deleteEvent = '/deleteEvent/';
   static const String login = '/api/Authentication/Login';
   static const String refreshTokenn = '/api/Authentication/RefreshToken';
+  static const String clubPlayerStats = '/getClubStatsOfPlayers/';
 
 }

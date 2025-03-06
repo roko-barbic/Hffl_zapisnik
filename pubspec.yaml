@@ -64,6 +64,7 @@ dependencies:
   loader_overlay: ^4.0.4+1
   flutter_dotenv: ^5.2.1
   flutter_secure_storage: ^4.2.1
+  syncfusion_flutter_datagrid: ^22.2.11
 
 
 dev_dependencies:

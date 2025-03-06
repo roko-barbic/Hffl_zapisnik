@@ -177,6 +177,15 @@ class _EnterGameState extends State<EnterGame> {
   Club? selectedValueClubOne;
   Club? selectedValueClubTwo;
 
+
+  bool canGameBeCreated(){
+    if (selectedValueClubOne != null &&
+        selectedValueClubTwo != null && !(selectedValueClubOne?.id == selectedValueClubTwo?.id)){
+      return true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     final clubs = context.read<ClubsCubit>().state.clubs!.clubs;
@@ -209,7 +218,7 @@ class _EnterGameState extends State<EnterGame> {
                             selectedValueClubOne = selectedClub;
                           });
                         },
-                        hint: const Text('Select Club 1'),
+                        hint: const Text('Odaberite domacina'),
                         value: selectedValueClubOne,
                       ),
                       const SizedBox(width: 20, child: Text(' vs ')),
@@ -220,17 +229,17 @@ class _EnterGameState extends State<EnterGame> {
                             selectedValueClubTwo = selectedClub;
                           });
                         },
-                        hint: const Text('Select Club 2'),
+                        hint: const Text('Odaberite gosta'),
                         value: selectedValueClubTwo,
                         alignment: Alignment.centerRight,
                       ),
                     ],
                   ),
                   const SizedBox(height: 15),
-                  FloatingActionButton(
+                  if(canGameBeCreated())FloatingActionButton(
                     onPressed: () {
                       if (selectedValueClubOne != null &&
-                          selectedValueClubTwo != null) {
+                          selectedValueClubTwo != null ) {
                         context.read<GameCubit>().createGame(
                               widget.tournamentId,
                               selectedValueClubOne!.id,
@@ -240,7 +249,7 @@ class _EnterGameState extends State<EnterGame> {
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('Please select both clubs'),
+                            content: Text('Potrebno je odabrati oba kluba'),
                           ),
                         );
                       }

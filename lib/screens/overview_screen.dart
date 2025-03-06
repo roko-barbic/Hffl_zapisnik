@@ -50,7 +50,7 @@ class _OverviewScreenState extends State<OverviewScreen>
                   color: Colors.white,
                 ),
                 onPressed: () async {
-                context.read<AuthCubit>().logout();
+                  context.read<AuthCubit>().logout();
                 },
               );
             },

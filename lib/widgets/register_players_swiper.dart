@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,10 +24,26 @@ class _RegisterPlayersSwiperState extends State<RegisterPlayersSwiper> {
   bool isProceedAvailable = true;
 
   bool isOnProceedVisible() {
-    return isProceedAvailable;//(homePlayers.length > 4 && awayPlayers.length > 4);
+    int nonNullHomePL = homePlayers.values.where((a) => a != null).length;
+    int nonNullAwayPL = awayPlayers.values.where((a) => a != null).length;
+    return (nonNullHomePL > 4 && nonNullAwayPL > 4);
   }
 
-  Map<int, int?> convertToIntIntComb(List<PlayerCombination> playerCombination) {
+  bool checkIfAnyPlayerHasSameNumber(Map<int, int?> players) {
+    final seenNumbers = <int>{};
+    for (var jersey in players.values) {
+      if (jersey != null) {
+        if (seenNumbers.contains(jersey)) {
+          return true;
+        }
+        seenNumbers.add(jersey);
+      }
+    }
+    return false;
+  }
+
+  Map<int, int?> convertToIntIntComb(
+      List<PlayerCombination> playerCombination) {
     Map<int, int?> newCombination = {};
     for (var player in playerCombination) {
       newCombination.addAll({player.playerId: player.jerseyNumber});
@@ -42,16 +56,24 @@ class _RegisterPlayersSwiperState extends State<RegisterPlayersSwiper> {
       padding: const EdgeInsets.all(16.0),
       child: ElevatedButton(
         onPressed: () {
-          context.read<GameCubit>().registerPlayersToGamme(widget.gameDetails.gameId, homePlayers, awayPlayers, context);
-          setState(() {
-            isProceedAvailable = false;
-          });
-          },
-        child: const Text("Proceed"),
+          if (!checkIfAnyPlayerHasSameNumber(homePlayers) &&
+              !checkIfAnyPlayerHasSameNumber(awayPlayers)) {
+            context.read<GameCubit>().registerPlayersToGamme(
+                widget.gameDetails.gameId, homePlayers, awayPlayers, context);
+            setState(() {
+              isProceedAvailable = false;
+            });
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Dva ili vise ista broja dresa')),
+            );
+          }
+        },
         style: ElevatedButton.styleFrom(
           backgroundColor: Theme.of(context).colorScheme.primary,
           foregroundColor: Colors.white,
         ),
+        child: const Text("Prijavi"),
       ),
     );
   }
@@ -71,11 +93,10 @@ class _RegisterPlayersSwiperState extends State<RegisterPlayersSwiper> {
               surname: homePlayersCombination[index].surname,
               jerseyNumber: newJerseyNumber);
         }
-      }
-      else {
+      } else {
         awayPlayers[playerId] = newJerseyNumber;
         int index = awayPlayersCombination.indexWhere(
-              (playerCombination) => playerCombination.playerId == playerId,
+          (playerCombination) => playerCombination.playerId == playerId,
         );
         if (index != -1) {
           awayPlayersCombination[index] = PlayerCombination(
@@ -170,7 +191,8 @@ class ClubsRegistrationCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(30),
             child: Image.asset(
-              ClubIconsPng.clubIcon[clubId] ?? "assets/images/club_image_id_1.png",
+              ClubIconsPng.clubIcon[clubId] ??
+                  "assets/images/club_image_id_1.png",
               width: 130, // Adjust width
               height: 130, // Adjust height
               fit: BoxFit.contain,
@@ -192,8 +214,7 @@ class ClubsRegistrationCard extends StatelessWidget {
                               decoration: const BoxDecoration(
                                 border: Border(
                                   bottom: BorderSide(
-                                    color:
-                                        Colors.grey,
+                                    color: Colors.grey,
                                     width: 1.0,
                                   ),
                                 ),
@@ -222,7 +243,13 @@ class ClubsRegistrationCard extends StatelessWidget {
                                         color: Colors.blue,
                                         width: 2), // Color when focused
                                   ),
-                                  hintText: playersCombination[index].jerseyNumber != null ? playersCombination[index].jerseyNumber.toString() : "-",
+                                  hintText:
+                                      playersCombination[index].jerseyNumber !=
+                                              null
+                                          ? playersCombination[index]
+                                              .jerseyNumber
+                                              .toString()
+                                          : "-",
                                 ),
                                 onChanged: (value) {
                                   int? number = int.tryParse(value);

@@ -16,7 +16,7 @@ class _RegisterPlayersScreenState extends State<RegisterPlayersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Registration'),
+          title: const Text('Registracija'),
         ),
         body: BlocBuilder<GameCubit, GameState>(builder: (context, state) {
           switch (state.gamesLoadingStatus) {

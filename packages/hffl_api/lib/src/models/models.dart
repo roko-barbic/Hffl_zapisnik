@@ -1,6 +1,7 @@
 export 'auth_result.dart';
 export 'club.dart';
 export 'club_dto_short.dart';
+export 'club_player_stats.dart';
 export 'clubs.dart';
 export 'event.dart';
 export 'event_dto.dart';
@@ -11,6 +12,7 @@ export 'games.dart';
 export 'login_model.dart';
 export 'player_combination.dart';
 export 'player_dto.dart';
+export 'player_stats.dart';
 export 'token_request.dart';
 export 'tournament.dart';
 export 'tournaments.dart';

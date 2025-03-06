@@ -79,9 +79,13 @@ class HfflRepository {
   Future<bool> deleteEvent(int eventId){
     return _hfflApiClient.deleteEvent(eventId);
   }
-  
+
   Future<AuthResult?> login(String email, String password){
     return _hfflApiClient.login(email, password);
+  }
+
+  Future<ClubPlayersStats?> fetchClubPlayersStats(int clubId){
+    return _hfflApiClient.fetchClubPlayersStats(clubId);
   }
 
 //Widget initApp(){
