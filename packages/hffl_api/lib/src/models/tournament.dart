@@ -14,6 +14,7 @@ class Tournament {
   final String name;
   final String? season;
   final String? coverPhoto;
+  final bool? isFinished;
 
   factory Tournament.fromJson(Map<String, dynamic> json) => _$TournamentFromJson(json);
   Map<String, dynamic> toJson() => _$TournamentToJson(this);
@@ -25,6 +26,7 @@ class Tournament {
     required this.name,
     this.season,
     this.coverPhoto,
+    this.isFinished,
   });
 
   @override
@@ -36,7 +38,8 @@ class Tournament {
           date == other.date &&
           name == other.name &&
           season == other.season &&
-          coverPhoto == other.coverPhoto);
+          coverPhoto == other.coverPhoto &&
+          isFinished == other.isFinished);
 
   @override
   int get hashCode =>
@@ -44,7 +47,8 @@ class Tournament {
       date.hashCode ^
       name.hashCode ^
       season.hashCode ^
-      coverPhoto.hashCode;
+      coverPhoto.hashCode ^
+      isFinished.hashCode;
 
   @override
   String toString() {
@@ -53,7 +57,8 @@ class Tournament {
         ' date: $date,' +
         ' name: $name,' +
         ' season: $season,' +
-        ' image: $coverPhoto,' +
+        ' coverPhoto: $coverPhoto,' +
+        ' isFinished: $isFinished,' +
         '}';
   }
 
@@ -62,14 +67,16 @@ class Tournament {
     DateTime? date,
     String? name,
     String? season,
-    String? image,
+    String? coverPhoto,
+    bool? isFinished,
   }) {
     return Tournament(
       id: id ?? this.id,
       date: date ?? this.date,
       name: name ?? this.name,
       season: season ?? this.season,
-      coverPhoto: image ?? this.coverPhoto,
+      coverPhoto: coverPhoto ?? this.coverPhoto,
+      isFinished: isFinished ?? this.isFinished,
     );
   }
 
@@ -79,7 +86,8 @@ class Tournament {
       'date': this.date,
       'name': this.name,
       'season': this.season,
-      'image': this.coverPhoto,
+      'coverPhoto': this.coverPhoto,
+      'isFinished': this.isFinished,
     };
   }
 
@@ -89,7 +97,8 @@ class Tournament {
       date: map['date'] as DateTime,
       name: map['name'] as String,
       season: map['season'] as String,
-      coverPhoto: map['image'] as String,
+      coverPhoto: map['coverPhoto'] as String,
+      isFinished: map['isFinished'] as bool,
     );
   }
 

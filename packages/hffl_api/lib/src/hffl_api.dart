@@ -440,6 +440,40 @@ class HfflApi {
       return null;
     }
   }
+
+  Future<bool?> finishTournamet(int tournamentId) async {
+    try {
+      String url = '$conn${Routes.finishTournament}$tournamentId';
+
+      final response = await client.get(url);
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      //print('Error fetching game details: $e');
+      return false;
+    }
+  }
+
+  Future<bool?> startAgainTournament(int tournamentId) async {
+    try {
+      String url = '$conn${Routes.startAgainTournament}$tournamentId';
+
+      final response = await client.get(url);
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      //print('Error fetching game details: $e');
+      return false;
+    }
+  }
   //Future<ImageProvid>
 
 }

@@ -76,6 +76,15 @@ void main() async {
           }
         }
       }
+      if(error.response?.statusCode == 403){
+        final context = navigatorKey.currentContext;
+        if(context != null){
+          context.loaderOverlay.hide();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Nemate prava za ovu akciju')),
+          );
+        }
+      }
       return handler.next(error);
     },
   ));

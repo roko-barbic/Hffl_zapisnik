@@ -12,6 +12,7 @@ Tournament _$TournamentFromJson(Map<String, dynamic> json) => Tournament(
       name: json['name'] as String,
       season: json['season'] as String?,
       coverPhoto: json['coverPhoto'] as String?,
+      isFinished: json['isFinished'] as bool?,
     );
 
 Map<String, dynamic> _$TournamentToJson(Tournament instance) =>
@@ -21,4 +22,5 @@ Map<String, dynamic> _$TournamentToJson(Tournament instance) =>
       'name': instance.name,
       'season': instance.season,
       'coverPhoto': instance.coverPhoto,
+      'isFinished': instance.isFinished,
     };

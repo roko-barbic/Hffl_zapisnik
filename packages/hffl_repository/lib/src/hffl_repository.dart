@@ -88,6 +88,16 @@ class HfflRepository {
     return _hfflApiClient.fetchClubPlayersStats(clubId);
   }
 
+  Future<bool> finishTorunament(int tournamentId)async{
+   bool? isSuccesful =  await _hfflApiClient?.finishTournamet(tournamentId);
+    return isSuccesful ?? false;
+  }
+
+  Future<bool> startAgainTournament(int tournamentId)async{
+    bool? isSuccesful =  await _hfflApiClient?.startAgainTournament(tournamentId);
+    return isSuccesful ?? false;
+  }
+
 //Widget initApp(){
 
 //realno repository ti treba ako ces sklapat neke komplekcsnije pozive sastavljene od vise poziva

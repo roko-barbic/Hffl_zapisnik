@@ -108,6 +108,21 @@ class TournamentCubit extends Cubit<TournamentState> {
     );
   }
 
+  Future<void> toggleTournamentStatus(bool isFinished, int tournamentId)async{
+
+    navigatorKey.currentContext?.loaderOverlay.show();
+    bool isSuccesful;
+    if(isFinished){
+      isSuccesful = await _hfflRepository.startAgainTournament(tournamentId);
+    }else{
+      isSuccesful = await _hfflRepository.finishTorunament(tournamentId);
+    }
+    if(isSuccesful){
+      await fetchTournaments();
+    }
+    navigatorKey.currentContext?.loaderOverlay.hide();
+  }
+
 
   @override
   TournamentState fromJson(Map<String, dynamic> json) =>

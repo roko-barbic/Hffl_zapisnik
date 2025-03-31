@@ -97,6 +97,7 @@ class TournamentsRowDisplay extends StatelessWidget {
                       _buildGradient(),
                       _buildTitleAndSubtitle(),
                       _buildDownloadButton(context),
+                      _buildLockTournamentButton(context),
                     ],
                   ),
                 ),
@@ -197,6 +198,22 @@ class TournamentsRowDisplay extends StatelessWidget {
             .dowloadTournamentSummary(tournament.id ?? 0, context),
         child: const Icon(
           Icons.download,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLockTournamentButton(BuildContext context) {
+    return Positioned(
+      right: 50,
+      bottom: 20,
+      child: GestureDetector(
+        onTap: () => context
+            .read<TournamentCubit>()
+            .toggleTournamentStatus(tournament.isFinished ?? false ,tournament.id ?? 0),
+        child: Icon(
+          (tournament.isFinished ?? false) ? Icons.lock : Icons.lock_open,
           color: Colors.white,
         ),
       ),
