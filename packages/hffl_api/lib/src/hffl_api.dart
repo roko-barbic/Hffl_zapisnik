@@ -122,7 +122,7 @@ class HfflApi {
         return false;
       }
     } catch (e) {
-      print("Exception: $e");
+      throw Exception();
     }
   }
 
@@ -145,7 +145,7 @@ class HfflApi {
         print("Failed to fetch photo: ${response.statusCode}");
       }
     } catch (e) {
-      print("Error fetching photo: $e");
+      throw Exception();
     }
   }
 
@@ -164,7 +164,7 @@ class HfflApi {
         print("Failed to fetch photo: ${response.statusCode}");
       }
     } catch (e) {
-      print("Error fetching photo: $e");
+      throw Exception();
     }
   }
 
@@ -187,7 +187,7 @@ class HfflApi {
         return filePath;
       }
     } catch (e) {
-      print('Error downloading PDF: $e');
+      throw Exception();
     }
   }
 
@@ -267,8 +267,7 @@ class HfflApi {
         return null;
       }
     } catch (e) {
-      print('Error fetching game details: $e');
-      return null;
+      throw Exception();
     }
   }
 
@@ -284,7 +283,7 @@ class HfflApi {
       }
     } catch (e) {
       print('Error fetching game details: $e');
-      return null;
+      throw Exception();
     }
   }
 
@@ -325,7 +324,7 @@ class HfflApi {
         return false;
       }
     } catch (e) {
-      return false;
+      throw Exception();
     }
   }
 
@@ -348,7 +347,7 @@ class HfflApi {
       }
     } catch (e) {
       print('Error fetching game details: $e');
-      return false;
+      throw Exception();
     }
   }
 
@@ -382,8 +381,7 @@ class HfflApi {
         return authResult;
       }
     } catch (e) {
-      return null;
-      //throw Exception();
+      throw Exception();
     }
     return null;
   }
@@ -436,8 +434,7 @@ class HfflApi {
         return null;
       }
     } catch (e) {
-      //print('Error fetching game details: $e');
-      return null;
+      throw Exception();
     }
   }
 
@@ -453,8 +450,7 @@ class HfflApi {
         return false;
       }
     } catch (e) {
-      //print('Error fetching game details: $e');
-      return false;
+      throw Exception();
     }
   }
 
@@ -470,8 +466,7 @@ class HfflApi {
         return false;
       }
     } catch (e) {
-      //print('Error fetching game details: $e');
-      return false;
+      throw Exception();
     }
   }
   //Future<ImageProvid>
