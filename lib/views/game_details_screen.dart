@@ -11,7 +11,8 @@ import 'package:hffl_zapisnik/widgets/game_events_details.dart';
 
 class GameDetailsScreen extends StatefulWidget {
 
-  const GameDetailsScreen({Key? key}) : super(key: key);
+  const GameDetailsScreen({required this.isEditable, Key? key}) : super(key: key);
+  final bool isEditable;
 
   @override
   _GameDetailsScreenState createState() => _GameDetailsScreenState();
@@ -41,7 +42,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
         ) : null,
       ),
 
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: widget.isEditable ? FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
             context: context,
@@ -60,7 +61,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
           );
         },
         child: const Icon(Icons.add),
-      ),
+      ) : const SizedBox(width: 0, height: 0,),
       body:  switch (state.selectedGameLoadingStatus) {
             LoadingStatus.initial => const Text(
                 "Nesto bar displayam"), //tu sad treba definirat widget za kad nema niceg, itd za ostale
@@ -71,7 +72,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
                     .read<GameCubit>()
                     .justFetchGameDetails(state.selectedGame?.id ?? 0),
                 child: const Center(child: Text("Neuspijeh, probaj refreshat"))),
-            LoadingStatus.success => const GameEventsDetails(),
+            LoadingStatus.success => GameEventsDetails(isEditable: widget.isEditable,),
           });
         },
     );

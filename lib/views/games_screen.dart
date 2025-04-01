@@ -13,8 +13,9 @@ import 'package:hffl_zapisnik/widgets/games_list.dart';
 class GamesScreen extends StatefulWidget {
   final int tournamentId;
   final String tournamentName;
+  final bool isEditable;
 
-  const GamesScreen({required this.tournamentId, required this.tournamentName, super.key});
+  const GamesScreen({required this.tournamentId, required this.tournamentName, required this.isEditable, super.key});
 
   @override
   State<GamesScreen> createState() => _GamesScreenState();
@@ -59,12 +60,13 @@ class _GamesScreenState extends State<GamesScreen> {
                   games: state.games,
                   onRefresh: () =>
                       context.read<GameCubit>().fetchGames(widget.tournamentId),
+                  isEditable: widget.isEditable,
                 ),
             };
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: widget.isEditable ? FloatingActionButton(
         onPressed: () {
           context.read<GameCubit>().resetCreatingGame();
 
@@ -88,7 +90,7 @@ class _GamesScreenState extends State<GamesScreen> {
           // );
         },
         child: const Icon(Icons.add),
-      ),
+      ) : null,
     );
   }
 }

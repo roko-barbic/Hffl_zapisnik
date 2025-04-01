@@ -7,7 +7,9 @@ import 'package:hffl_zapisnik/widgets/eventRowDisplay.dart';
 import '../utility/helper_class.dart';
 
 class GameEventsDetails extends StatelessWidget {
-  const GameEventsDetails({super.key});
+
+  final bool isEditable;
+  const GameEventsDetails({required this.isEditable, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -228,7 +230,7 @@ class GameEventsDetails extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final event = state.selectedGame!.events[index];
                           return GestureDetector(
-                              onLongPress: () => showDialog(
+                              onLongPress: () => isEditable ? showDialog(
                                   context: context,
                                   builder: (context) {
                                     return DeleteModal(
@@ -250,7 +252,7 @@ class GameEventsDetails extends StatelessWidget {
                                         warningMessage:
                                             'Želite li obrisati događaj? (id:%s)',
                                         title: 'Brisanje događaja');
-                                  }),
+                                  }) : {},
                               child: EventRowDisplay(
                                 event: event,
                               ));

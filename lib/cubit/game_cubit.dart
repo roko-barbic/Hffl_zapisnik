@@ -77,7 +77,7 @@ class GameCubit extends Cubit<GameState> {
   }
 
   Future<void> fetchGameDetails(
-      int gameId, BuildContext context, bool isFromRegistration) async {
+      int gameId, BuildContext context, bool isFromRegistration, bool isEditable) async {
     navigatorKey.currentContext?.loaderOverlay.show();
     if (state.selectedGameLoadingStatus == LoadingStatus.initial) {
       emit(state.copyWith(selectedGameLoadingStatus: LoadingStatus.loading));
@@ -93,10 +93,10 @@ class GameCubit extends Cubit<GameState> {
           await fetchGameAndPlayerDetails(gameId);
           if (isFromRegistration) {
             Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => const GameDetailsScreen()));
+                builder: (context) => GameDetailsScreen(isEditable: isEditable)));
           } else {
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const GameDetailsScreen()));
+                builder: (context) => GameDetailsScreen(isEditable: isEditable)));
           }
         } else {
           await fetchGameAndPlayerDetails(gameId);
@@ -162,7 +162,7 @@ class GameCubit extends Cubit<GameState> {
       if (isSuccessful) {
         emit(state.copyWith(selectedGameLoadingStatus: LoadingStatus.success));
         //Navigator.of(context).pop();
-        await fetchGameDetails(gameId, context, true);
+        await fetchGameDetails(gameId, context, true, true);
       } else {
         emit(state.copyWith(selectedGameLoadingStatus: LoadingStatus.failure));
       }

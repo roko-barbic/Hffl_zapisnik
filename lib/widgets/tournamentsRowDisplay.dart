@@ -30,7 +30,7 @@ class TournamentsRowDisplay extends StatelessWidget {
             Navigator.of(context).push(
               MaterialPageRoute<void>(
                 builder: (BuildContext context) =>
-                    GamesScreen(tournamentId: tournament.id ?? 0, tournamentName: tournament.name,),
+                    GamesScreen(tournamentId: tournament.id ?? 0, tournamentName: tournament.name, isEditable: !(tournament.isFinished ?? true)),
               ),
             );
           },

@@ -9,11 +9,12 @@ import 'package:hffl_zapisnik/widgets/game_row.dart';
 
 class GamesList extends StatelessWidget {
 
-  GamesList({this.games, required this.tournamentId, required this.onRefresh, super.key});
+  GamesList({this.games, required this.tournamentId, required this.onRefresh, required this.isEditable,super.key});
 
   final int tournamentId;
   final Games? games;
   final ValueGetter<Future<void>> onRefresh;
+  final bool isEditable;
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +32,9 @@ class GamesList extends StatelessWidget {
                   onTap: () {
                     context
                         .read<GameCubit>()
-                        .fetchGameDetails(games?.games[index].id ?? 0, context, false);
+                        .fetchGameDetails(games?.games[index].id ?? 0, context, false, isEditable);
                   },
-                  onLongPress: () => showDialog(
+                  onLongPress: () => isEditable ? showDialog(
                       context: context,
                       builder: (context) {
                         return DeleteModal(
@@ -48,7 +49,7 @@ class GamesList extends StatelessWidget {
                             warningMessage:
                             'Želite li obrisati utakmicu? (id:%s)',
                             title: 'Brisanje utakmice');
-                      }),
+                      }) : {},
                   child: GamesRowDisplay(
                   game: games!.games[index],
                    onDelete: () { //TODO delete tournament
