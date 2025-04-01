@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hffl_zapisnik/cubit/auth_cubit.dart';
-import 'package:hffl_zapisnik/views/clubs_ranking_screen.dart';
-import 'package:hffl_zapisnik/views/tournaments_screen.dart';
+import 'package:hffl_zapisnik/screens/clubs_ranking_screen.dart';
+import 'package:hffl_zapisnik/screens/tournaments_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OverviewScreen extends StatefulWidget {

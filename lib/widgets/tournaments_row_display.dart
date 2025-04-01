@@ -5,7 +5,7 @@ import 'package:hffl_api/hffl_api.dart';
 import 'package:hffl_zapisnik/cubit/game_cubit.dart';
 import 'package:hffl_zapisnik/cubit/tournament_cubit.dart';
 import 'package:hffl_zapisnik/delegates/parallax_flow_delegate.dart';
-import 'package:hffl_zapisnik/views/games_screen.dart';
+import 'package:hffl_zapisnik/screens/games_screen.dart';
 import 'package:hffl_zapisnik/widgets/modals/delete_modal.dart';
 import 'package:intl/intl.dart';
 
