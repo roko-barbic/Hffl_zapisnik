@@ -91,7 +91,8 @@ class _EnterNewEventState extends State<EnterNewEvent> {
                 ],
                 selected: <bool>{isHomeClub},
                 onSelectionChanged: (newSet) {
-                  setState(() { // This now updates the whole widget
+                  setState(() {
+                    // This now updates the whole widget
                     resetValues();
                     isHomeClub = newSet.first;
                   });
@@ -112,18 +113,23 @@ class _EnterNewEventState extends State<EnterNewEvent> {
             if (isButtonVisible(state.selectedGameAndPlayers!.gameId))
               ElevatedButton(
                   onPressed: () {
-                    if(typeOfEvent == 6){
-                      if(isHomeClub){
-                        firstPlayerId = state.selectedGameAndPlayers!.homePlayersCombination.first.playerId;
-                      }
-                      else{
-                        firstPlayerId = state.selectedGameAndPlayers!.awayPlayersCombination.first.playerId;
+                    if (typeOfEvent == 6) {
+                      if (isHomeClub) {
+                        firstPlayerId = state.selectedGameAndPlayers!
+                            .homePlayersCombination.first.playerId;
+                      } else {
+                        firstPlayerId = state.selectedGameAndPlayers!
+                            .awayPlayersCombination.first.playerId;
                       }
                     }
                     context.read<GameCubit>().addNewEvent(
-                      state.selectedGameAndPlayers!.gameId, EventDto(playerOneId: firstPlayerId ?? 0, playetTwoId: secondPlayerId ?? 0, type: typeOfEvent!));
-                      Navigator.of(context).pop();
-                    },
+                        state.selectedGameAndPlayers!.gameId,
+                        EventDto(
+                            playerOneId: firstPlayerId ?? 0,
+                            playetTwoId: secondPlayerId ?? 0,
+                            type: typeOfEvent!));
+                    Navigator.of(context).pop();
+                  },
                   child: const Icon(Icons.add))
           ],
         ),
@@ -132,19 +138,19 @@ class _EnterNewEventState extends State<EnterNewEvent> {
   }
 
   bool isButtonVisible(int? gameId) {
-
-    if(typeOfEvent == 1 || typeOfEvent == 4 || typeOfEvent == 5 || typeOfEvent == 2 || typeOfEvent == 3){
+    if (typeOfEvent == 1 ||
+        typeOfEvent == 4 ||
+        typeOfEvent == 5 ||
+        typeOfEvent == 2 ||
+        typeOfEvent == 3) {
       return (gameId != null &&
           firstPlayerId != null &&
           secondPlayerId != null &&
           typeOfEvent != null);
-    }else if(typeOfEvent == 7 || typeOfEvent == 8 || typeOfEvent == 9){
-      return (gameId != null &&
-          firstPlayerId != null &&
-          typeOfEvent != null);
-    } else if(typeOfEvent == 6){
-      return (gameId != null &&
-          typeOfEvent == 6 && secondPlayerId != null);
+    } else if (typeOfEvent == 7 || typeOfEvent == 8 || typeOfEvent == 9) {
+      return (gameId != null && firstPlayerId != null && typeOfEvent != null);
+    } else if (typeOfEvent == 6) {
+      return (gameId != null && typeOfEvent == 6 && secondPlayerId != null);
     }
     return false;
   }
@@ -152,7 +158,8 @@ class _EnterNewEventState extends State<EnterNewEvent> {
   List<DropdownMenuItem<int>> buildDropdownItems(
       List<PlayerCombination> players) {
     return players
-        .where((player) => player.jerseyNumber != null && player.jerseyNumber != 0)
+        .where(
+            (player) => player.jerseyNumber != null && player.jerseyNumber != 0)
         .map((player) {
       return DropdownMenuItem<int>(
         value: player.playerId,
@@ -163,10 +170,9 @@ class _EnterNewEventState extends State<EnterNewEvent> {
     }).toList();
   }
 
-  void resetValues(){
+  void resetValues() {
     firstPlayerId = null;
     secondPlayerId = null;
-
   }
 
   Widget ChosePlayersWidget(List<PlayerCombination> homePlayersCombination,
@@ -209,12 +215,10 @@ class _EnterNewEventState extends State<EnterNewEvent> {
                 buildDropdownItems(awayPlayersCombination));
       case 6:
         return isHome
-            ? ChosePlayerSegment(
-                null, "Saftey je napravio",
-                null, buildDropdownItems(homePlayersCombination))
-            : ChosePlayerSegment(
-                null, "Saftey je napravio",
-                null, buildDropdownItems(awayPlayersCombination));
+            ? ChosePlayerSegment(null, "Saftey je napravio", null,
+                buildDropdownItems(homePlayersCombination))
+            : ChosePlayerSegment(null, "Saftey je napravio", null,
+                buildDropdownItems(awayPlayersCombination));
       case null:
         return const SizedBox(
           height: 0,
@@ -252,8 +256,7 @@ class _EnterNewEventState extends State<EnterNewEvent> {
                     items: playersOne,
                     onChanged: (value) {
                       setState(() {
-                        if(value != null)
-                        firstPlayerId = value;
+                        if (value != null) firstPlayerId = value;
                       });
                     },
                     value: firstPlayerId,

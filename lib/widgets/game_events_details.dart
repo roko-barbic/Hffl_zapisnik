@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hffl_zapisnik/cubit/game_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hffl_zapisnik/widgets/deletePopUp.dart';
-import 'package:hffl_zapisnik/widgets/eventRowDisplay.dart';
+import 'package:hffl_zapisnik/widgets/modals/delete_modal.dart';
+import 'package:hffl_zapisnik/widgets/event_row_display.dart';
 
 import '../utility/helper_class.dart';
 
 class GameEventsDetails extends StatelessWidget {
-
   final bool isEditable;
+
   const GameEventsDetails({required this.isEditable, super.key});
 
   @override
@@ -25,8 +25,7 @@ class GameEventsDetails extends StatelessWidget {
               height: 2,
               // Slightly thicker to ensure coverage
               child: Container(
-                decoration:
-                BoxDecoration(
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
@@ -230,16 +229,15 @@ class GameEventsDetails extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final event = state.selectedGame!.events[index];
                           return GestureDetector(
-                              onLongPress: () => isEditable ? showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return DeleteModal(
-                                        id:
-                                            state.selectedGame?.events[index]
-                                                    .id ??
+                              onLongPress: () => isEditable
+                                  ? showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return DeleteModal(
+                                            id: state.selectedGame
+                                                    ?.events[index].id ??
                                                 0,
-                                        onDelete: () =>
-                                            context
+                                            onDelete: () => context
                                                 .read<GameCubit>()
                                                 .deleteEvent(
                                                     state
@@ -249,10 +247,11 @@ class GameEventsDetails extends StatelessWidget {
                                                         0,
                                                     state.selectedGame?.id ??
                                                         0),
-                                        warningMessage:
-                                            'Želite li obrisati događaj? (id:%s)',
-                                        title: 'Brisanje događaja');
-                                  }) : {},
+                                            warningMessage:
+                                                'Želite li obrisati događaj? (id:${state.selectedGame?.id})',
+                                            title: 'Brisanje događaja');
+                                      })
+                                  : {},
                               child: EventRowDisplay(
                                 event: event,
                               ));

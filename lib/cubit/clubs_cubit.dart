@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hffl_api/hffl_api.dart';
 import 'package:hffl_zapisnik/enums/clubs_status_enum.dart';
-import 'package:hffl_zapisnik/screens/DetailClubPlayersScreen.dart';
+import 'package:hffl_zapisnik/screens/clubs_players_screen.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:hffl_repository/hffl_repository.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -47,7 +47,7 @@ class ClubsCubit extends HydratedCubit<ClubsState> {
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => DetailClubPlayersScreen(), //todo dodat screen za igrace
+            builder: (context) => ClubsPlayersScreen(), //todo dodat screen za igrace
         ),
       );
 

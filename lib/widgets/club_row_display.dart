@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hffl_api/hffl_api.dart';
 import 'package:hffl_zapisnik/utility/helper_class.dart';
 
-
-
 class ClubRow extends StatelessWidget {
   const ClubRow({required this.club, super.key});
 
@@ -21,10 +19,11 @@ class ClubRow extends StatelessWidget {
             children: [
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.15,
-                child:  Padding(
+                child: Padding(
                   padding: const EdgeInsets.all(2),
                   child: Image.asset(
-                    ClubIconsPng.clubIcon[club.id] ?? 'assets/images/club_image_id_1.png',
+                    ClubIconsPng.clubIcon[club.id] ??
+                        'assets/images/club_image_id_1.png',
                     width: 45, // Adjust width
                     height: 45, // Adjust height
                     fit: BoxFit.contain,

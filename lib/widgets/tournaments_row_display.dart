@@ -5,9 +5,8 @@ import 'package:hffl_api/hffl_api.dart';
 import 'package:hffl_zapisnik/cubit/game_cubit.dart';
 import 'package:hffl_zapisnik/cubit/tournament_cubit.dart';
 import 'package:hffl_zapisnik/delegates/parallax_flow_delegate.dart';
-import 'package:hffl_zapisnik/enums/clubs_status_enum.dart';
 import 'package:hffl_zapisnik/views/games_screen.dart';
-import 'package:hffl_zapisnik/widgets/deletePopUp.dart';
+import 'package:hffl_zapisnik/widgets/modals/delete_modal.dart';
 import 'package:intl/intl.dart';
 
 class TournamentsRowDisplay extends StatelessWidget {
@@ -22,15 +21,13 @@ class TournamentsRowDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<GameCubit, GameState>(builder: (context, state) {
       return GestureDetector(
-          //onTap: () => context.read<TournamentCubit>().deleteTournament(tournament.id),
-
           onTap: () {
-            //context.read<GameCubit>().fetchGames(tournament.id ?? 0);
-
             Navigator.of(context).push(
               MaterialPageRoute<void>(
-                builder: (BuildContext context) =>
-                    GamesScreen(tournamentId: tournament.id ?? 0, tournamentName: tournament.name, isEditable: !(tournament.isFinished ?? true)),
+                builder: (BuildContext context) => GamesScreen(
+                    tournamentId: tournament.id ?? 0,
+                    tournamentName: tournament.name,
+                    isEditable: !(tournament.isFinished ?? true)),
               ),
             );
           },
@@ -38,41 +35,12 @@ class TournamentsRowDisplay extends StatelessWidget {
             showDialog(
               context: context,
               builder: (context) {
-                return DeleteModal(id: tournament.id ?? 0, onDelete: () => onDelete(tournament.id ?? 0), warningMessage: "Jeste li sigurni da želite obrisati ${tournament.name}?", title: "Brisanje turnira");
-
-                /*AlertDialog(
-                  title: const Text('Delete tournament'),
-                  content: Text(
-                      'Are you sure you want to delete tournament? (id: ${tournament.id.toString()})'),
-                  actions: <Widget>[
-                    BlocBuilder<TournamentCubit, TournamentState>(
-                        builder: (context, state) {
-                      if (state.deletingTournament == LoadingStatus.initial) {
-                        return TextButton(
-                            child: const Text('Yes'),
-                            onPressed: () {
-                              onDelete(tournament.id ?? 0); //todo prepravi
-                              Navigator.of(context).pop();
-                            });
-                      } else if (state.deletingTournament ==
-                          LoadingStatus.loading) {
-                        return const CircularProgressIndicator();
-                      } else {
-                        return TextButton(
-                            child: const Text('Failed'),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            });
-                      }
-                    }),
-                    TextButton(
-                      child: const Text('No'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );*/
+                return DeleteModal(
+                    id: tournament.id ?? 0,
+                    onDelete: () => onDelete(tournament.id ?? 0),
+                    warningMessage:
+                        "Jeste li sigurni da želite obrisati ${tournament.name}?",
+                    title: "Brisanje turnira");
               },
             );
           },
@@ -83,12 +51,13 @@ class TournamentsRowDisplay extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
-                    boxShadow:const  [BoxShadow(
-                    //color: Theme.of(context).primaryColor, // Shadow color
-                    blurRadius: 10, // Spread of the shadow
-                    offset: Offset(0, 4),
-                  )]
-                ),
+                    boxShadow: const [
+                      BoxShadow(
+                        //color: Theme.of(context).primaryColor, // Shadow color
+                        blurRadius: 10, // Spread of the shadow
+                        offset: Offset(0, 4),
+                      )
+                    ]),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: Stack(
@@ -125,22 +94,21 @@ class TournamentsRowDisplay extends StatelessWidget {
               return child;
             }
             return const Center(
-              child: CircularProgressIndicator(
-              ),
+              child: CircularProgressIndicator(),
             );
           },
           errorBuilder: (context, error, stackTrace) {
             return Container(
-              color: Colors.grey[300],
-              child: const Center(
-                child: Icon(
-                  Icons.broken_image,
-                  color: Colors.grey,
-                  size: 48,
-                ),
-              ));
+                color: Colors.grey[300],
+                child: const Center(
+                  child: Icon(
+                    Icons.broken_image,
+                    color: Colors.grey,
+                    size: 48,
+                  ),
+                ));
           },
-          )
+        )
       ],
     );
   }
@@ -209,9 +177,8 @@ class TournamentsRowDisplay extends StatelessWidget {
       right: 50,
       bottom: 20,
       child: GestureDetector(
-        onTap: () => context
-            .read<TournamentCubit>()
-            .toggleTournamentStatus(tournament.isFinished ?? false ,tournament.id ?? 0),
+        onTap: () => context.read<TournamentCubit>().toggleTournamentStatus(
+            tournament.isFinished ?? false, tournament.id ?? 0),
         child: Icon(
           (tournament.isFinished ?? false) ? Icons.lock : Icons.lock_open,
           color: Colors.white,

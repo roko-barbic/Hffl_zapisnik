@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hffl_api/hffl_api.dart';
 import 'package:hffl_zapisnik/cubit/tournament_cubit.dart';
-import 'package:hffl_zapisnik/widgets/tournamentsRowDisplay.dart';
+import 'package:hffl_zapisnik/widgets/tournaments_row_display.dart';
 
 class TournamentsList extends StatelessWidget {
-
   TournamentsList({this.tournaments, required this.onRefresh, super.key});
 
   final Tournaments? tournaments;
@@ -26,11 +25,10 @@ class TournamentsList extends StatelessWidget {
             itemCount: tournaments!.tournaments.length,
             itemBuilder: (context, index) {
               return TournamentsRowDisplay(
-                tournament: tournaments!.tournaments[index],
-                onDelete: (id) {
-                  context.read<TournamentCubit>().deleteTournament(id);
-                }
-              );
+                  tournament: tournaments!.tournaments[index],
+                  onDelete: (id) {
+                    context.read<TournamentCubit>().deleteTournament(id);
+                  });
             },
           ),
         );

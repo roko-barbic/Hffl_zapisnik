@@ -6,13 +6,13 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler_platform_interface/permission_handler_platform_interface.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class UploadPicture extends StatefulWidget {
   final Function(String) onUpload;
-  UploadPicture({ required this.onUpload ,super.key});
+
+  UploadPicture({required this.onUpload, super.key});
 
   @override
   State<UploadPicture> createState() => _UploadPictureState();
@@ -34,11 +34,10 @@ class _UploadPictureState extends State<UploadPicture> {
     );
 
     if (result != null) {
-
       if (result.files.single.bytes != null) {
         Uint8List bytes = result.files.single.bytes!;
         setState(() {
-          _imageBytes = bytes;//fileName
+          _imageBytes = bytes; //fileName
         });
         widget.onUpload(result.files.single.path ?? "");
       } else {

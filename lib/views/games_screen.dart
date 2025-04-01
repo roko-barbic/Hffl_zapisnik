@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hffl_api/hffl_api.dart';
 import 'package:hffl_zapisnik/cubit/game_cubit.dart';
-import 'package:hffl_zapisnik/cubit/tournament_cubit.dart';
 import 'package:hffl_zapisnik/enums/clubs_status_enum.dart';
-import 'package:hffl_zapisnik/widgets/bouncing_ball_progress_indicator.dart';
 import 'package:hffl_zapisnik/widgets/connection_error.dart';
-import 'package:hffl_zapisnik/widgets/enterGame.dart';
-import 'package:hffl_zapisnik/widgets/enter_tournament.dart';
+import 'package:hffl_zapisnik/widgets/enter_game.dart';
 import 'package:hffl_zapisnik/widgets/games_list.dart';
 
 class GamesScreen extends StatefulWidget {
@@ -15,20 +11,22 @@ class GamesScreen extends StatefulWidget {
   final String tournamentName;
   final bool isEditable;
 
-  const GamesScreen({required this.tournamentId, required this.tournamentName, required this.isEditable, super.key});
+  const GamesScreen(
+      {required this.tournamentId,
+      required this.tournamentName,
+      required this.isEditable,
+      super.key});
 
   @override
   State<GamesScreen> createState() => _GamesScreenState();
 }
 
 class _GamesScreenState extends State<GamesScreen> {
-
   @override
   void initState() {
     super.initState();
     context.read<GameCubit>().fetchGames(widget.tournamentId); // Trigger loader
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -50,11 +48,13 @@ class _GamesScreenState extends State<GamesScreen> {
               LoadingStatus.initial => const Text(
                   "Nesto bar displayam"), //tu sad treba definirat widget za kad nema niceg, itd za ostale
               LoadingStatus.loading => const SizedBox.shrink(),
-              LoadingStatus.failure =>  ConnectionError(
-                onRefresh:  () {
-                  return context.read<GameCubit>().fetchGames(widget.tournamentId);
-                },
-              ),
+              LoadingStatus.failure => ConnectionError(
+                  onRefresh: () {
+                    return context
+                        .read<GameCubit>()
+                        .fetchGames(widget.tournamentId);
+                  },
+                ),
               LoadingStatus.success => GamesList(
                   tournamentId: widget.tournamentId,
                   games: state.games,
@@ -66,31 +66,31 @@ class _GamesScreenState extends State<GamesScreen> {
           },
         ),
       ),
-      floatingActionButton: widget.isEditable ? FloatingActionButton(
-        onPressed: () {
-          context.read<GameCubit>().resetCreatingGame();
+      floatingActionButton: widget.isEditable
+          ? FloatingActionButton(
+              onPressed: () {
+                context.read<GameCubit>().resetCreatingGame();
 
-          showModalBottomSheet(
-              context: context,
-              isScrollControlled: true,
-              showDragHandle: true,
-              builder: (BuildContext context) {
-                return AnimatedContainer(
-                    duration: const Duration(milliseconds: 150),
-                    padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom * 0.3),
-                    child: SizedBox(
-                        width: double.infinity,
-                        height: MediaQuery.of(context).size.height * 0.4,
-                        child: EnterGame(tournamentId: widget.tournamentId)));
-              });
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => const UploadPicture()),
-          // );
-        },
-        child: const Icon(Icons.add),
-      ) : null,
+                showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    showDragHandle: true,
+                    builder: (BuildContext context) {
+                      return AnimatedContainer(
+                          duration: const Duration(milliseconds: 150),
+                          padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewInsets.bottom *
+                                  0.3),
+                          child: SizedBox(
+                              width: double.infinity,
+                              height: MediaQuery.of(context).size.height * 0.4,
+                              child: EnterGame(
+                                  tournamentId: widget.tournamentId)));
+                    });
+              },
+              child: const Icon(Icons.add),
+            )
+          : null,
     );
   }
 }

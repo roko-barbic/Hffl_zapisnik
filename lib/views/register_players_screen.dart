@@ -23,8 +23,10 @@ class _RegisterPlayersScreenState extends State<RegisterPlayersScreen> {
             case LoadingStatus.loading:
               return const CircularProgressIndicator();
             case LoadingStatus.success:
-              if(state.selectedGameAndPlayers != null)
-                return RegisterPlayersSwiper(gameDetails: state.selectedGameAndPlayers!,);
+              if (state.selectedGameAndPlayers != null)
+                return RegisterPlayersSwiper(
+                  gameDetails: state.selectedGameAndPlayers!,
+                );
               return const Text("Fail");
             case LoadingStatus.failure:
               return const Text("Fail");

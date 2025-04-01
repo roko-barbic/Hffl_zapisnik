@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hffl_api/hffl_api.dart';
 import 'package:hffl_repository/hffl_repository.dart';
-import 'package:hffl_zapisnik/classes/eventClasses/event.dart';
 import 'package:hffl_zapisnik/cubit/app_bloc_observer.dart';
 import 'package:hffl_zapisnik/cubit/auth_cubit.dart';
 import 'package:hffl_zapisnik/cubit/clubs_cubit.dart';
@@ -11,29 +10,13 @@ import 'package:hffl_zapisnik/cubit/game_cubit.dart';
 import 'package:hffl_zapisnik/cubit/tournament_cubit.dart';
 import 'package:hffl_zapisnik/screens/login_screen.dart';
 import 'package:hffl_zapisnik/screens/overview_screen.dart';
-import 'package:hffl_zapisnik/views/clubs_ranking_screen.dart';
-import 'package:hffl_zapisnik/views/games_screen.dart';
-import 'package:hffl_zapisnik/views/tournaments_screen.dart';
 import 'package:hffl_zapisnik/widgets/bouncing_ball_progress_indicator.dart';
-import 'package:hffl_zapisnik/widgets/enter_tournament.dart';
-import 'package:hffl_zapisnik/widgets/torunamentsGrid.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:hffl_zapisnik/global_keys.dart';
-import 'package:lottie/lottie.dart';
-import './providers/tournaments.dart';
-import 'package:hffl_zapisnik/screens/rankingScreen.dart';
-import 'package:hffl_zapisnik/widgets/clubsGrid.dart';
-import '../providers/clubs.dart';
-import '../providers/events.dart';
-import '/services/mysql.dart';
 import 'package:bloc/bloc.dart';
 import 'package:provider/provider.dart';
-import './screens/LogIn.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:flutter/foundation.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:dio/dio.dart';
@@ -131,13 +114,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      //create: (context) => UsersList(),
-      // providers: [
-      //   ChangeNotifierProvider<EventsList>(create: (context) => EventsList()),
-      //   ChangeNotifierProvider<ClubsList>(create: (context) => ClubsList()),
-      //   ChangeNotifierProvider<TournamentsList>(
-      //       create: (context) => TournamentsList())
-      // ],
       providers: [
         BlocProvider<ClubsCubit>(
           create: (context) {
@@ -151,7 +127,7 @@ class MyApp extends StatelessWidget {
           create: (context) {
             final cubit = TournamentCubit(_hfflRepository);
             cubit
-                .fetchTournaments(); // Fetch clubs as soon as the cubit is created
+                .fetchTournaments(); // Fetch tournaments as soon as the cubit is created
             return cubit;
           },
         ),
@@ -161,19 +137,7 @@ class MyApp extends StatelessWidget {
         }),
         BlocProvider.value(value: authCubit),
       ],
-
       child: const HfflAppView(),
-      // MaterialApp(
-      //   title: 'Flutter Demo',
-      //   theme: ThemeData(
-      //     primarySwatch: Colors.blue,
-      //     //fontFamily: '';
-      //   ),
-      //   home: MyHomePage(
-      //     title: isLoggedIn ? 'FlagFootballHR Admin' : 'FlagFootballHR',
-      //     isLoggedIn: isLoggedIn,
-      //   ),
-      // ),
     );
   }
 }
@@ -218,9 +182,7 @@ class _HfflAppViewState extends State<HfflAppView>
         ),
         tabBarTheme: const TabBarTheme(
           labelColor: Colors.white,
-          // Color for selected tab text/icon
           unselectedLabelColor: Colors.white70,
-          // Color for unselected tab text/icon
         ),
       ),
       initialRoute: '/',

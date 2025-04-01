@@ -237,29 +237,32 @@ class ClubsRegistrationCard extends StatelessWidget {
                                       textAlign: TextAlign.center,
                                       decoration: InputDecoration(
                                         border: const UnderlineInputBorder(),
-                                        enabledBorder: const UnderlineInputBorder(
+                                        enabledBorder:
+                                            const UnderlineInputBorder(
                                           borderSide: BorderSide(
                                               color: Colors
                                                   .grey), // Color when not focused
                                         ),
-                                        focusedBorder: const UnderlineInputBorder(
+                                        focusedBorder:
+                                            const UnderlineInputBorder(
                                           borderSide: BorderSide(
                                               color: Colors.blue,
                                               width: 2), // Color when focused
                                         ),
-                                        hintText:
-                                            playersCombination[index].jerseyNumber !=
-                                                    null
-                                                ? playersCombination[index]
-                                                    .jerseyNumber
-                                                    .toString()
-                                                : "-",
+                                        hintText: playersCombination[index]
+                                                    .jerseyNumber !=
+                                                null
+                                            ? playersCombination[index]
+                                                .jerseyNumber
+                                                .toString()
+                                            : "-",
                                       ),
                                       onChanged: (value) {
                                         int? number = int.tryParse(value);
                                         if (number != null) {
                                           updateMap(
-                                              playersCombination[index].playerId,
+                                              playersCombination[index]
+                                                  .playerId,
                                               number,
                                               isHomeClub);
                                         }
@@ -269,11 +272,14 @@ class ClubsRegistrationCard extends StatelessWidget {
                                   SizedBox(
                                     width: 25,
                                     child: GestureDetector(
-                                      onTap: () =>  updateMap(
+                                      onTap: () => updateMap(
                                           playersCombination[index].playerId,
                                           null,
                                           isHomeClub),
-                                      child: const Icon(Icons.delete, color: Colors.redAccent,),
+                                      child: const Icon(
+                                        Icons.delete,
+                                        color: Colors.redAccent,
+                                      ),
                                     ),
                                   )
                                 ],

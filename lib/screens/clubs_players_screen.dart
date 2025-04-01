@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:hffl_zapisnik/cubit/clubs_cubit.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import 'package:hffl_zapisnik/widgets/playerRowDisplay.dart';
+import 'package:hffl_zapisnik/widgets/player_row_display.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DetailClubPlayersScreen extends StatefulWidget {
-  const DetailClubPlayersScreen({super.key});
+class ClubsPlayersScreen extends StatefulWidget {
+  const ClubsPlayersScreen({super.key});
 
   @override
-  State<DetailClubPlayersScreen> createState() => _DetailClubPlayersScreenState();
+  State<ClubsPlayersScreen> createState() => _ClubsPlayersScreenState();
 }
 
-class _DetailClubPlayersScreenState extends State<DetailClubPlayersScreen> {
+class _ClubsPlayersScreenState extends State<ClubsPlayersScreen> {
   late PlayerStatsDataSource _dataSource;
 
   @override

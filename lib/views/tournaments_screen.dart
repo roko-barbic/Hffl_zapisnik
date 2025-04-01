@@ -51,14 +51,9 @@ class _TournamentsScreenState extends State<TournamentsScreen> {
                     child: SizedBox(
                         width: double.infinity,
                         height: MediaQuery.of(context).size.height * 0.5,
-                        child: const EnterTournament()
-                    ));
+                        child: const EnterTournament()));
               });
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => const UploadPicture()),
-          // );
-    },
+        },
         child: const Icon(Icons.add),
       ),
     );

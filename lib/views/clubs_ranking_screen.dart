@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,18 +14,20 @@ class ClubsRanking extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white54, //Color(0xFFF5F5F5), // Dirty white background
+      backgroundColor: Colors.white54,
       body: BlocBuilder<ClubsCubit, ClubsState>(
         builder: (context, state) {
           return switch (state.clubsLoadingStatus) {
             LoadingStatus.initial => const Text(
                 "Hello"), //tu sad treba definirat widget za kad nema niceg, itd za ostale
-            LoadingStatus.loading => const BouncingBallProgressIndicator(),
+            LoadingStatus.loading => RefreshIndicator(
+                onRefresh: () => context.read<ClubsCubit>().fetchClubsInfo(),
+                child: const BouncingBallProgressIndicator()),
             LoadingStatus.failure => ConnectionError(
-              onRefresh:  () {
-                return context.read<ClubsCubit>().fetchClubsInfo();
-              },
-            ),
+                onRefresh: () {
+                  return context.read<ClubsCubit>().fetchClubsInfo();
+                },
+              ),
             LoadingStatus.success => ClubsRankingPopulated(
                 clubs: state.clubs ??
                     const Clubs(clubs: <Club>[

@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -30,22 +28,21 @@ class _EnterTournamentState extends State<EnterTournament> {
       builder: (context, state) {
         return switch (state.creatingTournament) {
           LoadingStatus.initial => const EnterTournamentValues(),
-          LoadingStatus.loading => const Center(child: CircularProgressIndicator()),
+          LoadingStatus.loading =>
+            const Center(child: CircularProgressIndicator()),
           LoadingStatus.failure => const TextWidget(
               text: "fail",
             ),
           LoadingStatus.success => const Center(
-            child: TextWidget(
+              child: TextWidget(
                 text: "Uspjesno kreiran turnir",
               ),
-          ),
+            ),
         };
       },
     );
   }
 }
-
-
 
 class EnterTournamentValues extends StatefulWidget {
   const EnterTournamentValues({super.key});
@@ -54,14 +51,13 @@ class EnterTournamentValues extends StatefulWidget {
   State<EnterTournamentValues> createState() => _EnterTournamentValuesState();
 }
 
-
 class _EnterTournamentValuesState extends State<EnterTournamentValues> {
   TextEditingController tournamentNameController = TextEditingController();
   DateTime selectedDate = DateTime.now();
   bool isSelectedTime = false;
   String? _path;
 
-  void onUpdatePhoto(String path){
+  void onUpdatePhoto(String path) {
     setState(() {
       _path = path;
     });
@@ -104,18 +100,17 @@ class _EnterTournamentValuesState extends State<EnterTournamentValues> {
           //     child:
           SizedBox(
         height: MediaQuery.of(context).size.height * 0.5,
-        child: Column(
-            children: [
-              SizedBox(
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: TextField(
-                controller: tournamentNameController,
-                decoration: const InputDecoration(
-                  labelText: 'Ime turnira:',
-                  hintText: 'Unesite ime turnira',
-                ),
+        child: Column(children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.8,
+            child: TextField(
+              controller: tournamentNameController,
+              decoration: const InputDecoration(
+                labelText: 'Ime turnira:',
+                hintText: 'Unesite ime turnira',
               ),
             ),
+          ),
           const SizedBox(
             height: 45,
           ),
@@ -129,10 +124,9 @@ class _EnterTournamentValuesState extends State<EnterTournamentValues> {
                   : 'Odaberite datum',
             ),
           ),
-              const SizedBox(
-                height: 35,
-              ),
-
+          const SizedBox(
+            height: 35,
+          ),
           UploadPicture(
             onUpload: onUpdatePhoto,
           ),
@@ -142,10 +136,11 @@ class _EnterTournamentValuesState extends State<EnterTournamentValues> {
                 // context
                 //     .read<TournamentCubit>()
                 //     .createTournament(createTournamentObject());
-                context
-                    .read<TournamentCubit>()
-                    .createTournament2(tournamentNameController.text, selectedDate.add(const Duration(hours: 4)).toUtc(),
-                    2024, _path ?? "");
+                context.read<TournamentCubit>().createTournament2(
+                    tournamentNameController.text,
+                    selectedDate.add(const Duration(hours: 4)).toUtc(),
+                    2024,
+                    _path ?? "");
                 // Navigator.of(context).pop;
               },
               child: const Icon(Icons.add),

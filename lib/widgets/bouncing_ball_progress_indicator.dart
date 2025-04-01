@@ -5,10 +5,12 @@ class BouncingBallProgressIndicator extends StatefulWidget {
   const BouncingBallProgressIndicator({super.key});
 
   @override
-  State<BouncingBallProgressIndicator> createState() => _BouncingBallProgressIndicatorState();
+  State<BouncingBallProgressIndicator> createState() =>
+      _BouncingBallProgressIndicatorState();
 }
 
-class _BouncingBallProgressIndicatorState extends State<BouncingBallProgressIndicator>
+class _BouncingBallProgressIndicatorState
+    extends State<BouncingBallProgressIndicator>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
@@ -17,7 +19,7 @@ class _BouncingBallProgressIndicatorState extends State<BouncingBallProgressIndi
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 30), // Adjust to match your animation’s natural duration
+      duration: const Duration(milliseconds: 30),
     )..repeat(); // Start looping immediately
   }
 
@@ -36,7 +38,8 @@ class _BouncingBallProgressIndicatorState extends State<BouncingBallProgressIndi
         width: 150,
         height: 150,
         fit: BoxFit.contain,
-        repeat: true, // Ensure looping
+        repeat: true,
+        // Ensure looping
         onLoaded: (composition) {
           // Set duration to match the animation file’s length
           _controller.duration = composition.duration;
