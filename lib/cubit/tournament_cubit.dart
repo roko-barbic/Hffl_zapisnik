@@ -59,6 +59,7 @@ class TournamentCubit extends Cubit<TournamentState> {
       final creation = await _hfflRepository.createTournamentWithPhoto(
           name, date, season, coverPhoto);
       if (creation == true) {
+        await fetchTournaments();
         emit(state.copyWith(creatingTournament: LoadingStatus.success));
       }
     } on Exception {
