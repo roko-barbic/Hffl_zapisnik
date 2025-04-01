@@ -79,7 +79,7 @@ class _RegisterPlayersSwiperState extends State<RegisterPlayersSwiper> {
   }
 
   void updatePlayerJerseyNumber(
-      int playerId, int newJerseyNumber, bool isHomeClub) {
+      int playerId, int? newJerseyNumber, bool isHomeClub) {
     setState(() {
       if (isHomeClub) {
         homePlayers[playerId] = newJerseyNumber;
@@ -172,7 +172,7 @@ class ClubsRegistrationCard extends StatelessWidget {
   final int clubId;
   final bool isHomeClub;
   final List<PlayerCombination> playersCombination;
-  final Function(int, int, bool) updateMap;
+  final Function(int, int?, bool) updateMap;
 
   const ClubsRegistrationCard(
       {super.key,
@@ -203,7 +203,7 @@ class ClubsRegistrationCard extends StatelessWidget {
                   itemCount: playersCombination.length,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 50),
+                      padding: const EdgeInsets.symmetric(horizontal: 33),
                       child: SizedBox(
                         height: 60,
                         child: Row(
@@ -227,39 +227,56 @@ class ClubsRegistrationCard extends StatelessWidget {
                               ),
                             ),
 
-                            SizedBox(
-                              width: 50,
-                              child: TextField(
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  border: const UnderlineInputBorder(),
-                                  enabledBorder: const UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors
-                                            .grey), // Color when not focused
+                            Container(
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 50,
+                                    child: TextField(
+                                      keyboardType: TextInputType.number,
+                                      textAlign: TextAlign.center,
+                                      decoration: InputDecoration(
+                                        border: const UnderlineInputBorder(),
+                                        enabledBorder: const UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors
+                                                  .grey), // Color when not focused
+                                        ),
+                                        focusedBorder: const UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.blue,
+                                              width: 2), // Color when focused
+                                        ),
+                                        hintText:
+                                            playersCombination[index].jerseyNumber !=
+                                                    null
+                                                ? playersCombination[index]
+                                                    .jerseyNumber
+                                                    .toString()
+                                                : "-",
+                                      ),
+                                      onChanged: (value) {
+                                        int? number = int.tryParse(value);
+                                        if (number != null) {
+                                          updateMap(
+                                              playersCombination[index].playerId,
+                                              number,
+                                              isHomeClub);
+                                        }
+                                      },
+                                    ),
                                   ),
-                                  focusedBorder: const UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.blue,
-                                        width: 2), // Color when focused
-                                  ),
-                                  hintText:
-                                      playersCombination[index].jerseyNumber !=
-                                              null
-                                          ? playersCombination[index]
-                                              .jerseyNumber
-                                              .toString()
-                                          : "-",
-                                ),
-                                onChanged: (value) {
-                                  int? number = int.tryParse(value);
-                                  if (number != null) {
-                                    updateMap(
-                                        playersCombination[index].playerId,
-                                        number,
-                                        isHomeClub);
-                                  }
-                                },
+                                  SizedBox(
+                                    width: 25,
+                                    child: GestureDetector(
+                                      onTap: () =>  updateMap(
+                                          playersCombination[index].playerId,
+                                          null,
+                                          isHomeClub),
+                                      child: const Icon(Icons.delete, color: Colors.redAccent,),
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
                           ],
