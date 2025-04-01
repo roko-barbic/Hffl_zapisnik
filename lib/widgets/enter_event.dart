@@ -142,11 +142,11 @@ class _EnterNewEventState extends State<EnterNewEvent> {
       return (gameId != null &&
           firstPlayerId != null &&
           typeOfEvent != null);
-    }
-    else{
+    } else if(typeOfEvent == 6){
       return (gameId != null &&
-          typeOfEvent == 6);
+          typeOfEvent == 6 && secondPlayerId != null);
     }
+    return false;
   }
 
   List<DropdownMenuItem<int>> buildDropdownItems(
@@ -208,6 +208,13 @@ class _EnterNewEventState extends State<EnterNewEvent> {
                 buildDropdownItems(homePlayersCombination),
                 buildDropdownItems(awayPlayersCombination));
       case 6:
+        return isHome
+            ? ChosePlayerSegment(
+                null, "Saftey je napravio",
+                null, buildDropdownItems(homePlayersCombination))
+            : ChosePlayerSegment(
+                null, "Saftey je napravio",
+                null, buildDropdownItems(awayPlayersCombination));
       case null:
         return const SizedBox(
           height: 0,

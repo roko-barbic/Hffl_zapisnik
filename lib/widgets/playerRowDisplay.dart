@@ -19,6 +19,7 @@ class PlayerStatsDataSource extends DataGridSource {
       DataGridCell<int>(columnName: 'XPP', value: player.XPPass),
       DataGridCell<int>(columnName: 'XPC', value: player.XPCatch),
       DataGridCell<int>(columnName: 'XPR', value: player.XPRun),
+      DataGridCell<int>(columnName: 'SAF', value: player.Safety),
     ])).toList();
   }
 

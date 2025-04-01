@@ -32,9 +32,7 @@ class EventRowDisplay extends StatelessWidget {
             ? Alignment.centerLeft
             : Alignment.centerRight,
         child: SizedBox(
-          width: event.type == 6
-              ? MediaQuery.of(context).size.width * 0.3
-              : MediaQuery.of(context).size.width * 0.6,
+          width: MediaQuery.of(context).size.width * 0.7,
           height: 60,
           child: Container(
             decoration: BoxDecoration(
@@ -59,9 +57,9 @@ class EventRowDisplay extends StatelessWidget {
 
   List<Widget> buildEventRow(BuildContext context) {
     if (event.type == 6) {
-      return [
-        Center(child: Text(getText())),
-      ];
+      return event.teamGettingPoints == 1
+          ? buildSafetyRow(context)
+          : buildReversedSafetyRow(context);
     }
 
     if (event.type >= 7) {
@@ -112,15 +110,29 @@ class EventRowDisplay extends StatelessWidget {
     ];
   }
 
+  List<Widget> buildSafetyRow(BuildContext context) {
+    return [
+      Center(child: Text(getText())),
+      buildPlayerInfo('Safety', event.playerTwo, context),
+    ];
+  }
+
+  List<Widget> buildReversedSafetyRow(BuildContext context) {
+    return [
+      buildPlayerInfo('Safety', event.playerTwo, context),
+      Center(child: Text(getText())),
+    ];
+  }
+
   Widget buildPlayerInfo(
       String label, PlayerDto? player, BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.35,
+      width: MediaQuery.of(context).size.width * 0.45,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-              '$label: ${player?.LastName ?? "Unknown"} ${player?.firstName.characters.first ?? ""}.'),
+              '$label: ${player?.LastName ?? "Unknown"} ${player?.firstName.characters.first ?? ""}${player?.firstName != null ? "." : ""}'),
         ],
       ),
     );

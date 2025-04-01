@@ -125,6 +125,14 @@ class _DetailClubPlayersScreenState extends State<DetailClubPlayersScreen> {
                   child: const Text('XP/R', overflow: TextOverflow.ellipsis),
                 ),
               ),
+              GridColumn(
+                columnName: 'SAF',
+                label: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  alignment: Alignment.center,
+                  child: const Text('SAF', overflow: TextOverflow.ellipsis),
+                ),
+              ),
             ],
           ),
         );
