@@ -84,7 +84,7 @@ class _EnterTournamentValuesState extends State<EnterTournamentValues> {
 
   Tournament createTournamentObject() {
     return Tournament(
-        date: selectedDate.toUtc(),
+        date: selectedDate.add(const Duration(hours: 4)).toUtc(),
         name: tournamentNameController.text,
         season: "2024"); //todo prepravi sezonu
   }
@@ -144,7 +144,7 @@ class _EnterTournamentValuesState extends State<EnterTournamentValues> {
                 //     .createTournament(createTournamentObject());
                 context
                     .read<TournamentCubit>()
-                    .createTournament2(tournamentNameController.text, selectedDate.toUtc(),
+                    .createTournament2(tournamentNameController.text, selectedDate.add(const Duration(hours: 4)).toUtc(),
                     2024, _path ?? "");
                 // Navigator.of(context).pop;
               },
