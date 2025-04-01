@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hffl_zapisnik/cubit/tournament_cubit.dart';
 import 'package:hffl_zapisnik/enums/clubs_status_enum.dart';
 import 'package:hffl_zapisnik/widgets/bouncing_ball_progress_indicator.dart';
+import 'package:hffl_zapisnik/widgets/centered_svg.dart';
+import 'package:hffl_zapisnik/widgets/connection_error.dart';
 import 'package:hffl_zapisnik/widgets/enter_tournament.dart';
 import 'package:hffl_zapisnik/widgets/tournaments_list.dart';
 
@@ -22,10 +24,12 @@ class _TournamentsScreenState extends State<TournamentsScreen> {
         child: BlocBuilder<TournamentCubit, TournamentState>(
           builder: (context, state) {
             return switch (state.tournamentLoadingStatus) {
-              LoadingStatus.initial => const Text(
-                  "Nesto bar displayam"), //tu sad treba definirat widget za kad nema niceg, itd za ostale
+              LoadingStatus.initial => const CenteredSvg(),
               LoadingStatus.loading => const BouncingBallProgressIndicator(),
-              LoadingStatus.failure => const Text("fail"),
+              LoadingStatus.failure => ConnectionError(
+                onRefresh: () =>
+                   context.read<TournamentCubit>().fetchTournaments(),
+              ),
               LoadingStatus.success => TournamentsList(
                   tournaments: state.tournaments,
                   onRefresh: () =>
@@ -38,7 +42,6 @@ class _TournamentsScreenState extends State<TournamentsScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.read<TournamentCubit>().resetCreatingTournament();
-
           showModalBottomSheet(
               context: context,
               isScrollControlled: true,

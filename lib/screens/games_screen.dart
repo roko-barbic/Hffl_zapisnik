@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hffl_zapisnik/cubit/game_cubit.dart';
 import 'package:hffl_zapisnik/enums/clubs_status_enum.dart';
+import 'package:hffl_zapisnik/widgets/centered_svg.dart';
 import 'package:hffl_zapisnik/widgets/connection_error.dart';
 import 'package:hffl_zapisnik/widgets/enter_game.dart';
 import 'package:hffl_zapisnik/widgets/games_list.dart';
@@ -45,8 +46,7 @@ class _GamesScreenState extends State<GamesScreen> {
         child: BlocBuilder<GameCubit, GameState>(
           builder: (context, state) {
             return switch (state.gamesLoadingStatus) {
-              LoadingStatus.initial => const Text(
-                  "Nesto bar displayam"), //tu sad treba definirat widget za kad nema niceg, itd za ostale
+              LoadingStatus.initial => const CenteredSvg(),
               LoadingStatus.loading => const SizedBox.shrink(),
               LoadingStatus.failure => ConnectionError(
                   onRefresh: () {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hffl_zapisnik/cubit/game_cubit.dart';
 import 'package:hffl_zapisnik/enums/clubs_status_enum.dart';
+import 'package:hffl_zapisnik/widgets/centered_svg.dart';
 import 'package:hffl_zapisnik/widgets/register_players_swiper.dart';
 
 class RegisterPlayersScreen extends StatefulWidget {
@@ -31,7 +32,7 @@ class _RegisterPlayersScreenState extends State<RegisterPlayersScreen> {
             case LoadingStatus.failure:
               return const Text("Fail");
             default:
-              return const Text("Pocetno");
+              return const CenteredSvg();
           }
         }));
   }

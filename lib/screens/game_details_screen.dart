@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hffl_zapisnik/cubit/game_cubit.dart';
 import 'package:hffl_zapisnik/enums/clubs_status_enum.dart';
 import 'package:hffl_zapisnik/utility/helper_class.dart';
+import 'package:hffl_zapisnik/widgets/centered_svg.dart';
+import 'package:hffl_zapisnik/widgets/connection_error.dart';
 import 'package:hffl_zapisnik/widgets/enter_event.dart';
 import 'package:hffl_zapisnik/widgets/game_events_details.dart';
 
@@ -68,16 +70,14 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
                     height: 0,
                   ),
             body: switch (state.selectedGameLoadingStatus) {
-              LoadingStatus.initial => const Text(
-                  "Nesto bar displayam"), //tu sad treba definirat widget za kad nema niceg, itd za ostale
+              LoadingStatus.initial => const CenteredSvg(),
               LoadingStatus.loading =>
                 const Center(child: CircularProgressIndicator()),
-              LoadingStatus.failure => RefreshIndicator(
+              LoadingStatus.failure => ConnectionError(
                   onRefresh: () => context
                       .read<GameCubit>()
                       .justFetchGameDetails(state.selectedGame?.id ?? 0),
-                  child:
-                      const Center(child: Text("Neuspijeh, probaj refreshat"))),
+                ),
               LoadingStatus.success => GameEventsDetails(
                   isEditable: widget.isEditable,
                 ),
