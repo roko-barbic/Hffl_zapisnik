@@ -7,6 +7,7 @@ import 'package:hffl_repository/hffl_repository.dart';
 import 'package:hffl_zapisnik/enums/clubs_status_enum.dart';
 import 'package:hffl_zapisnik/screens/game_details_screen.dart';
 import 'package:hffl_zapisnik/screens/register_players_screen.dart';
+import 'package:hffl_zapisnik/widgets/modals/game_didnt_start.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:hffl_zapisnik/global_keys.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -76,8 +77,8 @@ class GameCubit extends Cubit<GameState> {
     }
   }
 
-  Future<void> fetchGameDetails(
-      int gameId, BuildContext context, bool isFromRegistration, bool isEditable) async {
+  Future<void> fetchGameDetails(int gameId, BuildContext context,
+      bool isFromRegistration, bool isEditable, bool isGuestLoggedIn) async {
     navigatorKey.currentContext?.loaderOverlay.show();
     if (state.selectedGameLoadingStatus == LoadingStatus.initial) {
       emit(state.copyWith(selectedGameLoadingStatus: LoadingStatus.loading));
@@ -93,15 +94,25 @@ class GameCubit extends Cubit<GameState> {
           await fetchGameAndPlayerDetails(gameId);
           if (isFromRegistration) {
             Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => GameDetailsScreen(isEditable: isEditable)));
+                builder: (context) =>
+                    GameDetailsScreen(isEditable: isEditable)));
           } else {
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => GameDetailsScreen(isEditable: isEditable)));
+                builder: (context) =>
+                    GameDetailsScreen(isEditable: isEditable)));
           }
         } else {
-          await fetchGameAndPlayerDetails(gameId);
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const RegisterPlayersScreen()));
+          if (isGuestLoggedIn) {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return GameDidntStartModal();
+                });
+          } else {
+            await fetchGameAndPlayerDetails(gameId);
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const RegisterPlayersScreen()));
+          }
         }
       } else {
         emit(state.copyWith(selectedGameLoadingStatus: LoadingStatus.failure));
@@ -162,7 +173,7 @@ class GameCubit extends Cubit<GameState> {
       if (isSuccessful) {
         emit(state.copyWith(selectedGameLoadingStatus: LoadingStatus.success));
         //Navigator.of(context).pop();
-        await fetchGameDetails(gameId, context, true, true);
+        await fetchGameDetails(gameId, context, true, true, false);
       } else {
         emit(state.copyWith(selectedGameLoadingStatus: LoadingStatus.failure));
       }

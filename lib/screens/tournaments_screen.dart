@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hffl_zapisnik/cubit/tournament_cubit.dart';
+import 'package:hffl_zapisnik/cubit/auth_cubit.dart';
 import 'package:hffl_zapisnik/enums/clubs_status_enum.dart';
 import 'package:hffl_zapisnik/widgets/bouncing_ball_progress_indicator.dart';
 import 'package:hffl_zapisnik/widgets/centered_svg.dart';
@@ -18,6 +19,8 @@ class TournamentsScreen extends StatefulWidget {
 class _TournamentsScreenState extends State<TournamentsScreen> {
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<AuthCubit, AuthState>(
+  builder: (context, authState) {
     return Scaffold(
       backgroundColor: Colors.white54,
       body: Center(
@@ -39,7 +42,7 @@ class _TournamentsScreenState extends State<TournamentsScreen> {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: !authState.isGuestMode ? FloatingActionButton(
         onPressed: () {
           context.read<TournamentCubit>().resetCreatingTournament();
           showModalBottomSheet(
@@ -58,7 +61,9 @@ class _TournamentsScreenState extends State<TournamentsScreen> {
               });
         },
         child: const Icon(Icons.add),
-      ),
+      ) : null,
     );
+  },
+);
   }
 }

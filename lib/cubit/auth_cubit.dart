@@ -5,19 +5,22 @@ import 'package:hffl_zapisnik/utility/secure_storage.dart';
 class AuthState {
   final bool isLoading;
   final bool isLoggedIn;
+  final bool isGuestMode;
   final String? error;
 
   const AuthState({
     this.isLoading = false,
     this.isLoggedIn = false,
+    this.isGuestMode = false,
     this.error,
   });
 
-  AuthState copyWith({bool? isLoading, bool? isLoggedIn, String? error}) {
+  AuthState copyWith({bool? isLoading, bool? isLoggedIn, String? error, bool? isGuestMode}) {
     return AuthState(
       isLoading: isLoading ?? this.isLoading,
       isLoggedIn: isLoggedIn ?? this.isLoggedIn,
       error: error ?? this.error,
+      isGuestMode: isGuestMode ?? this.isGuestMode,
     );
   }
 }
@@ -58,8 +61,13 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> logout() async {
-    await SecureStorage.deleteTokens();
-    emit(state.copyWith(isLoggedIn: false));
+    if(state.isLoggedIn){
+      await SecureStorage.deleteTokens();
+      emit(state.copyWith(isLoggedIn: false));
+    }
+    else{
+      emit(state.copyWith(isGuestMode: false));
+    }
   }
 
   Future<void> tokenCheck() async {
@@ -71,5 +79,9 @@ class AuthCubit extends Cubit<AuthState> {
 
   void resetErrorMessage(){
     emit(state.copyWith(error: null));
+  }
+
+  void loginAsGuest(){
+    emit(state.copyWith(isGuestMode: true));
   }
 }

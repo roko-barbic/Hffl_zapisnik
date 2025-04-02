@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hffl_api/hffl_api.dart';
+import 'package:hffl_zapisnik/cubit/auth_cubit.dart';
 import 'package:hffl_zapisnik/cubit/game_cubit.dart';
 import 'package:hffl_zapisnik/widgets/game_row.dart';
 import 'package:hffl_zapisnik/widgets/modals/delete_modal.dart';
@@ -17,6 +18,8 @@ class GamesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<AuthCubit, AuthState>(
+  builder: (context, authState) {
     return BlocBuilder<GameCubit, GameState>(
       builder: (context, state) {
         return RefreshIndicator(
@@ -31,7 +34,7 @@ class GamesList extends StatelessWidget {
                   onTap: () {
                     context
                         .read<GameCubit>()
-                        .fetchGameDetails(games?.games[index].id ?? 0, context, false, isEditable);
+                        .fetchGameDetails(games?.games[index].id ?? 0, context, false, isEditable, authState.isGuestMode);
                   },
                   onLongPress: () => isEditable ? showDialog(
                       context: context,
@@ -60,5 +63,7 @@ class GamesList extends StatelessWidget {
         );
       },
     );
+  },
+);
   }
 }

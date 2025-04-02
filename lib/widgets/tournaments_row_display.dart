@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hffl_api/hffl_api.dart';
-import 'package:hffl_zapisnik/cubit/game_cubit.dart';
+import 'package:hffl_zapisnik/cubit/auth_cubit.dart';
 import 'package:hffl_zapisnik/cubit/tournament_cubit.dart';
 import 'package:hffl_zapisnik/delegates/parallax_flow_delegate.dart';
 import 'package:hffl_zapisnik/screens/games_screen.dart';
@@ -19,7 +19,7 @@ class TournamentsRowDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GameCubit, GameState>(builder: (context, state) {
+    return BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
       return GestureDetector(
           onTap: () {
             Navigator.of(context).push(
@@ -27,23 +27,26 @@ class TournamentsRowDisplay extends StatelessWidget {
                 builder: (BuildContext context) => GamesScreen(
                     tournamentId: tournament.id ?? 0,
                     tournamentName: tournament.name,
-                    isEditable: !(tournament.isFinished ?? true)),
+                    isEditable: (!(tournament.isFinished ?? true) &&
+                        !(state.isGuestMode))),
               ),
             );
           },
-          onLongPress: () {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return DeleteModal(
-                    id: tournament.id ?? 0,
-                    onDelete: () => onDelete(tournament.id ?? 0),
-                    warningMessage:
-                        "Jeste li sigurni da želite obrisati ${tournament.name}?",
-                    title: "Brisanje turnira");
-              },
-            );
-          },
+          onLongPress: () => state.isGuestMode
+              ? {}
+              : {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return DeleteModal(
+                          id: tournament.id ?? 0,
+                          onDelete: () => onDelete(tournament.id ?? 0),
+                          warningMessage:
+                              "Jeste li sigurni da želite obrisati ${tournament.name}?",
+                          title: "Brisanje turnira");
+                    },
+                  )
+                },
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             child: AspectRatio(
@@ -63,10 +66,12 @@ class TournamentsRowDisplay extends StatelessWidget {
                   child: Stack(
                     children: [
                       _buildParallaxBackground(context),
-                      _buildGradient(),
-                      _buildTitleAndSubtitle(),
-                      _buildDownloadButton(context),
-                      _buildLockTournamentButton(context),
+                      if (!state.isGuestMode) ...<Widget>[
+                        _buildGradient(),
+                        _buildTitleAndSubtitle(),
+                        _buildDownloadButton(context),
+                        _buildLockTournamentButton(context),
+                      ]
                     ],
                   ),
                 ),

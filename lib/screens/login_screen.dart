@@ -87,19 +87,28 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
                         decoration: InputDecoration(
                           labelText: 'Email',
                           labelStyle: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withOpacity(0.6),
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12.0),
                             borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primary
+                                  .withOpacity(0.5),
                               width: 1.5,
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12.0),
                             borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primary
+                                  .withOpacity(0.3),
                               width: 1.5,
                             ),
                           ),
@@ -111,7 +120,10 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
                             ),
                           ),
                           filled: true,
-                          fillColor: Theme.of(context).colorScheme.surface.withOpacity(0.05),
+                          fillColor: Theme.of(context)
+                              .colorScheme
+                              .surface
+                              .withOpacity(0.05),
                         ),
                         keyboardType: TextInputType.emailAddress,
                       ),
@@ -121,19 +133,28 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
                         decoration: InputDecoration(
                           labelText: 'Password',
                           labelStyle: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withOpacity(0.6),
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12.0),
                             borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primary
+                                  .withOpacity(0.5),
                               width: 1.5,
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12.0),
                             borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primary
+                                  .withOpacity(0.3),
                               width: 1.5,
                             ),
                           ),
@@ -145,39 +166,73 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
                             ),
                           ),
                           filled: true,
-                          fillColor: Theme.of(context).colorScheme.surface.withOpacity(0.05),
+                          fillColor: Theme.of(context)
+                              .colorScheme
+                              .surface
+                              .withOpacity(0.05),
                         ),
                         obscureText: true,
                       ),
                       const SizedBox(height: 24),
-                      state.isLoading
-                          ? const CircularProgressIndicator()
-                          : ElevatedButton(
-                        onPressed: () {
-                          final email = _emailController.text.trim();
-                          final password = _passwordController.text.trim();
-                          if (email.isNotEmpty && password.isNotEmpty) {
-                            context.read<AuthCubit>().login(email, password);
-                            _passwordController.clear();
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Please enter email and password'),
-                                backgroundColor: Colors.orange,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                        state.isLoading
+                            ? const CircularProgressIndicator()
+                            : ElevatedButton(
+                                onPressed: () {
+                                  final email = _emailController.text.trim();
+                                  final password =
+                                      _passwordController.text.trim();
+                                  if (email.isNotEmpty && password.isNotEmpty) {
+                                    context
+                                        .read<AuthCubit>()
+                                        .login(email, password);
+                                    _passwordController.clear();
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            'Please enter email and password'),
+                                        backgroundColor: Colors.orange,
+                                      ),
+                                    );
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 32, vertical: 12),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                ),
+                                child: const Text('Login'),
                               ),
-                            );
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                        ),
-                        child: const Text('Login'),
-                      ),
+
+                            if(!state.isLoading)
+                              ElevatedButton(
+                                onPressed: () {
+                                    context
+                                        .read<AuthCubit>()
+                                        .loginAsGuest();
+                                    _passwordController.clear();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                  Colors.grey,
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 32, vertical: 12),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                ),
+                                child: const Text('Use as guest'),
+                              ),
+                      ]),
                       const SizedBox(height: 16),
                     ],
                   ),

@@ -189,7 +189,7 @@ class _HfflAppViewState extends State<HfflAppView>
       routes: {
         '/': (context) =>BlocBuilder<AuthCubit, AuthState>(
               builder: (context, state) {
-                return state.isLoggedIn ? OverviewScreen() : LoginScreen();
+                return (state.isLoggedIn || state.isGuestMode) ? OverviewScreen() : LoginScreen();
               },
             ),
         '/login': (context) => LoginScreen(),
