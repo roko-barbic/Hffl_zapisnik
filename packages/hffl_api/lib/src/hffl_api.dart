@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
+
 
 import 'package:hffl_api/hffl_api.dart';
 import 'package:dio/dio.dart';
@@ -168,21 +170,17 @@ class HfflApi {
     }
   }
 
+
   Future<String?> downloadPdf(int tournamentId, String fileName) async {
     try {
       final String url = '$conn${Routes.generatePdf}$tournamentId';
-      //https://localhost:7011/Tournament/GeneratePdfReport?tournamentId=1'
       Directory directory = await getTemporaryDirectory();
-      //String fileName = "Turnir-$tournamentId.pdf";
       String filePath = '${directory.path}/$fileName';
       Response response = await client.download(
         url,
         filePath,
-        options: Options(
-          responseType: ResponseType.bytes, // Expecting binary data
-        ),
+        options: Options(responseType: ResponseType.bytes),
       );
-
       if (response.statusCode == 200) {
         return filePath;
       }
@@ -369,7 +367,7 @@ class HfflApi {
     try {
       final url = '$conn${Routes.login}';
       final response = await client.post(
-          '$conn${Routes.login}',
+          url,
           data: UserLoginRequestDto(email: email, password: password).toJson(),
           options: Options(
           headers: {'Content-Type': 'application/json'},
