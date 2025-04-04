@@ -49,14 +49,20 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
           listener: (context, state) {
             if (state.isLoggedIn) {
               Navigator.pushReplacementNamed(context, '/');
-            } else if (state.error != null && !state.isLoading) {
+            }
+            /*else if (state.error != null && !state.isLoading) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(state.error!),
                   backgroundColor: Colors.red,
                 ),
               );
+              *//*WidgetsBinding.instance.addPostFrameCallback((_) {
+                context.read<AuthCubit>().resetErrorMessage();
+              }); *//*
             }
+            if(state.wasErrorDisplayed != null && state.wasErrorDisplayed == true)
+              context.read<AuthCubit>().resetErrorMessage();*/
           },
           builder: (context, state) {
             return Center(
@@ -85,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
                       TextField(
                         controller: _emailController,
                         decoration: InputDecoration(
-                          labelText: 'Email',
+                          labelText: 'Ime',
                           labelStyle: TextStyle(
                             color: Theme.of(context)
                                 .colorScheme
@@ -131,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
                       TextField(
                         controller: _passwordController,
                         decoration: InputDecoration(
-                          labelText: 'Password',
+                          labelText: 'Lozinka',
                           labelStyle: TextStyle(
                             color: Theme.of(context)
                                 .colorScheme
@@ -187,13 +193,13 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
                                   if (email.isNotEmpty && password.isNotEmpty) {
                                     context
                                         .read<AuthCubit>()
-                                        .login(email, password);
+                                        .login(email, password, context);
                                     _passwordController.clear();
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         content: Text(
-                                            'Please enter email and password'),
+                                            'Molim vas unesite ime profila i lozinku'),
                                         backgroundColor: Colors.orange,
                                       ),
                                     );

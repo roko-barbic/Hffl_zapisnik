@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hffl_api/hffl_api.dart';
 import 'package:hffl_zapisnik/utility/secure_storage.dart';
@@ -15,11 +16,10 @@ class AuthState {
     this.error,
   });
 
-  AuthState copyWith({bool? isLoading, bool? isLoggedIn, String? error, bool? isGuestMode}) {
+  AuthState copyWith({bool? isLoading, bool? isLoggedIn, String? error, bool? isGuestMode, bool? wasErrorDisplayed}) {
     return AuthState(
       isLoading: isLoading ?? this.isLoading,
       isLoggedIn: isLoggedIn ?? this.isLoggedIn,
-      error: error ?? this.error,
       isGuestMode: isGuestMode ?? this.isGuestMode,
     );
   }
@@ -30,16 +30,33 @@ class AuthCubit extends Cubit<AuthState> {
 
   AuthCubit(this.hfflApi) : super(const AuthState()) {}
 
-  Future<void> login(String email, String password) async {
+  Future<void> login(String email, String password, BuildContext context) async {
     emit(state.copyWith(isLoading: true, error: null));
-    final authResult = await hfflApi.login(email, password);
-    if (authResult != null && authResult.result && authResult.token != null && authResult.refreshToken != null) {
-      await SecureStorage.saveTokens(authResult.token!, authResult.refreshToken!);
-      emit(state.copyWith(isLoading: false, isLoggedIn: true));
-    } else {
-      emit(state.copyWith(isLoading: false, error: authResult?.errors?.join(', ') ?? 'Login failed'));
-      resetErrorMessage();
+    try{
+      final authResult = await hfflApi.login(email, password);
+      if (authResult != null && authResult.result && authResult.token != null && authResult.refreshToken != null) {
+        await SecureStorage.saveTokens(authResult.token!, authResult.refreshToken!);
+        emit(state.copyWith(isLoading: false, isLoggedIn: true));
+      } else {
+        emit(state.copyWith(isLoading: false, error: authResult?.errors?.join(', ') ?? 'Login failed'));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Login nije ispravan'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+
+    } catch(e){
+      emit(state.copyWith(isLoading: false, error: 'Login failed', wasErrorDisplayed: false));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Login nije ispravan'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
+
   }
 
   Future<bool> refresh() async {
@@ -76,10 +93,6 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<String?> getToken() async => await SecureStorage.getToken();
-
-  void resetErrorMessage(){
-    emit(state.copyWith(error: null));
-  }
 
   void loginAsGuest(){
     emit(state.copyWith(isGuestMode: true));
