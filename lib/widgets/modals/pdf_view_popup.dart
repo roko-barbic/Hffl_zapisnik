@@ -46,13 +46,15 @@ class PdfPopupWidget extends StatelessWidget {
               padding: const EdgeInsets.all(12.0),
               child: SizedBox(
                 height: 350,
-                child: Expanded(
-                  child: AlhPdfView(
-                    filePath: pdfFilePath,
-                    enableSwipe: true,
-                    autoSpacing: true,
-                    fitPolicy: FitPolicy.both,
-                  ),
+                child: Builder(
+                  builder: (context) {
+                    return AlhPdfView(
+                      filePath: pdfFilePath,
+                      enableSwipe: true,
+                      autoSpacing: true,
+                      fitPolicy: FitPolicy.both,
+                    );
+                  }
                 ),
               ),
             ),
