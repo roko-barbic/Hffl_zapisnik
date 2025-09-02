@@ -18,49 +18,52 @@ class GamesRowDisplay extends StatelessWidget {
         child: SizedBox(
           width: MediaQuery.of(context).size.width * 0.9,
           height: 100,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border(
-                left: BorderSide(
-                  color: ClubColors.clubColors[game.clubHomeId] ?? Colors.black,
-                  width: 3.0,
-                ),
-                right: BorderSide(
-                  color: ClubColors.clubColors[game.clubAwayId] ?? Colors.black,
-                  width: 3.0,
-                ),
-                top: BorderSide(
-                  color: Colors.black.withOpacity(0.1),
-                  width: 1.0,
-                ),
-              ),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 2,
-                  offset: Offset(0, 3),
-                  spreadRadius: 0,
-                ),
-              ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                clubNameAndIcon(game.clubHome.name, "iconPath", true, context),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.18,
-                  height: 70,
-                  child: Center(
-                    child: Text(
-                      "${game.scoreHome} : ${game.scoreAway}",
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.w600),
-                    ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                  left: BorderSide(
+                    color: ClubColors.clubColors[game.clubHomeId] ?? Colors.black,
+                    width: 9.0,
+                  ),
+                  right: BorderSide(
+                    color: ClubColors.clubColors[game.clubAwayId] ?? Colors.black,
+                    width: 9.0,
+                  ),
+                  top: BorderSide(
+                    color: Colors.black.withOpacity(0.1),
+                    width: 1.0,
                   ),
                 ),
-                clubNameAndIcon(game.clubAway.name, "iconPath", false, context),
-              ],
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 2,
+                    offset: Offset(0, 3),
+                    spreadRadius: 0,
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  clubNameAndIcon(game.clubHome.name, "iconPath", true, context),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.18,
+                    height: 70,
+                    child: Center(
+                      child: Text(
+                        "${game.scoreHome} : ${game.scoreAway}",
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
+                  clubNameAndIcon(game.clubAway.name, "iconPath", false, context),
+                ],
+              ),
             ),
           ),
         ),
@@ -91,7 +94,7 @@ class GamesRowDisplay extends StatelessWidget {
                   ),
                   Expanded(
                     child: Padding(
-                        padding: const EdgeInsets.only(left: 18.0),
+                        padding: const EdgeInsets.only(left: 10.0),
                         child: Text(
                           name,
                           softWrap: true,
@@ -107,7 +110,7 @@ class GamesRowDisplay extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.only(right: 18.0),
+                      padding: const EdgeInsets.only(right: 10.0),
                       child: Text(name,
                           softWrap: true,
                           textAlign: TextAlign.center,

@@ -9,7 +9,7 @@ class CenteredSvg extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Image.asset(
-          'assets/images/cafa_png.png',
+          'assets/images/extrapoint_logo_transparent.png',
           width: 39,
           height: 39,
           fit: BoxFit.cover,

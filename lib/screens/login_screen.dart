@@ -83,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
                         width: isKeyboardOpen ? 120 : 200,
                         height: isKeyboardOpen ? 120 : 200,
                         child: Image.asset(
-                          'assets/images/cafa_png.png',
+                          'assets/images/extrapoint_logo_transparent.png',
                           fit: BoxFit.contain,
                         ),
                       ),

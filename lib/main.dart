@@ -88,7 +88,7 @@ void main() async {
   runApp(GlobalLoaderOverlay(
     overlayWidgetBuilder: (_) => const BouncingBallProgressIndicator()
     ,
-    overlayColor: Color.fromRGBO(20, 81, 191, 1.0).withOpacity(0.7),
+    overlayColor:  const Color.fromRGBO(55, 142, 112, 0.7),//const Color.fromRGBO(2, 71, 181, 1.0),//Color.fromRGBO(20, 81, 191, 1.0).withOpacity(0.7),
     child: MyApp(
       hfflRepository: hfflRepository,
       authCubit: authCubit,
@@ -110,7 +110,6 @@ class MyApp extends StatelessWidget {
   final HfflRepository _hfflRepository;
   final AuthCubit authCubit;
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -171,13 +170,13 @@ class _HfflAppViewState extends State<HfflAppView>
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: const Color.fromRGBO(2, 71, 181, 1.0),
+        primaryColor: const Color.fromRGBO(55, 142, 112, 1.0),//const Color.fromRGBO(2, 71, 181, 1.0),
         colorScheme: const ColorScheme.light(
-          primary: Color.fromRGBO(2, 71, 181, 1.0),
+          primary:  const Color.fromRGBO(55, 142, 112, 1.0),//const Color.fromRGBO(2, 71, 181, 1.0),
           secondary: Colors.blueAccent,
         ),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color.fromRGBO(2, 71, 181, 1.0),
+          backgroundColor:  const Color.fromRGBO(55, 142, 112, 1.0),//const Color.fromRGBO(2, 71, 181, 1.0),
           foregroundColor: Colors.white,
         ),
         tabBarTheme: const TabBarTheme(

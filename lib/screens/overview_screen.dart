@@ -33,14 +33,17 @@ class _OverviewScreenState extends State<OverviewScreen>
       appBar: AppBar(
         //backgroundColor: Colors.redAccent,
         title: const Padding(
-            padding: EdgeInsets.only(left: 15),
+          padding: EdgeInsets.only(left: 42.0),
+          child: Center(
             child: Text(
-              "CAFA - zapisnik",
+              "Extrapoint",
               style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                   color: Colors.white),
-            )),
+            ),
+          ),
+        ),
         actions: [
           BlocBuilder<AuthCubit, AuthState>(
             builder: (context, state) {
