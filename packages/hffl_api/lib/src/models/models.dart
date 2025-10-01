@@ -13,6 +13,7 @@ export 'login_model.dart';
 export 'player_combination.dart';
 export 'player_dto.dart';
 export 'player_stats.dart';
+export 'seasons.dart';
 export 'token_request.dart';
 export 'tournament.dart';
 export 'tournaments.dart';

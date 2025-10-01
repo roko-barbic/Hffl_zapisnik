@@ -17,6 +17,11 @@ class HfflRepository {
     return clubs;
   }
 
+  Future<Seasons?> getSeasons() async {
+    final seasons = await _hfflApiClient.getSeasons();
+    return seasons;
+  }
+
   Future<Tournaments?> getTournaments() async {
     final tournaments = await _hfflApiClient.getTournaments();
     return tournaments;

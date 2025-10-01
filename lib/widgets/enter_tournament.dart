@@ -82,7 +82,7 @@ class _EnterTournamentValuesState extends State<EnterTournamentValues> {
     return Tournament(
         date: selectedDate.add(const Duration(hours: 4)).toUtc(),
         name: tournamentNameController.text,
-        season: "2024"); //todo prepravi sezonu
+        season: DateTime.now().year.toString());
   }
 
   @override

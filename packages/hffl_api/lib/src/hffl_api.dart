@@ -39,7 +39,20 @@ class HfflApi {
       return clubs;
     }
     throw Exception();
-    return null;
+  }
+
+  Future<Seasons> getSeasons() async {
+    final response = await client.get('$conn${Routes.getSeasons}',
+        options: Options(
+          headers: {'Content-Type': 'application/json'},
+        ));
+
+    if (response.statusCode == 200) {
+      dynamic data = response.data;
+      Seasons seasons = Seasons.fromJson(data as List<dynamic>);
+      return seasons;
+    }
+    throw Exception();
   }
 
   Future<Tournaments?> getTournaments() async {

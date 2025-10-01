@@ -7,6 +7,7 @@ import 'package:hffl_zapisnik/cubit/app_bloc_observer.dart';
 import 'package:hffl_zapisnik/cubit/auth_cubit.dart';
 import 'package:hffl_zapisnik/cubit/clubs_cubit.dart';
 import 'package:hffl_zapisnik/cubit/game_cubit.dart';
+import 'package:hffl_zapisnik/cubit/season_cubit.dart';
 import 'package:hffl_zapisnik/cubit/tournament_cubit.dart';
 import 'package:hffl_zapisnik/screens/login_screen.dart';
 import 'package:hffl_zapisnik/screens/overview_screen.dart';
@@ -114,6 +115,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider<SeasonCubit>(create: (context) {
+          final cubit = SeasonCubit(_hfflRepository);
+          cubit.fetchAvailableSeasons();
+          return cubit;
+        }),
         BlocProvider<ClubsCubit>(
           create: (context) {
             final cubit = ClubsCubit(_hfflRepository);

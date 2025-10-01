@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hffl_zapisnik/cubit/auth_cubit.dart';
+import 'package:hffl_zapisnik/cubit/season_cubit.dart';
 import 'package:hffl_zapisnik/screens/clubs_ranking_screen.dart';
 import 'package:hffl_zapisnik/screens/tournaments_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,23 +61,55 @@ class _OverviewScreenState extends State<OverviewScreen>
             },
           ),
         ],
-        bottom: TabBar(
-          indicatorColor: Colors.white,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white.withOpacity(0.7),
-          controller: _tabController,
-          tabs: const [
-            Tab(
-                icon: Text(
-              "Poredak",
-              style: TextStyle(fontSize: 16),
-            )),
-            Tab(
-                icon: Text(
-              "Turniri",
-              style: TextStyle(fontSize: 16),
-            )),
-          ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(100),
+          child: BlocBuilder<SeasonCubit, SeasonState>(
+            builder: (context, state) {
+              return Column(children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(right: 12),
+                        child: Text("Sezona: ", style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white),)),
+                    DropdownButton<String>(
+                      value: state.selectedSeason,
+                      dropdownColor: Theme.of(context).primaryColor,
+                      style: const TextStyle(color: Colors.white),
+                      underline: const SizedBox(),
+                      iconEnabledColor: Colors.white,
+                      items: state.availableSeasons?.seasons.map((season) =>
+                          DropdownMenuItem(value: season, child: Text(season))).toList(),
+                      onChanged: (value) {
+                        context.read<SeasonCubit>().setSelectedSeason(value!);
+                      },
+                    ),
+                  ],
+                ),
+                TabBar(
+                  indicatorColor: Colors.white,
+                  labelColor: Colors.white,
+                  unselectedLabelColor: Colors.white.withOpacity(0.7),
+                  controller: _tabController,
+                  tabs: const [
+                    Tab(
+                        icon: Text(
+                      "Poredak",
+                      style: TextStyle(fontSize: 16),
+                    )),
+                    Tab(
+                        icon: Text(
+                      "Turniri",
+                      style: TextStyle(fontSize: 16),
+                    )),
+                  ],
+                ),
+              ]);
+            },
+          ),
         ),
       ),
       body: TabBarView(
