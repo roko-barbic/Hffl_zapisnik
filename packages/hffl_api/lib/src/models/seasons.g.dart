@@ -10,7 +10,7 @@ part of 'seasons.dart';
 //NE DIRAT PLS
 Seasons _$SeasonsFromJson(List<dynamic> json) => Seasons(
       seasons:
-          json.map((e) => e as String).toList(),
+          json.map((e) => e as int).toList(),
     );
 
 Map<String, dynamic> _$SeasonsToJson(Seasons instance) => <String, dynamic>{

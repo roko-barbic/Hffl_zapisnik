@@ -6,7 +6,7 @@ part 'seasons.g.dart';
 @immutable
 @JsonSerializable()
 class Seasons {
-  final List<String> seasons;
+  final List<int> seasons;
 
   factory Seasons.fromJson(List<dynamic> json) =>
       _$SeasonsFromJson(json);
@@ -34,7 +34,7 @@ class Seasons {
   }
 
   Seasons copyWith({
-    List<String>? seasons,
+    List<int>? seasons,
   }) {
     return Seasons(
       seasons: seasons ?? this.seasons,
@@ -49,7 +49,7 @@ class Seasons {
 
   factory Seasons.fromMap(Map<String, dynamic> map) {
     return Seasons(
-      seasons: map['seasons'] as List<String>,
+      seasons: map['seasons'] as List<int>,
     );
   }
 

@@ -82,7 +82,7 @@ class _OverviewScreenState extends State<OverviewScreen>
                       underline: const SizedBox(),
                       iconEnabledColor: Colors.white,
                       items: state.availableSeasons?.seasons.map((season) =>
-                          DropdownMenuItem(value: season, child: Text(season))).toList(),
+                          DropdownMenuItem(value: season.toString(), child: Text(season.toString()))).toList(),
                       onChanged: (value) {
                         context.read<SeasonCubit>().setSelectedSeason(value!);
                       },
