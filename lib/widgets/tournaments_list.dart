@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hffl_api/hffl_api.dart';
+import 'package:hffl_zapisnik/cubit/season_cubit.dart';
 import 'package:hffl_zapisnik/cubit/tournament_cubit.dart';
 import 'package:hffl_zapisnik/widgets/tournaments_row_display.dart';
 
@@ -17,7 +18,7 @@ class TournamentsList extends StatelessWidget {
       builder: (context, state) {
         return RefreshIndicator(
           onRefresh: () async {
-            context.read<TournamentCubit>().fetchTournaments();
+            context.read<TournamentCubit>().fetchTournaments(context.read<SeasonCubit>().state.selectedSeason);
           },
           //child: ,
           child: ListView.builder(
@@ -27,7 +28,7 @@ class TournamentsList extends StatelessWidget {
               return TournamentsRowDisplay(
                   tournament: tournaments!.tournaments[index],
                   onDelete: (id) {
-                    context.read<TournamentCubit>().deleteTournament(id);
+                    context.read<TournamentCubit>().deleteTournament(id, context.read<SeasonCubit>().state.selectedSeason);
                   });
             },
           ),

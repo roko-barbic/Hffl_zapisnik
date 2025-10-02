@@ -3,7 +3,7 @@ part of 'season_cubit.dart';
 @immutable
 final class SeasonState extends Equatable {
   final Seasons? availableSeasons;
-  final String selectedSeason;
+  final int selectedSeason;
 
   @override
   List<Object?> get props => [availableSeasons, selectedSeason];
@@ -35,7 +35,7 @@ final class SeasonState extends Equatable {
 
   SeasonState copyWith({
     Seasons? availableSeasons,
-    String? selectedSeason,
+    int? selectedSeason,
   }) {
     return SeasonState(
       availableSeasons: availableSeasons ?? this.availableSeasons,
@@ -53,7 +53,7 @@ final class SeasonState extends Equatable {
   factory SeasonState.fromMap(Map<String, dynamic> map) {
     return SeasonState(
       availableSeasons: map['availableSeasons'] as Seasons,
-      selectedSeason: map['selectedSeason'] as String,
+      selectedSeason: map['selectedSeason'] as int,
     );
   }
 

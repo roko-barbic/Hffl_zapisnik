@@ -27,8 +27,8 @@ class HfflApi {
   HfflApi({required this.conn, required this.client});
 
 
-  Future<Clubs?> getClubs() async {
-    final response = await client.get('$conn${Routes.getClubsUrl}',
+  Future<Clubs?> getClubs(int season) async {
+    final response = await client.get('$conn${Routes.getClubsUrl}$season',
         options: Options(
           headers: {'Content-Type': 'application/json'},
         ));
@@ -55,8 +55,8 @@ class HfflApi {
     throw Exception();
   }
 
-  Future<Tournaments?> getTournaments() async {
-    final response = await client.get('$conn${Routes.getTournamentUrl}',
+  Future<Tournaments?> getTournaments(int season) async {
+    final response = await client.get('$conn${Routes.getTournamentUrl}$season',
         options: Options(
           headers: {'Content-Type': 'application/json'},
         ));
@@ -164,9 +164,9 @@ class HfflApi {
     }
   }
 
-  Future<Tournaments?> fetchTournamentsWithPhoto() async {
+  Future<Tournaments?> fetchTournamentsWithPhoto(int season) async {
     try {
-      String url = '$conn/tournamentWithPhoto';
+      String url = '$conn${Routes.getTournamentUrl}$season';
 
       Response response = await client.get(
         url,

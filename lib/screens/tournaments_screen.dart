@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hffl_zapisnik/cubit/season_cubit.dart';
 import 'package:hffl_zapisnik/cubit/tournament_cubit.dart';
 import 'package:hffl_zapisnik/cubit/auth_cubit.dart';
 import 'package:hffl_zapisnik/enums/clubs_status_enum.dart';
@@ -30,13 +31,15 @@ class _TournamentsScreenState extends State<TournamentsScreen> {
               LoadingStatus.initial => const CenteredSvg(),
               LoadingStatus.loading => const BouncingBallProgressIndicator(),
               LoadingStatus.failure => ConnectionError(
-                onRefresh: () =>
-                   context.read<TournamentCubit>().fetchTournaments(),
+                onRefresh: () {
+                    context.read<SeasonCubit>().fetchAvailableSeasons();
+                   context.read<TournamentCubit>().fetchTournaments(context.read<SeasonCubit>().state.selectedSeason);
+                   },
               ),
               LoadingStatus.success => TournamentsList(
                   tournaments: state.tournaments,
                   onRefresh: () =>
-                      context.read<TournamentCubit>().fetchTournaments(),
+                      context.read<TournamentCubit>().fetchTournaments(context.read<SeasonCubit>().state.selectedSeason),
                 ),
             };
           },

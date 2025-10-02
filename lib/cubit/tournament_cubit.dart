@@ -24,12 +24,10 @@ class TournamentCubit extends Cubit<TournamentState> {
 
   final HfflRepository _hfflRepository;
 
-  Future<void> fetchTournaments() async {
+  Future<void> fetchTournaments(int season) async {
     try {
-      if (state.tournamentLoadingStatus == LoadingStatus.initial) {
-        emit(state.copyWith(tournamentLoadingStatus: LoadingStatus.loading));
-      }
-      final tournaments = await _hfflRepository.fetchTournaments(); //ovo sam changeo
+      emit(state.copyWith(tournamentLoadingStatus: LoadingStatus.loading));
+      final tournaments = await _hfflRepository.fetchTournaments(season); //ovo sam changeo
       if(tournaments != null)
         emit(state.copyWith(
           tournaments: tournaments,
@@ -59,7 +57,7 @@ class TournamentCubit extends Cubit<TournamentState> {
       final creation = await _hfflRepository.createTournamentWithPhoto(
           name, date, season, coverPhoto);
       if (creation == true) {
-        await fetchTournaments();
+        await fetchTournaments(season);
         emit(state.copyWith(creatingTournament: LoadingStatus.success));
       }
     } on Exception {
@@ -68,14 +66,14 @@ class TournamentCubit extends Cubit<TournamentState> {
     navigatorKey.currentContext?.loaderOverlay.hide();
   }
 
-  Future<void> deleteTournament(int tournamentId) async {
+  Future<void> deleteTournament(int tournamentId, int season) async {
     navigatorKey.currentContext?.loaderOverlay.show();
     try {
       emit(state.copyWith(deletingTournament: LoadingStatus.loading));
       final deletion = await _hfflRepository.deleteTournament(tournamentId);
       if (deletion == true) {
         emit(state.copyWith(deletingTournament: LoadingStatus.success));
-        await fetchTournaments();
+        await fetchTournaments(season);
       }
     } on Exception {
       emit(state.copyWith(deletingTournament: LoadingStatus.failure));
@@ -109,7 +107,7 @@ class TournamentCubit extends Cubit<TournamentState> {
     );
   }
 
-  Future<void> toggleTournamentStatus(bool isFinished, int tournamentId)async{
+  Future<void> toggleTournamentStatus(bool isFinished, int tournamentId, int season)async{
 
     navigatorKey.currentContext?.loaderOverlay.show();
     bool isSuccesful;
@@ -119,7 +117,7 @@ class TournamentCubit extends Cubit<TournamentState> {
       isSuccesful = await _hfflRepository.finishTorunament(tournamentId);
     }
     if(isSuccesful){
-      await fetchTournaments();
+      await fetchTournaments(season);
     }
     navigatorKey.currentContext?.loaderOverlay.hide();
   }

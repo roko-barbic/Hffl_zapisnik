@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hffl_zapisnik/cubit/auth_cubit.dart';
+import 'package:hffl_zapisnik/cubit/clubs_cubit.dart';
+import 'package:hffl_zapisnik/cubit/game_cubit.dart';
 import 'package:hffl_zapisnik/cubit/season_cubit.dart';
+import 'package:hffl_zapisnik/cubit/tournament_cubit.dart';
 import 'package:hffl_zapisnik/screens/clubs_ranking_screen.dart';
 import 'package:hffl_zapisnik/screens/tournaments_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -75,16 +79,19 @@ class _OverviewScreenState extends State<OverviewScreen>
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                           color: Colors.white),)),
-                    DropdownButton<String>(
+                    DropdownButton<int>(
                       value: state.selectedSeason,
                       dropdownColor: Theme.of(context).primaryColor,
                       style: const TextStyle(color: Colors.white),
                       underline: const SizedBox(),
                       iconEnabledColor: Colors.white,
                       items: state.availableSeasons?.seasons.map((season) =>
-                          DropdownMenuItem(value: season.toString(), child: Text(season.toString()))).toList(),
+                          DropdownMenuItem(value: season, child: Text(season.toString()))).toList(),
                       onChanged: (value) {
-                        context.read<SeasonCubit>().setSelectedSeason(value!);
+                        int selectedSeason = value ?? DateTime.now().year;
+                        context.read<ClubsCubit>().fetchClubsInfo(selectedSeason);
+                        context.read<TournamentCubit>().fetchTournaments(selectedSeason);
+                        context.read<SeasonCubit>().setSelectedSeason(selectedSeason);
                       },
                     ),
                   ],

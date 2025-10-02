@@ -12,8 +12,8 @@ class HfflRepository {
 
   final HfflApi _hfflApiClient;
 
-  Future<Clubs?> getClubs() async {
-    final clubs = await _hfflApiClient.getClubs();
+  Future<Clubs?> getClubs(int? season) async {
+    final clubs = await _hfflApiClient.getClubs(season ?? DateTime.now().year);
     return clubs;
   }
 
@@ -22,8 +22,8 @@ class HfflRepository {
     return seasons;
   }
 
-  Future<Tournaments?> getTournaments() async {
-    final tournaments = await _hfflApiClient.getTournaments();
+  Future<Tournaments?> getTournaments(int? season) async {
+    final tournaments = await _hfflApiClient.getTournaments(season ?? DateTime.now().year);
     return tournaments;
   }
 
@@ -45,8 +45,8 @@ class HfflRepository {
         );
   }
 
-  Future<Tournaments?> fetchTournaments(){
-    return _hfflApiClient.fetchTournamentsWithPhoto();
+  Future<Tournaments?> fetchTournaments(int season){
+    return _hfflApiClient.fetchTournamentsWithPhoto(season);
   }
 
   Future<String?> downloadTournamentPdf(int tournamentId, String fileName){

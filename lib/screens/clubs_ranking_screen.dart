@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hffl_api/hffl_api.dart';
 import 'package:hffl_zapisnik/cubit/clubs_cubit.dart';
+import 'package:hffl_zapisnik/cubit/season_cubit.dart';
 import 'package:hffl_zapisnik/enums/clubs_status_enum.dart';
 import 'package:hffl_zapisnik/widgets/bouncing_ball_progress_indicator.dart';
 import 'package:hffl_zapisnik/widgets/centered_svg.dart';
@@ -21,11 +22,12 @@ class ClubsRanking extends StatelessWidget {
           return switch (state.clubsLoadingStatus) {
             LoadingStatus.initial => const CenteredSvg(),
             LoadingStatus.loading => RefreshIndicator(
-                onRefresh: () => context.read<ClubsCubit>().fetchClubsInfo(),
+                onRefresh: () => context.read<ClubsCubit>().fetchClubsInfo(context.read<SeasonCubit>().state.selectedSeason),
                 child: const BouncingBallProgressIndicator()),
             LoadingStatus.failure => ConnectionError(
                 onRefresh: () {
-                  return context.read<ClubsCubit>().fetchClubsInfo();
+                  context.read<SeasonCubit>().fetchAvailableSeasons();
+                  return context.read<ClubsCubit>().fetchClubsInfo(context.read<SeasonCubit>().state.selectedSeason);
                 },
               ),
             LoadingStatus.success => ClubsRankingPopulated(
@@ -34,7 +36,7 @@ class ClubsRanking extends StatelessWidget {
                       Club(id: 1, name: "name", win: 1, draw: 1, loss: 1)
                     ]),
                 onRefresh: () {
-                  return context.read<ClubsCubit>().fetchClubsInfo();
+                  return context.read<ClubsCubit>().fetchClubsInfo(context.read<SeasonCubit>().state.selectedSeason);
                 })
           };
         },

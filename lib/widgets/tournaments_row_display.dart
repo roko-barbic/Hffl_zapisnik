@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hffl_api/hffl_api.dart';
 import 'package:hffl_zapisnik/cubit/auth_cubit.dart';
+import 'package:hffl_zapisnik/cubit/season_cubit.dart';
 import 'package:hffl_zapisnik/cubit/tournament_cubit.dart';
 import 'package:hffl_zapisnik/delegates/parallax_flow_delegate.dart';
 import 'package:hffl_zapisnik/screens/games_screen.dart';
@@ -182,8 +183,9 @@ class TournamentsRowDisplay extends StatelessWidget {
       right: 50,
       bottom: 20,
       child: GestureDetector(
-        onTap: () => context.read<TournamentCubit>().toggleTournamentStatus(
-            tournament.isFinished ?? false, tournament.id ?? 0),
+        onTap: () { context.read<TournamentCubit>().toggleTournamentStatus(
+            tournament.isFinished ?? false, tournament.id ?? 0, context.read<SeasonCubit>().state.selectedSeason
+        );},
         child: Icon(
           (tournament.isFinished ?? false) ? Icons.lock : Icons.lock_open,
           color: Colors.white,

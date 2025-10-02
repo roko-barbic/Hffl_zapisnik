@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hffl_api/hffl_api.dart';
+import 'package:hffl_zapisnik/cubit/season_cubit.dart';
 import 'package:hffl_zapisnik/enums/clubs_status_enum.dart';
 import 'package:hffl_zapisnik/screens/clubs_players_screen.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -20,13 +21,12 @@ class ClubsCubit extends HydratedCubit<ClubsState> {
 
   final HfflRepository _hfflRepository;
 
-
-  Future<void> fetchClubsInfo() async{
+  Future<void> fetchClubsInfo(int season) async{
     try{
-      if(state.clubsLoadingStatus == LoadingStatus.initial){
-        emit(state.copyWith(clubsLoadingStatus: LoadingStatus.loading));
-      }
-      final clubs = await _hfflRepository.getClubs();
+
+      emit(state.copyWith(clubsLoadingStatus: LoadingStatus.loading));
+
+      final clubs = await _hfflRepository.getClubs(season);
       emit(state.copyWith(clubs: clubs, clubsLoadingStatus: LoadingStatus.success));
 
     }on Exception{

@@ -124,7 +124,7 @@ class MyApp extends StatelessWidget {
           create: (context) {
             final cubit = ClubsCubit(_hfflRepository);
             cubit
-                .fetchClubsInfo(); // Fetch clubs as soon as the cubit is created
+                .fetchClubsInfo(DateTime.now().year); // Fetch clubs as soon as the cubit is created
             return cubit;
           },
         ),
@@ -132,7 +132,7 @@ class MyApp extends StatelessWidget {
           create: (context) {
             final cubit = TournamentCubit(_hfflRepository);
             cubit
-                .fetchTournaments(); // Fetch tournaments as soon as the cubit is created
+                .fetchTournaments(DateTime.now().year); // Fetch tournaments as soon as the cubit is created
             return cubit;
           },
         ),
