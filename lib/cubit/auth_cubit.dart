@@ -78,23 +78,25 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> logout() async {
-    if(state.isLoggedIn){
-      await SecureStorage.deleteTokens();
-      emit(state.copyWith(isLoggedIn: false));
-    }
-    else{
-      emit(state.copyWith(isGuestMode: false));
-    }
+    
+    await SecureStorage.deleteTokens();
+    emit(state.copyWith(isLoggedIn: false));
+    emit(state.copyWith(isGuestMode: false));
+
   }
 
   Future<void> tokenCheck() async {
     bool isTokenSaved = await SecureStorage.isThereToken();
+    bool isGuestMode = await SecureStorage.isGuestModeOn();
+    emit(state.copyWith(isGuestMode: isGuestMode));
     emit(state.copyWith(isLoggedIn: isTokenSaved));
   }
 
   Future<String?> getToken() async => await SecureStorage.getToken();
 
-  void loginAsGuest(){
+  void loginAsGuest() async{
+    await SecureStorage.deleteTokens();
+    await SecureStorage.saveGuestMode();
     emit(state.copyWith(isGuestMode: true));
   }
 }
