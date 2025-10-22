@@ -34,14 +34,14 @@ class ClubsCubit extends HydratedCubit<ClubsState> {
     }
   }
 
-  Future<ClubPlayersStats?> fetchClubPlayersStats(int clubId, BuildContext context) async{
+  Future<ClubPlayersStats?> fetchClubPlayersStats(int clubId, BuildContext context, int season) async{
     navigatorKey.currentContext?.loaderOverlay.show();
     emit(state.copyWith(clubPlayersStats: null));
     try{
       if(state.statsLoadingStatus == LoadingStatus.initial){
         emit(state.copyWith(statsLoadingStatus: LoadingStatus.loading));
       }
-      final clubs = await _hfflRepository.fetchClubPlayersStats(clubId);
+      final clubs = await _hfflRepository.fetchClubPlayersStats(clubId, season);
       emit(state.copyWith(statsLoadingStatus: LoadingStatus.success, clubPlayersStats: clubs));
 
       Navigator.push(

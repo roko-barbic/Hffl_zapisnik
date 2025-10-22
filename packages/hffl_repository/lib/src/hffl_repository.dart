@@ -89,8 +89,8 @@ class HfflRepository {
     return _hfflApiClient.login(email, password);
   }
 
-  Future<ClubPlayersStats?> fetchClubPlayersStats(int clubId){
-    return _hfflApiClient.fetchClubPlayersStats(clubId);
+  Future<ClubPlayersStats?> fetchClubPlayersStats(int clubId, int season){
+    return _hfflApiClient.fetchClubPlayersStats(clubId, season);
   }
 
   Future<bool> finishTorunament(int tournamentId)async{

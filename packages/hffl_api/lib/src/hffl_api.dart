@@ -433,11 +433,18 @@ class HfflApi {
     }
   }
 
-  Future<ClubPlayersStats?> fetchClubPlayersStats(int clubId) async {
+  Future<ClubPlayersStats?> fetchClubPlayersStats(int clubId, int season) async {
     try {
-      String url = '$conn${Routes.clubPlayerStats}$clubId';
-
-      final response = await client.get(url);
+      String url = '$conn${Routes.clubPlayerStats}';
+      final data = {
+        'id': clubId,
+        'season': season,
+      };
+      final response = await client.post(url, data: data, options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      ),);
 
       if (response.statusCode == 200) {
         return ClubPlayersStats.fromJson(response.data as Map<String, dynamic>);

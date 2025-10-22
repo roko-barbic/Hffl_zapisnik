@@ -17,7 +17,7 @@ class Routes{
   static const String deleteEvent = '/deleteEvent/';
   static const String login = '/api/Authentication/Login';
   static const String refreshTokenn = '/api/Authentication/RefreshToken';
-  static const String clubPlayerStats = '/getClubStatsOfPlayers/';
+  static const String clubPlayerStats = '/getClubStatsOfPlayers';
   static const String finishTournament = '/Tournament/finishTournament?tournamentId=';
   static const String startAgainTournament = '/Tournament/startAgainTournament?tournamentId=';
 }

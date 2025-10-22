@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hffl_api/hffl_api.dart';
 import 'package:hffl_zapisnik/cubit/clubs_cubit.dart';
+import 'package:hffl_zapisnik/cubit/season_cubit.dart';
 import 'package:hffl_zapisnik/widgets/club_row_display.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,7 +25,7 @@ class ClubsGrid extends StatelessWidget {
           itemBuilder: (context, index) => GestureDetector(
             onTap: () => context
                 .read<ClubsCubit>()
-                .fetchClubPlayersStats(clubs.clubs[index].id, context),
+                .fetchClubPlayersStats(clubs.clubs[index].id, context, context.read<SeasonCubit>().state.selectedSeason),
             child: ClubRow(club: clubs.clubs[index]),
           ),
         );
