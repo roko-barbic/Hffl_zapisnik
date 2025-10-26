@@ -6,6 +6,7 @@ part of 'game.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+//NE DIRAT
 Game _$GameFromJson(Map<String, dynamic> json) => Game(
       id: (json['id'] as num?)?.toInt(),
       clubHome: ClubName.fromJson(json['club_Home'] as Map<String, dynamic>),
