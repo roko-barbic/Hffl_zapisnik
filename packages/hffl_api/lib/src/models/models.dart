@@ -1,8 +1,10 @@
+export 'archive_player_dto.dart';
 export 'auth_result.dart';
 export 'club.dart';
 export 'club_dto_short.dart';
 export 'club_player_stats.dart';
 export 'clubs.dart';
+export 'create_player_dto.dart';
 export 'event.dart';
 export 'event_dto.dart';
 export 'game.dart';
