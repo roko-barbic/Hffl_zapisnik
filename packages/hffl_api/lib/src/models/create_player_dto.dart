@@ -6,7 +6,9 @@ part 'create_player_dto.g.dart';
 
 @JsonSerializable()
 class CreatePlayerDto {
-  final int playerId;
+  final String firstName;
+  final String lastname;
+  final DateTime dateOfBirth;
   final int clubId;
 
 
@@ -17,7 +19,9 @@ class CreatePlayerDto {
 
 //<editor-fold desc="Data Methods">
   const CreatePlayerDto({
-    required this.playerId,
+    required this.firstName,
+    required this.lastname,
+    required this.dateOfBirth,
     required this.clubId,
   });
 
@@ -26,40 +30,56 @@ class CreatePlayerDto {
       identical(this, other) ||
       (other is CreatePlayerDto &&
           runtimeType == other.runtimeType &&
-          playerId == other.playerId &&
+          firstName == other.firstName &&
+          lastname == other.lastname &&
+          dateOfBirth == other.dateOfBirth &&
           clubId == other.clubId);
 
   @override
-  int get hashCode => playerId.hashCode ^ clubId.hashCode;
+  int get hashCode =>
+      firstName.hashCode ^
+      lastname.hashCode ^
+      dateOfBirth.hashCode ^
+      clubId.hashCode;
 
   @override
   String toString() {
     return 'CreatePlayerDto{' +
-        ' playerId: $playerId,' +
+        ' firstName: $firstName,' +
+        ' lastname: $lastname,' +
+        ' dateOfBirth: $dateOfBirth,' +
         ' clubId: $clubId,' +
         '}';
   }
 
   CreatePlayerDto copyWith({
-    int? playerId,
+    String? firstName,
+    String? lastname,
+    DateTime? dateOfBirth,
     int? clubId,
   }) {
     return CreatePlayerDto(
-      playerId: playerId ?? this.playerId,
+      firstName: firstName ?? this.firstName,
+      lastname: lastname ?? this.lastname,
+      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
       clubId: clubId ?? this.clubId,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'playerId': this.playerId,
+      'firstName': this.firstName,
+      'lastname': this.lastname,
+      'dateOfBirth': this.dateOfBirth,
       'clubId': this.clubId,
     };
   }
 
   factory CreatePlayerDto.fromMap(Map<String, dynamic> map) {
     return CreatePlayerDto(
-      playerId: map['playerId'] as int,
+      firstName: map['firstName'] as String,
+      lastname: map['lastname'] as String,
+      dateOfBirth: map['dateOfBirth'] as DateTime,
       clubId: map['clubId'] as int,
     );
   }

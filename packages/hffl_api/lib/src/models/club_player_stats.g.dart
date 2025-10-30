@@ -9,6 +9,7 @@ part of 'club_player_stats.dart';
 ClubPlayersStats _$ClubPlayersStatsFromJson(Map<String, dynamic> json) =>
     ClubPlayersStats(
       name: json['name'] as String,
+      clubId: (json['clubId'] as num? ?? 0).toInt(),
       players: (json['players'] as List<dynamic>)
           .map((e) => PlayerStats.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -17,5 +18,6 @@ ClubPlayersStats _$ClubPlayersStatsFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$ClubPlayersStatsToJson(ClubPlayersStats instance) =>
     <String, dynamic>{
       'name': instance.name,
+      'clubId': instance.clubId,
       'players': instance.players,
     };

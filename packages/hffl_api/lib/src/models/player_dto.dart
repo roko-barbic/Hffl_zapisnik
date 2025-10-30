@@ -6,6 +6,7 @@ part 'player_dto.g.dart';
 class PlayerDto {
   final String LastName;
   final String firstName;
+  final int? id;
 
 
   factory PlayerDto.fromJson(Map<String, dynamic> json) =>
@@ -17,6 +18,7 @@ class PlayerDto {
   const PlayerDto({
     required this.LastName,
     required this.firstName,
+    this.id,
   });
 
   @override
@@ -25,26 +27,30 @@ class PlayerDto {
       (other is PlayerDto &&
           runtimeType == other.runtimeType &&
           LastName == other.LastName &&
-          firstName == other.firstName);
+          firstName == other.firstName &&
+          id == other.id);
 
   @override
-  int get hashCode => LastName.hashCode ^ firstName.hashCode;
+  int get hashCode => LastName.hashCode ^ firstName.hashCode ^ id.hashCode;
 
   @override
   String toString() {
     return 'PlayerDto{' +
         ' LastName: $LastName,' +
         ' firstName: $firstName,' +
+        ' id: $id,' +
         '}';
   }
 
   PlayerDto copyWith({
     String? LastName,
     String? firstName,
+    int? id,
   }) {
     return PlayerDto(
       LastName: LastName ?? this.LastName,
       firstName: firstName ?? this.firstName,
+      id: id ?? this.id,
     );
   }
 
@@ -52,6 +58,7 @@ class PlayerDto {
     return {
       'LastName': this.LastName,
       'firstName': this.firstName,
+      'id': this.id,
     };
   }
 
@@ -59,6 +66,7 @@ class PlayerDto {
     return PlayerDto(
       LastName: map['LastName'] as String,
       firstName: map['firstName'] as String,
+      id: map['id'] as int,
     );
   }
 

@@ -94,12 +94,32 @@ class HfflRepository {
   }
 
   Future<bool> finishTorunament(int tournamentId)async{
-   bool? isSuccesful =  await _hfflApiClient?.finishTournamet(tournamentId);
+   bool? isSuccesful =  await _hfflApiClient.finishTournamet(tournamentId);
     return isSuccesful ?? false;
   }
 
   Future<bool> startAgainTournament(int tournamentId)async{
-    bool? isSuccesful =  await _hfflApiClient?.startAgainTournament(tournamentId);
+    bool? isSuccesful =  await _hfflApiClient.startAgainTournament(tournamentId);
+    return isSuccesful ?? false;
+  }
+
+  Future<bool> archivePlayer(ArchivePlayerDto archivePlayerDto)async{
+    bool? isSuccesful =  await _hfflApiClient.archivePlayer(archivePlayerDto);
+    return isSuccesful ?? false;
+  }
+
+  Future<List<PlayerDto>> fetchArchivedPlayers()async{
+    List<PlayerDto>? archivedPlayers =  await _hfflApiClient.fetchArchivedPlayers();
+    return archivedPlayers ?? [];
+  }
+
+  Future<bool> activateArchivedPlayer(ArchivePlayerDto archivePlayerDto)async{
+    bool? isSuccesful =  await _hfflApiClient.activateArchivedPlayer(archivePlayerDto);
+    return isSuccesful ?? false;
+  }
+
+  Future<bool> addNewPlayer(CreatePlayerDto createPlayerDto)async{
+    bool? isSuccesful =  await _hfflApiClient.addNewPlayer(createPlayerDto);
     return isSuccesful ?? false;
   }
 

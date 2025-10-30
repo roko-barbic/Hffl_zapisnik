@@ -6,6 +6,7 @@ final class ClubsState extends Equatable {
   final Clubs? clubs;
   final ClubPlayersStats? clubPlayersStats;
   final LoadingStatus statsLoadingStatus;
+  final List<PlayerDto>? archivedPlayer;
   //todo adde rest
 
   factory ClubsState.fromJson(Map<String, dynamic> json) => _$ClubsStateFromJson(json);
@@ -21,6 +22,7 @@ final class ClubsState extends Equatable {
     this.clubs,
     this.clubPlayersStats,
     required this.statsLoadingStatus,
+    this.archivedPlayer,
   });
 
   @override
@@ -31,14 +33,16 @@ final class ClubsState extends Equatable {
           clubsLoadingStatus == other.clubsLoadingStatus &&
           clubs == other.clubs &&
           clubPlayersStats == other.clubPlayersStats &&
-          statsLoadingStatus == other.statsLoadingStatus);
+          statsLoadingStatus == other.statsLoadingStatus &&
+          archivedPlayer == other.archivedPlayer);
 
   @override
   int get hashCode =>
       clubsLoadingStatus.hashCode ^
       clubs.hashCode ^
       clubPlayersStats.hashCode ^
-      statsLoadingStatus.hashCode;
+      statsLoadingStatus.hashCode ^
+      archivedPlayer.hashCode;
 
   @override
   String toString() {
@@ -47,6 +51,7 @@ final class ClubsState extends Equatable {
         ' clubs: $clubs,' +
         ' clubPlayersStats: $clubPlayersStats,' +
         ' statsLoadingStatus: $statsLoadingStatus,' +
+        ' archivedPlayer: $archivedPlayer,' +
         '}';
   }
 
@@ -55,12 +60,14 @@ final class ClubsState extends Equatable {
     Clubs? clubs,
     ClubPlayersStats? clubPlayersStats,
     LoadingStatus? statsLoadingStatus,
+    List<PlayerDto>? archivedPlayer,
   }) {
     return ClubsState(
       clubsLoadingStatus: clubsLoadingStatus ?? this.clubsLoadingStatus,
       clubs: clubs ?? this.clubs,
       clubPlayersStats: clubPlayersStats ?? this.clubPlayersStats,
       statsLoadingStatus: statsLoadingStatus ?? this.statsLoadingStatus,
+      archivedPlayer: archivedPlayer ?? this.archivedPlayer,
     );
   }
 
@@ -70,6 +77,7 @@ final class ClubsState extends Equatable {
       'clubs': this.clubs,
       'clubPlayersStats': this.clubPlayersStats,
       'statsLoadingStatus': this.statsLoadingStatus,
+      'archivedPlayer': this.archivedPlayer,
     };
   }
 
@@ -79,6 +87,7 @@ final class ClubsState extends Equatable {
       clubs: map['clubs'] as Clubs,
       clubPlayersStats: map['clubPlayersStats'] as ClubPlayersStats,
       statsLoadingStatus: map['statsLoadingStatus'] as LoadingStatus,
+      archivedPlayer: map['archivedPlayer'] as List<PlayerDto>,
     );
   }
 

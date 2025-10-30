@@ -25,7 +25,7 @@ class ClubsGrid extends StatelessWidget {
           itemBuilder: (context, index) => GestureDetector(
             onTap: () => context
                 .read<ClubsCubit>()
-                .fetchClubPlayersStats(clubs.clubs[index].id, context, context.read<SeasonCubit>().state.selectedSeason),
+                .initClubsPlayersStats(clubs.clubs[index].id, context, context.read<SeasonCubit>().state.selectedSeason),
             child: ClubRow(club: clubs.clubs[index]),
           ),
         );

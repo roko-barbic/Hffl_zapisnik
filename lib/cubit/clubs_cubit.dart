@@ -4,12 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:hffl_api/hffl_api.dart';
 import 'package:hffl_zapisnik/cubit/season_cubit.dart';
 import 'package:hffl_zapisnik/enums/clubs_status_enum.dart';
+import 'package:hffl_zapisnik/screens/add_new_player_container.dart';
 import 'package:hffl_zapisnik/screens/clubs_players_screen.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:hffl_repository/hffl_repository.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:hffl_zapisnik/global_keys.dart';
 import 'package:loader_overlay/src/overlay_controller_widget_extension.dart';
+import 'package:hffl_zapisnik/widgets/add_new_player_screen.dart';
 import 'package:flutter/material.dart';
 
 part 'clubs_cubit.g.dart';
@@ -34,7 +36,17 @@ class ClubsCubit extends HydratedCubit<ClubsState> {
     }
   }
 
-  Future<ClubPlayersStats?> fetchClubPlayersStats(int clubId, BuildContext context, int season) async{
+  void initClubsPlayersStats(int clubId, BuildContext context, int season) async{
+    await fetchClubPlayersStats(clubId, season);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ClubsPlayersScreen(),
+      ),
+    );
+  }
+
+  Future<ClubPlayersStats?> fetchClubPlayersStats(int clubId, int season) async{
     navigatorKey.currentContext?.loaderOverlay.show();
     emit(state.copyWith(clubPlayersStats: null));
     try{
@@ -43,14 +55,6 @@ class ClubsCubit extends HydratedCubit<ClubsState> {
       }
       final clubs = await _hfflRepository.fetchClubPlayersStats(clubId, season);
       emit(state.copyWith(statsLoadingStatus: LoadingStatus.success, clubPlayersStats: clubs));
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ClubsPlayersScreen(), //todo dodat screen za igrace
-        ),
-      );
-
     }on Exception{
       emit(state.copyWith(statsLoadingStatus: LoadingStatus.failure));
     }
@@ -58,6 +62,65 @@ class ClubsCubit extends HydratedCubit<ClubsState> {
 
   }
 
+  Future<void> initCreatNewPlayer(BuildContext context) async{
+    navigatorKey.currentContext?.loaderOverlay.show();
+    emit(state.copyWith(clubPlayersStats: null));
+    try{
+      if(state.statsLoadingStatus == LoadingStatus.initial){
+        emit(state.copyWith(statsLoadingStatus: LoadingStatus.loading));
+      }
+      final archivedPlayers = await _hfflRepository.fetchArchivedPlayers();
+      emit(state.copyWith(statsLoadingStatus: LoadingStatus.success, archivedPlayer: archivedPlayers));
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AddNewPlayerContainer(),
+        ),
+      );
+    }catch(e){
+      emit(state.copyWith(statsLoadingStatus: LoadingStatus.failure));
+    }
+    navigatorKey.currentContext?.loaderOverlay.hide();
+
+  }
+
+  Future<void> creatNewPlayer(CreatePlayerDto createPlayerDto) async{
+    navigatorKey.currentContext?.loaderOverlay.show();
+    emit(state.copyWith(clubPlayersStats: null));
+    try{
+      if(state.statsLoadingStatus == LoadingStatus.initial){
+        emit(state.copyWith(statsLoadingStatus: LoadingStatus.loading));
+      }
+      final createdSuccessfully  = await _hfflRepository.addNewPlayer(createPlayerDto);
+
+      emit(state.copyWith(statsLoadingStatus: LoadingStatus.success));
+      await fetchClubPlayersStats(createPlayerDto.clubId, DateTime.now().year);
+      navigatorKey.currentState?.pop();
+    }on Exception{
+      emit(state.copyWith(statsLoadingStatus: LoadingStatus.failure));
+    }
+    navigatorKey.currentContext?.loaderOverlay.hide();
+
+  }
+
+  Future<void> returnArchivedPlayer(ArchivePlayerDto archivePlayerDto) async{
+    navigatorKey.currentContext?.loaderOverlay.show();
+    emit(state.copyWith(clubPlayersStats: null));
+    try{
+      if(state.statsLoadingStatus == LoadingStatus.initial){
+        emit(state.copyWith(statsLoadingStatus: LoadingStatus.loading));
+      }
+      await _hfflRepository.activateArchivedPlayer(archivePlayerDto);
+
+      emit(state.copyWith(statsLoadingStatus: LoadingStatus.success));
+      await fetchClubPlayersStats(archivePlayerDto.clubId, DateTime.now().year);
+      navigatorKey.currentState?.pop();
+    }on Exception{
+      emit(state.copyWith(statsLoadingStatus: LoadingStatus.failure));
+    }
+    navigatorKey.currentContext?.loaderOverlay.hide();
+  }
 
   @override
   ClubsState fromJson(Map<String, dynamic> json) =>

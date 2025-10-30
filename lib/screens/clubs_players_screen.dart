@@ -34,7 +34,17 @@ class _ClubsPlayersScreenState extends State<ClubsPlayersScreen> {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(clubName),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(clubName),
+                IconButton(
+                    onPressed: (){
+                      context.read<ClubsCubit>().initCreatNewPlayer(context);
+                    },
+                    icon: const Icon(Icons.add))
+              ],
+            ),
           ),
           body: players.isEmpty
               ? const Center(child: Text("No players available", style: TextStyle(fontSize: 16)))

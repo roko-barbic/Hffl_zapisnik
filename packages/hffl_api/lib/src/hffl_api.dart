@@ -447,10 +447,13 @@ class HfflApi {
       ),);
 
       if (response.statusCode == 200) {
-        return ClubPlayersStats.fromJson(response.data as Map<String, dynamic>);
+        ClubPlayersStats responseValue = ClubPlayersStats.fromJson(response.data as Map<String, dynamic>);
+        responseValue.copyWith(clubId: clubId);
+        return responseValue;
       } else {
         return null;
       }
+
     } catch (e) {
       throw Exception();
     }
@@ -487,6 +490,86 @@ class HfflApi {
       throw Exception();
     }
   }
+
+  Future<bool?> archivePlayer(ArchivePlayerDto archivePlayerDto) async {
+    try {
+
+      final response = await client.post(
+        '$conn${Routes.archivePlayer}',
+        data: archivePlayerDto.toJson(),
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  Future<List<PlayerDto>?> fetchArchivedPlayers() async {
+    try {
+
+      final response = await client.get(
+        '$conn${Routes.fetchArchivedPlayers}',
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
+
+      if (response.statusCode == 200) {
+        final data = response.data;
+        List<PlayerDto> players = (data as List)
+            .map((item) => PlayerDto.fromJson(item as Map<String, dynamic>))
+            .toList();
+        return players;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  Future<bool?> activateArchivedPlayer(ArchivePlayerDto archivePlayerDto) async {
+    try {
+
+      final response = await client.post(
+        '$conn${Routes.activateArchivedPlayer}',
+        data: archivePlayerDto.toJson(),
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  Future<bool?> addNewPlayer(CreatePlayerDto createPlayerDto) async {
+    try {
+
+      final response = await client.post(
+        '$conn${Routes.createPlayers}',
+        data: createPlayerDto.toJson(),
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
   //Future<ImageProvid>
 
 }

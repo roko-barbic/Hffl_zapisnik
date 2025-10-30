@@ -20,4 +20,8 @@ class Routes{
   static const String clubPlayerStats = '/getClubStatsOfPlayers';
   static const String finishTournament = '/Tournament/finishTournament?tournamentId=';
   static const String startAgainTournament = '/Tournament/startAgainTournament?tournamentId=';
+  static const String archivePlayer = '/ActiveRoster/archivePlayer';
+  static const String activateArchivedPlayer = '/ActiveRoster/activateArchivedPlayer';
+  static const String fetchArchivedPlayers = '/ActiveRoster/fetchArchivedPlayers';
+  static const String createPlayers = '/ActiveRoster/addNewPlayer';
 }
