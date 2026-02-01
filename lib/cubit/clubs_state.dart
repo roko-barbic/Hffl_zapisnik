@@ -14,7 +14,7 @@ final class ClubsState extends Equatable {
 
 
   @override
-  List<Object?> get props => [clubsLoadingStatus, clubs];
+  List<Object?> get props => [clubsLoadingStatus, clubs, clubPlayersStats, statsLoadingStatus, archivedPlayer];
 
 //<editor-fold desc="Data Methods">
   const ClubsState({
@@ -24,7 +24,7 @@ final class ClubsState extends Equatable {
     required this.statsLoadingStatus,
     this.archivedPlayer,
   });
-
+/*
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -54,7 +54,7 @@ final class ClubsState extends Equatable {
         ' archivedPlayer: $archivedPlayer,' +
         '}';
   }
-
+*/
   ClubsState copyWith({
     LoadingStatus? clubsLoadingStatus,
     Clubs? clubs,

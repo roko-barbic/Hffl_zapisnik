@@ -4,9 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hffl_api/hffl_api.dart';
 import 'package:hffl_zapisnik/cubit/clubs_cubit.dart';
-import 'package:toggle_switch/toggle_switch.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 
 class AddPlayer extends StatefulWidget {
   final List<PlayerDto> archivedPlayer;
@@ -49,15 +46,16 @@ class _AddPlayerState extends State<AddPlayer> {
             children: <Widget>[
               checkForArchivedPlayerWidget(),
               const SizedBox(height: 20),
-              (isArchived ?? false) ? archivedPlayerList(widget.archivedPlayer) : newPlayerInput(),
-               if(isProceedAvailable())
-                 ElevatedButton(
-                    onPressed: () => onProceed(),
-                    child: const Text("Spremi igrača"),
-                  ),
+              (isArchived ?? false)
+                  ? archivedPlayerList(widget.archivedPlayer)
+                  : newPlayerInput(),
+              if (isProceedAvailable())
+                ElevatedButton(
+                  onPressed: () => onProceed(),
+                  child: const Text("Spremi igrača"),
+                ),
             ],
-          )
-          );
+          ));
     });
   }
 
@@ -66,14 +64,14 @@ class _AddPlayerState extends State<AddPlayer> {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
-          bottom: BorderSide(
-              color: Theme.of(context).colorScheme.primary, width: 4),
-          left: BorderSide(
-              color: Theme.of(context).colorScheme.primary, width: 1),
-          right: BorderSide(
-              color: Theme.of(context).colorScheme.primary, width: 1)
-        ),
-        borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(42), bottomRight: Radius.circular(42)),
+            bottom: BorderSide(
+                color: Theme.of(context).colorScheme.primary, width: 4),
+            left: BorderSide(
+                color: Theme.of(context).colorScheme.primary, width: 1),
+            right: BorderSide(
+                color: Theme.of(context).colorScheme.primary, width: 1)),
+        borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(42), bottomRight: Radius.circular(42)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -96,18 +94,16 @@ class _AddPlayerState extends State<AddPlayer> {
                   visualDensity: VisualDensity.compact,
                   backgroundColor: MaterialStateProperty.resolveWith((states) {
                     if (states.contains(MaterialState.selected)) {
-                      return (isArchived == true) ? Theme.of(context).primaryColor.withOpacity(0.8) : Colors.red.withOpacity(0.8);
+                      return (isArchived == true)
+                          ? Theme.of(context).primaryColor.withOpacity(0.8)
+                          : Colors.red.withOpacity(0.8);
                     }
                     return Colors.grey.shade300;
                   }),
                 ),
                 segments: const <ButtonSegment<bool>>[
-                  ButtonSegment<bool>(
-                      value: true,
-                      label: Icon(Icons.check)),
-                  ButtonSegment<bool>(
-                      value: false,
-                      label: Icon(FontAwesomeIcons.xmark))
+                  ButtonSegment<bool>(value: true, label: Icon(Icons.check)),
+                  ButtonSegment<bool>(value: false, label: Icon(Icons.remove))
                 ],
                 selected: <bool>{isArchived!},
                 onSelectionChanged: (newSet) {
@@ -123,37 +119,37 @@ class _AddPlayerState extends State<AddPlayer> {
     );
   }
 
-  Widget archivedPlayerList(List<PlayerDto> players){
-    return  Padding(
+  Widget archivedPlayerList(List<PlayerDto> players) {
+    return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Container(
         height: MediaQuery.of(context).size.height * 0.5,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-             const Text("Odaberi igrača kojega vračaš u aktivni roster:"),
-             Expanded(
-               child: GridView.builder(
-                  padding: const EdgeInsets.all(10),
-                  itemCount: players.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 1,
-                    mainAxisSpacing: 3,
-                    mainAxisExtent: 60,
-                  ),
-                  itemBuilder: (context, index) => GestureDetector(
-                    onTap: (){},
-                    child: archivedPlayerRow(players[index]),
-                  ),
+            const Text("Odaberi igrača kojega vračaš u aktivni roster:"),
+            Expanded(
+              child: GridView.builder(
+                padding: const EdgeInsets.all(10),
+                itemCount: players.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 1,
+                  mainAxisSpacing: 3,
+                  mainAxisExtent: 60,
                 ),
-             ),
+                itemBuilder: (context, index) => GestureDetector(
+                  onTap: () {},
+                  child: archivedPlayerRow(players[index]),
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget archivedPlayerRow(PlayerDto player){
+  Widget archivedPlayerRow(PlayerDto player) {
     return Column(
       children: [
         Row(
@@ -162,16 +158,23 @@ class _AddPlayerState extends State<AddPlayer> {
             Text(player.id.toString()),
             Text(player.firstName),
             Text(player.LastName),
-            Checkbox(value: selectedArchivedPlayer == player.id, onChanged: (isSelected){
-              setState(() {
-                if(isSelected ?? false)
-                  selectedArchivedPlayer = player.id;
-                else
-                  selectedArchivedPlayer = null;
-              });
-            })
-          ],),
-        Divider(height: 2, thickness: 3, color: Theme.of(context).primaryColor,)
+            Checkbox(
+                value: selectedArchivedPlayer == player.id,
+                onChanged: (isSelected) {
+                  setState(() {
+                    if (isSelected ?? false)
+                      selectedArchivedPlayer = player.id;
+                    else
+                      selectedArchivedPlayer = null;
+                  });
+                })
+          ],
+        ),
+        Divider(
+          height: 2,
+          thickness: 3,
+          color: Theme.of(context).primaryColor,
+        )
       ],
     );
   }
@@ -233,23 +236,27 @@ class _AddPlayerState extends State<AddPlayer> {
     }
   }
 
-  bool isProceedAvailable(){
-    if(isArchived ?? false){
+  bool isProceedAvailable() {
+    if (isArchived ?? false) {
       return selectedArchivedPlayer != null;
     }
-    if(_firstNameController.text != "" &&
+    if (_firstNameController.text != "" &&
         _lastNameController.text != "" &&
-        _dateOfBirth != null
-    ){
+        _dateOfBirth != null) {
       return true;
     }
     return false;
   }
 
-  void onProceed(){
-    if(isArchived ?? false){
-      widget.returnArchivedPlayer(ArchivePlayerDto(playerId: selectedArchivedPlayer!, clubId: widget.clubId));
+  void onProceed() {
+    if (isArchived ?? false) {
+      widget.returnArchivedPlayer(ArchivePlayerDto(
+          playerId: selectedArchivedPlayer!, clubId: widget.clubId));
     }
-    widget.createPlayer(CreatePlayerDto(firstName: _firstNameController.text, lastname: _lastNameController.value.toString(), dateOfBirth: _dateOfBirth!, clubId: widget.clubId));
+    widget.createPlayer(CreatePlayerDto(
+        firstName: _firstNameController.text,
+        lastname: _lastNameController.text,
+        dateOfBirth: _dateOfBirth!,
+        clubId: widget.clubId));
   }
 }
