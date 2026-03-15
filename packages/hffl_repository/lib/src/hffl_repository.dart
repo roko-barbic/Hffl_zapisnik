@@ -123,6 +123,16 @@ class HfflRepository {
     return isSuccesful ?? false;
   }
 
+  Future<List<PlayerDto>?> fetchPossibleReferees(int gameId) async{
+    List<PlayerDto>? possibleReferees = await _hfflApiClient.fetchPossibleReferees(gameId);
+    return possibleReferees;
+  }
+
+  Future<bool> registerReferees(List<int> refereeIds, int gameId)async{
+    bool? isSuccesful =  await _hfflApiClient.registerReferees(refereeIds, gameId);
+    return isSuccesful ?? false;
+  }
+
 //Widget initApp(){
 
 //realno repository ti treba ako ces sklapat neke komplekcsnije pozive sastavljene od vise poziva
