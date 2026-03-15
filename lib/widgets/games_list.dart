@@ -34,7 +34,7 @@ class GamesList extends StatelessWidget {
                   onTap: () {
                     context
                         .read<GameCubit>()
-                        .fetchGameDetails(games?.games[index].id ?? 0, context, false, isEditable, authState.isGuestMode);
+                        .fetchGameDetails(games?.games[index].id ?? 0, context, isEditable, authState.isGuestMode, false);
                   },
                   onLongPress: () => isEditable ? showDialog(
                       context: context,
