@@ -7,7 +7,9 @@ import 'package:hffl_repository/hffl_repository.dart';
 import 'package:hffl_zapisnik/enums/clubs_status_enum.dart';
 import 'package:hffl_zapisnik/screens/game_details_screen.dart';
 import 'package:hffl_zapisnik/screens/register_players_screen.dart';
+import 'package:hffl_zapisnik/screens/register_referees_screen.dart';
 import 'package:hffl_zapisnik/widgets/modals/game_didnt_start.dart';
+import 'package:hffl_zapisnik/widgets/register_referees.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:hffl_zapisnik/global_keys.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -78,7 +80,7 @@ class GameCubit extends Cubit<GameState> {
   }
 
   Future<void> fetchGameDetails(int gameId, BuildContext context,
-      bool isFromRegistration, bool isEditable, bool isGuestLoggedIn) async {
+      bool isEditable, bool isGuestLoggedIn, bool? isFromRegistration) async {
     navigatorKey.currentContext?.loaderOverlay.show();
     if (state.selectedGameLoadingStatus == LoadingStatus.initial) {
       emit(state.copyWith(selectedGameLoadingStatus: LoadingStatus.loading));
@@ -90,27 +92,32 @@ class GameCubit extends Cubit<GameState> {
         emit(state.copyWith(
             selectedGame: gameDetails,
             selectedGameLoadingStatus: LoadingStatus.success));
-        if (gameDetails.playerRegistration) {
+        if (gameDetails.playerRegistration &&
+            !(gameDetails.referees != null && gameDetails.referees!.isEmpty)) {
           await fetchGameAndPlayerDetails(gameId);
-          if (isFromRegistration) {
+          if(isFromRegistration ?? false) {
             Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (context) =>
                     GameDetailsScreen(isEditable: isEditable)));
-          } else {
+          }else{
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) =>
                     GameDetailsScreen(isEditable: isEditable)));
           }
-        } else {
+        }else{
           if (isGuestLoggedIn) {
             showDialog(
                 context: context,
                 builder: (context) {
                   return GameDidntStartModal();
                 });
-          } else {
+          }
+          else if(gameDetails.referees != null && gameDetails.referees!.isEmpty) {
+            openRefereeRegistration(gameId, context);
+          }
+          else {
             await fetchGameAndPlayerDetails(gameId);
-            Navigator.of(context).push(MaterialPageRoute(
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (context) => const RegisterPlayersScreen()));
           }
         }
@@ -173,12 +180,40 @@ class GameCubit extends Cubit<GameState> {
       if (isSuccessful) {
         emit(state.copyWith(selectedGameLoadingStatus: LoadingStatus.success));
         //Navigator.of(context).pop();
-        await fetchGameDetails(gameId, context, true, true, false);
+        await fetchGameDetails(gameId, context, true, false, true);
       } else {
         emit(state.copyWith(selectedGameLoadingStatus: LoadingStatus.failure));
       }
-    } on Exception {
+    } on Exception catch(e) {
       emit(state.copyWith(selectedGameLoadingStatus: LoadingStatus.failure));
+    }
+  }
+
+  Future<void> openRefereeRegistration(int gameId, BuildContext context) async{
+    final possibleReferees = await _hfflRepository.fetchPossibleReferees(
+        gameId);
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => const RegisterRefereesScreen()));
+    if(possibleReferees != null && possibleReferees.isNotEmpty) {
+      emit(state.copyWith(
+          selectedGameLoadingStatus: LoadingStatus.success,
+          possibleReferees: possibleReferees
+      ));
+    }
+    else{
+      emit(state.copyWith(
+          selectedGameLoadingStatus: LoadingStatus.failure,
+          possibleReferees: []
+      ));
+    }
+  }
+
+  Future<void> submitReferees(List<int> refereeIds, BuildContext context) async{
+    final isSuccessful = await _hfflRepository.registerReferees(refereeIds, state.selectedGame?.id ?? 0);
+    if(isSuccessful){
+      fetchGameDetails(state.selectedGame!.id, context, true, false, true);
+    }else{
+      //TODO dodaj modal
     }
   }
 

@@ -13,6 +13,7 @@ final class GameState extends Equatable {
   final GameDetails? selectedGameAndPlayers;
 
   final LoadingStatus creatingGameStatus;
+  final List<PlayerDto>? possibleReferees;
 
   factory GameState.fromJson(Map<String, dynamic> json) => _$GameStateFromJson(json);
   Map<String, dynamic> toJson() => _$GameStateToJson(this);
@@ -29,6 +30,7 @@ final class GameState extends Equatable {
     required this.selectedGameLoadingStatus,
     this.selectedGameAndPlayers,
     required this.creatingGameStatus,
+    this.possibleReferees,
   });
 
   @override
@@ -41,7 +43,8 @@ final class GameState extends Equatable {
           selectedGame == other.selectedGame &&
           selectedGameLoadingStatus == other.selectedGameLoadingStatus &&
           selectedGameAndPlayers == other.selectedGameAndPlayers &&
-          creatingGameStatus == other.creatingGameStatus);
+          creatingGameStatus == other.creatingGameStatus &&
+          possibleReferees == other.possibleReferees);
 
   @override
   int get hashCode =>
@@ -50,7 +53,8 @@ final class GameState extends Equatable {
       selectedGame.hashCode ^
       selectedGameLoadingStatus.hashCode ^
       selectedGameAndPlayers.hashCode ^
-      creatingGameStatus.hashCode;
+      creatingGameStatus.hashCode ^
+      possibleReferees.hashCode;
 
   @override
   String toString() {
@@ -61,6 +65,7 @@ final class GameState extends Equatable {
         ' selectedGameLoadingStatus: $selectedGameLoadingStatus,' +
         ' selectedGameAndPlayers: $selectedGameAndPlayers,' +
         ' creatingGameStatus: $creatingGameStatus,' +
+        ' possibleReferees: $possibleReferees,' +
         '}';
   }
 
@@ -71,6 +76,7 @@ final class GameState extends Equatable {
     LoadingStatus? selectedGameLoadingStatus,
     GameDetails? selectedGameAndPlayers,
     LoadingStatus? creatingGameStatus,
+    List<PlayerDto>? possibleReferees,
   }) {
     return GameState(
       games: games ?? this.games,
@@ -81,6 +87,7 @@ final class GameState extends Equatable {
       selectedGameAndPlayers:
           selectedGameAndPlayers ?? this.selectedGameAndPlayers,
       creatingGameStatus: creatingGameStatus ?? this.creatingGameStatus,
+      possibleReferees: possibleReferees ?? this.possibleReferees,
     );
   }
 
@@ -92,6 +99,7 @@ final class GameState extends Equatable {
       'selectedGameLoadingStatus': this.selectedGameLoadingStatus,
       'selectedGameAndPlayers': this.selectedGameAndPlayers,
       'creatingGameStatus': this.creatingGameStatus,
+      'possibleReferees': this.possibleReferees,
     };
   }
 
@@ -104,6 +112,7 @@ final class GameState extends Equatable {
           map['selectedGameLoadingStatus'] as LoadingStatus,
       selectedGameAndPlayers: map['selectedGameAndPlayers'] as GameDetails,
       creatingGameStatus: map['creatingGameStatus'] as LoadingStatus,
+      possibleReferees: map['possibleReferees'] as List<PlayerDto>,
     );
   }
 
