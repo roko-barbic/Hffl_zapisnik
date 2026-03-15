@@ -18,6 +18,8 @@ class _RegisterPlayersScreenState extends State<RegisterPlayersScreen> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Registracija'),
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
         ),
         body: BlocBuilder<GameCubit, GameState>(builder: (context, state) {
           switch (state.gamesLoadingStatus) {
