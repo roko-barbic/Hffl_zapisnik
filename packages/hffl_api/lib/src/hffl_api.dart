@@ -570,6 +570,52 @@ class HfflApi {
     }
   }
 
+  Future<List<PlayerDto>?> fetchPossibleReferees(int gameId) async {
+    try {
+
+      final response = await client.get(
+        '$conn${Routes.fetchPossibleReferees}$gameId',
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
+
+      if (response.statusCode == 200) {
+        final data = response.data;
+        List<PlayerDto> players = (data as List)
+            .map((item) => PlayerDto.fromJson(item as Map<String, dynamic>))
+            .toList();
+        return players;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  Future<bool> registerReferees(List<int> referees, int gameId) async {
+    try {
+      final Map<String, dynamic> requestData = {
+        "refereeIds": referees,
+        "gameId": gameId,
+      };
+
+      final response = await client.post(
+        '$conn${Routes.registerReferees}',
+        data: requestData,
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print('Greška pri slanju sudaca: $e');
+      return false;
+    }
+  }
+
   //Future<ImageProvid>
 
 }

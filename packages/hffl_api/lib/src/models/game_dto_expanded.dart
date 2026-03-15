@@ -1,3 +1,4 @@
+import 'package:hffl_api/hffl_api.dart';
 import 'package:hffl_api/src/models/event.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'club_dto_short.dart';
@@ -13,6 +14,7 @@ class GameDto {
   final int clubAwayScore;
   final List<Event> events;
   final bool playerRegistration;
+  final List<PlayerDto>? referees;
 
   factory GameDto.fromJson(Map<String, dynamic> json) =>
       _$GameDtoFromJson(json);
@@ -28,6 +30,7 @@ class GameDto {
     required this.clubAwayScore,
     required this.events,
     required this.playerRegistration,
+    this.referees,
   });
 
   @override
@@ -41,7 +44,8 @@ class GameDto {
           clubHomeScore == other.clubHomeScore &&
           clubAwayScore == other.clubAwayScore &&
           events == other.events &&
-          playerRegistration == other.playerRegistration);
+          playerRegistration == other.playerRegistration &&
+          referees == other.referees);
 
   @override
   int get hashCode =>
@@ -51,7 +55,8 @@ class GameDto {
       clubHomeScore.hashCode ^
       clubAwayScore.hashCode ^
       events.hashCode ^
-      playerRegistration.hashCode;
+      playerRegistration.hashCode ^
+      referees.hashCode;
 
   @override
   String toString() {
@@ -63,6 +68,7 @@ class GameDto {
         ' clubAwayScore: $clubAwayScore,' +
         ' events: $events,' +
         ' playerRegistration: $playerRegistration,' +
+        ' referees: $referees,' +
         '}';
   }
 
@@ -74,6 +80,7 @@ class GameDto {
     int? clubAwayScore,
     List<Event>? events,
     bool? playerRegistration,
+    List<PlayerDto>? referees,
   }) {
     return GameDto(
       id: id ?? this.id,
@@ -83,6 +90,7 @@ class GameDto {
       clubAwayScore: clubAwayScore ?? this.clubAwayScore,
       events: events ?? this.events,
       playerRegistration: playerRegistration ?? this.playerRegistration,
+      referees: referees ?? this.referees,
     );
   }
 
@@ -95,6 +103,7 @@ class GameDto {
       'clubAwayScore': this.clubAwayScore,
       'events': this.events,
       'playerRegistration': this.playerRegistration,
+      'referees': this.referees,
     };
   }
 
@@ -107,6 +116,7 @@ class GameDto {
       clubAwayScore: map['clubAwayScore'] as int,
       events: map['events'] as List<Event>,
       playerRegistration: map['playerRegistration'] as bool,
+      referees: map['referees'] as List<PlayerDto>,
     );
   }
 

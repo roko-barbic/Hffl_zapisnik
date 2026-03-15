@@ -16,6 +16,9 @@ GameDto _$GameDtoFromJson(Map<String, dynamic> json) => GameDto(
           .map((e) => Event.fromJson(e as Map<String, dynamic>))
           .toList(),
       playerRegistration: json['playerRegistration'] as bool,
+      referees: (json['referees'] as List<dynamic>?)
+          ?.map((e) => PlayerDto.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$GameDtoToJson(GameDto instance) => <String, dynamic>{
@@ -26,4 +29,5 @@ Map<String, dynamic> _$GameDtoToJson(GameDto instance) => <String, dynamic>{
       'clubAwayScore': instance.clubAwayScore,
       'events': instance.events,
       'playerRegistration': instance.playerRegistration,
+      'referees': instance.referees,
     };

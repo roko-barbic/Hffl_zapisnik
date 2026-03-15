@@ -24,4 +24,6 @@ class Routes{
   static const String activateArchivedPlayer = '/ActiveRoster/activateArchivedPlayer';
   static const String fetchArchivedPlayers = '/ActiveRoster/fetchArchivedPlayers';
   static const String createPlayers = '/ActiveRoster/addNewPlayer';
+  static const String fetchPossibleReferees = "/getPlayersForRefereeRegistration/";
+  static const String registerReferees = "/registerReferees";
 }
