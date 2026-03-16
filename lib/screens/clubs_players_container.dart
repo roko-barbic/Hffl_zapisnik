@@ -18,21 +18,23 @@ class _ClubsPlayersContainerState extends State<ClubsPlayersContainer> {
   @override
   Widget build(BuildContext context) {
     final currentSeason = context.select((SeasonCubit cubit) => cubit.state.selectedSeason);
+    final isGuestMode = context.read<AuthCubit>().state.isGuestMode;
     return BlocBuilder<ClubsCubit, ClubsState>(builder: (context, state){
       return ClubsPlayersScreen(
         createNewPlayer: createNewPlayer,
         archivePlayer: archivePlayer,
         clubName: state.clubPlayersStats?.name ?? "Nan",
         players: state.clubPlayersStats?.players ?? [],
-        season: currentSeason
+        season: currentSeason,
+        isGuestMode: isGuestMode,
       );
     });
   }
 
   void archivePlayer(int playerId){
-    bool isLoggedIn = context.read<AuthCubit>().state.isLoggedIn;
+    bool isGuestMode = context.read<AuthCubit>().state.isGuestMode;
     bool isCurrentSeason = context.read<SeasonCubit>().state.selectedSeason == DateTime.now().year;
-    if(isLoggedIn && isCurrentSeason){
+    if(isGuestMode && isCurrentSeason){
       showDialog(
         context: context,
         builder: (_) => AlertDialog(

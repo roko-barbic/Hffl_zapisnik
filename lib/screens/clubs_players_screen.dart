@@ -11,6 +11,7 @@ class ClubsPlayersScreen extends StatefulWidget {
   final String clubName;
   final List<PlayerStats> players;
   final int season;
+  final bool isGuestMode;
 
   const ClubsPlayersScreen(
       {required this.archivePlayer,
@@ -18,6 +19,7 @@ class ClubsPlayersScreen extends StatefulWidget {
       required this.players,
       required this.clubName,
       required this.season,
+      required this.isGuestMode,
       super.key});
 
   @override
@@ -52,7 +54,7 @@ class _ClubsPlayersScreenState extends State<ClubsPlayersScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(widget.clubName),
-            if(widget.season == DateTime.now().year)
+            if(widget.season == DateTime.now().year && !widget.isGuestMode)
               IconButton(
                 onPressed: () => widget.createNewPlayer(),
                 icon: const Icon(Icons.add))
