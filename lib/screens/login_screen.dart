@@ -239,6 +239,42 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
                                 child: const Text('Use as guest'),
                               ),
                       ]),
+
+                      const SizedBox(height: 24),
+                      Row(
+                        children: [
+                          Expanded(child: Divider(color: Colors.grey.withOpacity(0.5), thickness: 1)),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Text('ILI', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
+                          ),
+                          Expanded(child: Divider(color: Colors.grey.withOpacity(0.5), thickness: 1)),
+                        ],
+                      ),
+
+                      const SizedBox(height: 24),
+                      SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton.icon(
+                          onPressed: state.isLoading
+                              ? null
+                              : () {
+                            context.read<AuthCubit>().loginWithGoogle(context);
+                          },
+                          icon: const Icon(Icons.g_mobiledata, size: 32, color: Colors.redAccent),
+                          label: const Text(
+                            'Prijavi se Googleom',
+                            style: TextStyle(fontSize: 16, color: Colors.black87),
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            side: BorderSide(color: Colors.grey.withOpacity(0.5)),
+                          ),
+                        ),
+                      ),
                       const SizedBox(height: 16),
                     ],
                   ),
